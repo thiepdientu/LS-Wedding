@@ -418,7 +418,7 @@ body {
 }
 
 .main-color {
-    color: #1c3b4f;
+    color: #1F2B4E;
     font-family: var(--title-font);
     font-size: 20px;
 }
@@ -566,8 +566,8 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #FFFF;
-    padding: 3px;
+    background: #D7AB72;
+    padding: 1px;
     border-radius: 15px;
 }
 .timeline-body {
@@ -701,14 +701,17 @@ body {
     justify-content: center;
 }
 .invitation-card {
-    display: flex  ;
+    display: flex
+    ;
         flex-direction: column;
         align-items: center;
         padding: 20px;
         gap: 12px;
-        background-color: #cae9ff7d;
+        color: #D7AB71;
+        background-color: #2C334A;
         border-radius: 20px;
         max-width: 100%;
+        border: 3px solid #D7AB71;
         text-align: center;
 }
 .invitation-card img {

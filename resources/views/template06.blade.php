@@ -586,20 +586,20 @@
     </div>
     <!-- END PRELOAD --> <!-- BANNER -->
     <section id="banner" class="section-banner"
-        style="color:white;  object-fit: cover;
+        style="color:rgb(0, 0, 0);  object-fit: cover;
     object-position: center;">
-        <img src="{{ asset($weddingCard->banner_top) }}"
+        <img src="{{ asset('template06/images/bg3.jpg') }}"
             alt="" class="banner-bg" style="object-position:center center; ">
-        <div class="banner-container container" style="background-color: #00000063;">
-            <h1 class="banner-title" data-aos="fade-down" data-aos-duration="3000">SAVE THE DATE</h1>
+        <div style="padding: 0px 43px;" class="banner-container container">
+            
             <div data-aos="fade-up" data-aos-duration="3000"
                 class="banner-name uk-position-relative uk-position-z-index">
                 {{ $weddingCard->groom_name }}<br>
                 &amp;<br>
                 {{ $weddingCard->bride_name }} </div>
             <div>
-                <p>Vào Lúc</p>
-                <p class="banner-time">{{ $weddingCard->wedding_time }}</p>
+                {{-- <p>Vào Lúc</p>
+                <p class="banner-time">{{ $weddingCard->wedding_time }}</p> --}}
             </div>
             <div class="banner-date">
                 <span class="day_name">@php
@@ -634,7 +634,7 @@
     <!-- ABOUT -->
     <section id="about" class="section-about">
         <div class="section-heading">
-            <h2 class="section-title">CHÚ RỂ VÀ CÔ DÂU</h2>
+            <h2 class="section-title" style="color:#587C4C">CHÚ RỂ VÀ CÔ DÂU</h2>
         </div>
         <div class="about-container container">
             <div class="about-card" style="order:1">
@@ -744,7 +744,7 @@
     <section id="album" class="uk-section" data-aos="fade-up" data-aos-duration="3000">
         <div class="section-heading">
             <p class="subtitle"></p>
-            <h2 class="uk-heading-small uk-text-center script-font">
+            <h2 style="color:#587C4C" class="uk-heading-small uk-text-center script-font">
                 Album Ảnh </h2>
         </div>
         @php
@@ -864,7 +864,7 @@
         <div class="container">
             <div class="section-heading">
                 <h2 class="section-title">
-                    <p class="script-font">{{ $weddingCard->message_invite }}</p>
+                    <p style="color:#587C4C" class="main-font">{{ $weddingCard->message_invite }}</p>
                 </h2>
             </div>
             <div class="invitation">

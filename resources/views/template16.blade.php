@@ -526,7 +526,18 @@
             position: absolute;
             clip: rect(1px, 1px, 1px, 1px);
         }
+        .banner-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
     </style>
+
+
+    
+</style>
     <link rel="stylesheet" href="{{ asset('template16/css/style.css') }}">
 </head>
 
@@ -546,20 +557,20 @@
 
     </div>
     <!-- END PRELOAD --> <!-- BANNER -->
-    <section id="banner" class="section-banner" style="background: #155279">
-        <div class="banner-container container">
-            <img src="{{ asset('template16/images/top-right.png') }}" alt="" class="bg-top-right"
-                data-aos="fade-down-left" data-aos-duration="2000">
-            <img src="{{ asset('template16/images/bottom-left.png') }}" alt="" class="bg-bottom-left"
-                data-aos="fade-up-right" data-aos-duration="2000">
+    <section id="banner" class="section-banner" style="color: #cdc391;">
+        <div class="banner-container container" >
+            <img src="{{ asset('template16/images/backgroudn.jpg') }}"
+            alt="" class="banner-bg" style="object-position:center center; ">
+            <div class="banner-bg" style="background: #0564c529;"></div>
+            
             <h1 class="banner-title" data-aos="fade-down" data-aos-duration="2000">
-                <p class="script-font" style="font-size: 40px;">Save The Date</p>
+                <p class="script-font" style="font-size: 30px;">Save The Date</p>
             </h1>
             <div data-aos="fade-down" data-aos-duration="2000" class="banner-name">
-                <h1 class="script-font" style="color: white;font-size:30px;font-weight:bold;">{{ $weddingCard->groom_name }}<br>
-                  💕<br>
+                <h1 style="color: #cdc391;font-size:40px;font-style:italic;" >{{ $weddingCard->groom_name }}<br>
+                  &<br>
                   {{ $weddingCard->bride_name }} </div></h3>
-            <div style="color:white;" class="banner-date">
+            <div style="color:#cdc391;" class="banner-date">
                 <div data-aos="fade-right" data-aos-duration="2000" class="date1">
                     <span class="name_day day_name"> @php
                         \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
@@ -568,7 +579,7 @@
                     @endphp
                         {{ $weekdayWedding }}</span>
                 </div>
-                <div class="date2">
+                <div style="z-index: 99;" class="date2">
                     <span
                         class="invitation_day  banner_month">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->day }}</span>
                     <span class="invitation_month banner_date">Tháng
@@ -583,12 +594,12 @@
             </div>
             <div class="banner-location" data-aos="fade-up" data-aos-duration="2000">
 
-                <h4 class="name_palace banner_location_name">{{ $weddingCard->wedding_message }}</h4>
-                <p data-aos="zoom-in" data-aos-duration="2000"  class="banner_location_name" style="font-size: 26px;font-weight:bold;">
+                <h4 style="color: #cdc391;" class="name_palace banner_location_name">{{ $weddingCard->wedding_message }}</h4>
+                <p  style="color: #cdc391;font-weight:bold;" data-aos="zoom-in" data-aos-duration="2000"  class="banner_location_name" style="font-size: 26px;font-weight:bold;">
                     {{ $weddingCard->name_place_wedding }}</p>
-                <p class="invitation_address banner_location_adress">{{ $weddingCard->address_wedding }}</p>
+                <p  style="color: #cdc391;" class="invitation_address banner_location_adress">{{ $weddingCard->address_wedding }}</p>
             </div>
-            <div class="social-link">
+            <div  style="color: #cdc391;" class="social-link">
                 <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="">
                     <i class="ri-phone-fill"></i>
                 </a>
@@ -605,7 +616,7 @@
     <!-- ABOUT -->
     <section id="about" class="section-about">
         <div class="section-heading">
-            <h2 class="main-color" style="font-size: 20px;font-weight:bold;">CHÚ RỂ VÀ CÔ DÂU</h2>
+            <h2 class="main-color" style="font-size: 20px;font-weight:bold;color:#1F2B4E;">CHÚ RỂ VÀ CÔ DÂU</h2>
         </div>
         <div class="about-container container">
             <div class="about-card" style="order:1">
@@ -836,7 +847,7 @@
             </div>
             <div class="invitation">
                 <div class="invitation-container">
-                  <h2 class="uk-heading-small uk-text-center section-title  uk-text-cappercase">
+                  <h2 class="main-color uk-heading-small uk-text-center section-title  uk-text-cappercase">
                     {{ $weddingCard->message_invite }}
                 </h2>
                     <div class="invitation-card"> <img
@@ -860,7 +871,7 @@
                                       $weekdayBride = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
                                   @endphp
                                   {{ $weekdayBride }} </span>
-                                    <span data-aos="zoom-in" data-aos-duration="1000" class="invi_date_number">
+                                    <span style="color:#D7AB71;" data-aos="zoom-in" data-aos-duration="1000" class="invi_date_number">
                                         <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->day }}</p> /
                                         <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->month }}</p>
                                     </span>
@@ -905,7 +916,7 @@
                                       $weekdayGroom = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
                                   @endphp
                                   {{ $weekdayGroom }} </span>
-                                    <span class="invi_date_number">
+                                    <span style="color:#D7AB71;" class="invi_date_number">
                                         <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->day }}</p> /
                                         <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->month }}</p>
                                     </span>
