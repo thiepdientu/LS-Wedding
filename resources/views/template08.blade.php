@@ -13,19 +13,20 @@
     <link rel="canonical" href="{{ url()->current() }}">
     <meta property="og:locale" content="vi_VN">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }} - Thiệp cưới online">
+    <meta property="og:title"
+        content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }} - Thiệp cưới online">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }}">
     <meta property="og:updated_time" content="2024-03-28T03:41:34+00:00">
     <meta property="og:image" content="{{ asset($weddingCard->banner_preview) }}">
-    <meta property="og:image:secure_url"
-        content="{{ asset($weddingCard->banner_preview) }}">
+    <meta property="og:image:secure_url" content="{{ asset($weddingCard->banner_preview) }}">
     <meta property="og:image:width" content="426">
     <meta property="og:image:height" content="639">
     <meta property="og:image:alt" content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }}">
     <meta property="og:image:type" content="image/jpeg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }} - Thiệp cưới online">
+    <meta name="twitter:title"
+        content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }} - Thiệp cưới online">
     <meta name="{{ asset($weddingCard->banner_preview) }}">
     <!-- /Rank Math WordPress SEO plugin -->
 
@@ -33,9 +34,7 @@
     <link rel="dns-prefetch" href="//unpkg.com">
 
     <script>
-
-        /*! This file is auto-generated */
-        ! function(i, n) {
+        /*! This file is auto-generated */ ! function(i, n) {
             var o, s, e;
 
             function c(e) {
@@ -65,7 +64,7 @@
                             n(e, "\ud83c\uddfa\ud83c\uddf3", "\ud83c\uddfa\u200b\ud83c\uddf3") && !n(e,
                                 "\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f",
                                 "\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f"
-                                );
+                            );
                     case "emoji":
                         return !n(e, "\ud83d\udc26\u200d\u2b1b", "\ud83d\udc26\u200b\u2b1b")
                 }
@@ -516,7 +515,8 @@
     <link rel="stylesheet" id="reset uikit-css" href="{{ asset('template08/css/reset1.css') }}" media="all">
     <link rel="stylesheet" id="remixicon-css" href="{{ asset('template08/css/remixicon.css') }}" media="all">
     <link rel="stylesheet" id="preload-css" href="{{ asset('template08/css/preload.css') }}" media="all">
-    <link rel="stylesheet" id="wedding reset-css" href="{{ asset('template08/css/reset-wedding.css') }}" media="all">
+    <link rel="stylesheet" id="wedding reset-css" href="{{ asset('template08/css/reset-wedding.css') }}"
+        media="all">
     <link rel="stylesheet" id="fancybox-css" href="{{ asset('template08/css/fancybox.css') }}" media="all">
     <link rel="stylesheet" id="swiper slide-css" href="{{ asset('template08/css/swiper-bundle.min.css') }}"
         media="all">
@@ -558,36 +558,44 @@
     </div>
     <!-- END PRELOAD --> <!-- BANNER -->
     <section id="banner" class="section-banner">
-        <img src="{{ asset($weddingCard->banner_top) }}" alt=""
-            class="banner-bg banner_top" style="object-position:center center">
+        <img src="{{ asset($weddingCard->banner_top) }}" alt="" class="banner-bg banner_top"
+            style="object-position:center center">
         <div class="banner-bg" style="background:#00000030;z-index: 19;">
-            
-        <div class="banner-container container" >
-            <h1 class="banner-title script-font text-white" data-aos="fade-down" data-aos-duration="2000">{{ $weddingCard->wedding_message }}</h1>
-            <img src="{{ asset('template08/images/hy-icon.png') }}" alt="" class="banner-icon">
-            <div data-aos="fade-up" data-aos-duration="2000" class="banner-name">
-                {{ $weddingCard->groom_name }}<br>
-                &amp;<br>
-                {{ $weddingCard->bride_name }} </div>
-            <div data-aos="fade-down" data-aos-duration="2000" class="banner-date text-white">
-                <span class="invitation_day banner_date">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->day }}</span>.
-                <span class="invitation_month banner_month">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->month }}</span>.
-                <span class="invitation_year banner_year">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->year }}</span>
-                <p class="name_palace banner_location_name">{{ $weddingCard->name_place_wedding }}</p>
-                <address class="invitation_address banner_location_adress">
-                    {{ $weddingCard->address_wedding }} </address>
-            </div>
-            <div class="social-link">
-                <a href="tel:+84{{ $weddingCard->groom_phone }}" class="">
-                    <i class="ri-phone-fill"></i>
-                </a>
 
-                <a
-                    href="{{ $weddingCard->address_wedding_map }}">
-                    <i class="ri-map-fill"></i>
-                </a>
+            <div class="banner-container container">
+                <h1 class="banner-title script-font text-white" data-aos="fade-down" data-aos-duration="2000">
+                    {{ $weddingCard->wedding_message }}</h1>
+                <img src="{{ asset('template08/images/hy-icon.png') }}" alt="" class="banner-icon">
+                <div data-aos="fade-up" data-aos-duration="2000" class="banner-name">
+                    {{ $weddingCard->groom_name }}<br>
+                    &amp;<br>
+                    {{ $weddingCard->bride_name }} </div>
+                <div data-aos="fade-down" data-aos-duration="2000" class="banner-date text-white">
+                    <span
+                        class="invitation_day banner_date">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->day }}</span>.
+                    <span
+                        class="invitation_month banner_month">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->month }}</span>.
+                    <span
+                        class="invitation_year banner_year">{{ \Carbon\Carbon::parse($weddingCard->wedding_date)->year }}</span>
+                    <p class="name_palace banner_location_name">{{ $weddingCard->name_place_wedding }}</p>
+                    <address class="invitation_address banner_location_adress">
+                        {{ $weddingCard->address_wedding }} </address>
+                </div>
+                <div class="social-link">
+                    @if ($weddingCard->groom_phone != ',')
+                        <a href="tel:+84{{ $weddingCard->groom_phone }}" class="">
+                            <i class="ri-phone-fill"></i>
+                        </a>
+                    @endif
+                    @if ($weddingCard->address_wedding_map != ',')
+                        <a href="{{ $weddingCard->address_wedding_map }}">
+                            <i class="ri-map-fill"></i>
+                        </a>
+                    @endif
+
+
+                </div>
             </div>
-        </div>
     </section>
     <!-- END BANNER -->
 
@@ -600,24 +608,28 @@
         <div class="about-container container">
             <div class="about-card" style="order:1">
                 <div class="about-media" data-aos="fade-up" data-aos-duration="3000">
-                    <img src="{{ asset($weddingCard->bride_avatar) }}"
-                        alt="" class="bride_img">
+                    <img src="{{ asset($weddingCard->bride_avatar) }}" alt="" class="bride_img">
                 </div>
                 <div class="about-data uk-text-center" data-aos="fade-down" data-aos-duration="1000">
                     <h3 class="bride_name">{{ $weddingCard->bride_name }}</h3>
-                    <p class="bride_des">{{ $weddingCard->des_bride }} </p>
+                    @if ($weddingCard->des_bride != ',')
+                        <p class="bride_des">{{ $weddingCard->des_bride }} </p>
+                    @endif
+
                     <hr>
                 </div>
 
             </div>
             <div class="about-card" style="order:1">
                 <div class="about-media" data-aos="fade-up" data-aos-duration="3000">
-                    <img src="{{ asset($weddingCard->groom_avatar) }}"
-                        alt="" class="groom_img">
+                    <img src="{{ asset($weddingCard->groom_avatar) }}" alt="" class="groom_img">
                 </div>
                 <div class="about-data uk-text-center" data-aos="fade-down" data-aos-duration="1000">
                     <h3 class="groom_name">{{ $weddingCard->groom_name }}</h3>
-                    <p class="groom_des">{{ $weddingCard->des_groom }}</p>
+                    @if ($weddingCard->des_groom != ',')
+                        <p class="groom_des">{{ $weddingCard->des_groom }}</p>
+                    @endif
+
                     <hr>
                 </div>
 
@@ -628,78 +640,76 @@
     <!-- TIMELINE -->
 
     @php
-    $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : [];
-    $stories = [];
-    if ($weddingCard->love_story != ',') {
-        $test = '1/2/2023:Hẹn Hò,1/3/2025:Tỏ tình,2/04/2025:Đính Hôn, 2/05/2025:Kết Hôn';
-        $items = explode(',', $weddingCard->love_story);
-        foreach ($items as $item) {
-            [$date, $story] = explode(':', $item);
-            $image = !empty($album) ? array_shift($album) : null; // Lấy ảnh đầu tiên và loại khỏi album
-            $stories[] = ['date' => trim($date), 'story' => trim($story), 'image' => $image];
+        $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : [];
+        $stories = [];
+        if ($weddingCard->love_story != ',') {
+            $test = '1/2/2023:Hẹn Hò,1/3/2025:Tỏ tình,2/04/2025:Đính Hôn, 2/05/2025:Kết Hôn';
+            $items = explode(',', $weddingCard->love_story);
+            foreach ($items as $item) {
+                [$date, $story] = explode(':', $item);
+                $image = !empty($album) ? array_shift($album) : null; // Lấy ảnh đầu tiên và loại khỏi album
+                $stories[] = ['date' => trim($date), 'story' => trim($story), 'image' => $image];
+            }
         }
-    }
 
-@endphp
+    @endphp
 
-@if (!empty($stories))
-<section id="time-line" class="time-line-section img_bg bg_overlay"
-style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
+    @if (!empty($stories))
+        <section id="time-line" class="time-line-section img_bg bg_overlay"
+            style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
 
-<div class="time-line container">
+            <div class="time-line container">
 
-    <div class="section-heading">
+                <div class="section-heading">
 
-        <p class="subtitle"></p>
+                    <p class="subtitle"></p>
 
-        <h2 class="section-title text-white">
+                    <h2 class="section-title text-white">
 
-            Love Story
-        </h2>
-
-
-    </div>
+                        Love Story
+                    </h2>
 
 
+                </div>
 
-    <div class="timeline-list">
 
-        @foreach ($stories as $story)
 
-        <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
+                <div class="timeline-list">
 
-            <div class="timeline-media">
+                    @foreach ($stories as $story)
+                        <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
 
-                <img src="{{ asset($story['image']) }}"
-                    alt="" class="timline-img">
+                            <div class="timeline-media">
+
+                                <img src="{{ asset($story['image']) }}" alt="" class="timline-img">
+
+                            </div>
+
+                            <div class="timeline-body">
+
+                                <span class="story-date">{{ $story['date'] }}</span>
+
+                                <span class="title">{{ $story['story'] }}</span>
+
+
+                            </div>
+
+                        </div>
+                    @endforeach
+
+
+
+
+                </div>
 
             </div>
 
-            <div class="timeline-body">
+        </section>
 
-                <span class="story-date">{{ $story['date'] }}</span>
-
-                <span class="title">{{ $story['story'] }}</span>
-
-
-            </div>
-
-        </div>
-    @endforeach
-
-
-      
-
-    </div>
-
-</div>
-
-</section>
-
-<!-- END TIMELINE -->
+        <!-- END TIMELINE -->
     @endif
 
-    
+
 
     <!-- ALBUM -->
     <section id="album" class="uk-section" data-aos="fade-up" data-aos-duration="3000">
@@ -709,24 +719,21 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
                 Album Ảnh </h2>
         </div>
         @php
-        $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : [];
-    @endphp
+            $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : [];
+        @endphp
         <div class="album container">
             @if (!empty($album))
-            @foreach (json_decode($weddingCard->album, true) as $image)
+                @foreach (json_decode($weddingCard->album, true) as $image)
+                    <div class="album-item">
+                        <a data-fancybox="gallery" href="{{ asset($image) }}">
+                            <img src="{{ asset($image) }}" alt="">
+                        </a>
+                    </div>
+                @endforeach
+            @endif
 
-                <div class="album-item">
-                    <a data-fancybox="gallery"
-                        href="{{ asset($image) }}">
-                        <img src="{{ asset($image) }}"
-                            alt="">
-                    </a>
-                </div>
-            @endforeach
-        @endif
 
-          
-            
+
         </div>
     </section>
     <!-- END ALBUM -->
@@ -832,9 +839,7 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
 
             <div class="invitation">
                 <div class="invitation-container">
-                    <div class="invitation-card"> <img
-                            src="{{ asset($weddingCard->bride_avatar) }}"
-                            alt="">
+                    <div class="invitation-card"> <img src="{{ asset($weddingCard->bride_avatar) }}" alt="">
                         <h3 class="card-title uk-margin-remove">{{ $weddingCard->bride_eating_title }}</h3>
                         <address class="uk-margin-remove">
                             <p>{{ $weddingCard->address_bride }}</p>
@@ -855,8 +860,10 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
                                         @endphp
                                         {{ $weekdayBride }} </span>
                                     <span class="invi_date_number">
-                                        <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->day }}</p> /
-                                        <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->month }}</p>
+                                        <p class="invi_date">
+                                            {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->day }}</p> /
+                                        <p class="invi_month">
+                                            {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->month }}</p>
                                     </span>
                                     <span class="invi_year_text">
                                         {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->year }} </span>
@@ -867,20 +874,23 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number">
-                                <i class="ri-phone-fill"></i>
-                            </a>
+                            @if ($weddingCard->bride_phone != ',')
+                                <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number">
+                                    <i class="ri-phone-fill"></i>
+                                </a>
+                            @endif
 
-                            <a href="{{ $weddingCard->bride_map }}" class="invi_map" target="_blank">
-                                <i class="ri-map-2-fill"></i>
-                            </a>
+                            @if ($weddingCard->bride_map != ',')
+                                <a href="{{ $weddingCard->bride_map }}" class="invi_map" target="_blank">
+                                    <i class="ri-map-2-fill"></i>
+                                </a>
+                            @endif
+
                         </div>
 
 
                     </div>
-                    <div class="invitation-card"> <img
-                            src="{{ asset($weddingCard->groom_avatar) }}"
-                            alt="">
+                    <div class="invitation-card"> <img src="{{ asset($weddingCard->groom_avatar) }}" alt="">
                         <h3 class="card-title uk-margin-remove">{{ $weddingCard->groom_eating_title }}</h3>
                         <address class="uk-margin-remove">
                             <p>{{ $weddingCard->address_groom }}</p>
@@ -895,14 +905,16 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
 
                                     <span class="invi_date_text">
                                         @php
-                                        \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
-                                        $date = \Carbon\Carbon::parse($weddingCard->groom_eating_date);
-                                        $weekdayGroom = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
-                                    @endphp
-                                    {{ $weekdayGroom }} </span>
+                                            \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
+                                            $date = \Carbon\Carbon::parse($weddingCard->groom_eating_date);
+                                            $weekdayGroom = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
+                                        @endphp
+                                        {{ $weekdayGroom }} </span>
                                     <span class="invi_date_number">
-                                        <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->day }}</p> /
-                                        <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->month }}</p>
+                                        <p class="invi_date">
+                                            {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->day }}</p> /
+                                        <p class="invi_month">
+                                            {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->month }}</p>
                                     </span>
                                     <span class="invi_year_text">
                                         {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->year }} </span>
@@ -913,13 +925,18 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
-                                <i class="ri-phone-fill"></i>
-                            </a>
+                            @if ($weddingCard->groom_phone != ',')
+                                <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
+                                    <i class="ri-phone-fill"></i>
+                                </a>
+                            @endif
 
-                            <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
-                                <i class="ri-map-2-fill"></i>
-                            </a>
+                            @if ($weddingCard->groom_map != ',')
+                                <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
+                                    <i class="ri-map-2-fill"></i>
+                                </a>
+                            @endif
+
                         </div>
 
 
@@ -1034,60 +1051,64 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
     </script>
     <!-- END LỜI CHÚC -->
 
-    
+
 
     <!-- GỬI QUÀ -->
-    <section id="gift" class="section-gift" style="display:block">
-        <div class="container">
-            <p class="subtitle"></p>
-            <h2 class="uk-heading-small uk-text-center script-font uk-text-cappercase">
-            </h2>
-            <a href="#box-gift" data-fancybox="" class="btn btn-primary">
-                <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#fff">
-                        <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2"></path>
-                        <path
-                            d="M216 72h-35.08c.39-.33.79-.65 1.17-1A29.53 29.53 0 0 0 192 49.57A32.62 32.62 0 0 0 158.44 16A29.53 29.53 0 0 0 137 25.91a54.94 54.94 0 0 0-9 14.48a54.94 54.94 0 0 0-9-14.48A29.53 29.53 0 0 0 97.56 16A32.62 32.62 0 0 0 64 49.57A29.53 29.53 0 0 0 73.91 71c.38.33.78.65 1.17 1H40a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16v64a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-64a16 16 0 0 0 16-16V88a16 16 0 0 0-16-16m-67-35.49a13.69 13.69 0 0 1 10-4.5h.49A16.62 16.62 0 0 1 176 49.08a13.69 13.69 0 0 1-4.5 10c-9.49 8.4-25.24 11.36-35 12.4c1.2-10.59 4.5-25.98 12.5-34.97m-64.09.36A16.63 16.63 0 0 1 96.59 32h.49a13.69 13.69 0 0 1 10 4.5c8.39 9.48 11.35 25.2 12.39 34.92c-9.72-1-25.44-4-34.92-12.39a13.69 13.69 0 0 1-4.5-10a16.6 16.6 0 0 1 4.82-12.16ZM40 88h80v32H40Zm16 48h64v64H56Zm144 64h-64v-64h64Zm16-80h-80V88h80z">
-                        </path>
-                    </g>
-                </svg>
-                <span class="text-white">{{ $weddingCard->message_gift }}</span>
-            </a>
-            <div id="box-gift">
-                <div class="gift-container" id="gift-container">
-                    <div class="gift-card">
-                        <div class="gift-qr">
-                            <img src="{{ asset($weddingCard->groom_qr) }}"
-                                alt="" class="groom_qr" style="max-width:100%">
-                                <img src="{{ asset($weddingCard->bride_qr) }}"
-                                alt="" class="groom_qr" style="max-width:100%">
+    @if ($weddingCard->message_gift != ',')
+        <section id="gift" class="section-gift" style="display:block">
+            <div class="container">
+                <p class="subtitle"></p>
+                <h2 class="uk-heading-small uk-text-center script-font uk-text-cappercase">
+                </h2>
+                <a href="#box-gift" data-fancybox="" class="btn btn-primary">
+                    <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="#fff">
+                            <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2"></path>
+                            <path
+                                d="M216 72h-35.08c.39-.33.79-.65 1.17-1A29.53 29.53 0 0 0 192 49.57A32.62 32.62 0 0 0 158.44 16A29.53 29.53 0 0 0 137 25.91a54.94 54.94 0 0 0-9 14.48a54.94 54.94 0 0 0-9-14.48A29.53 29.53 0 0 0 97.56 16A32.62 32.62 0 0 0 64 49.57A29.53 29.53 0 0 0 73.91 71c.38.33.78.65 1.17 1H40a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16v64a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-64a16 16 0 0 0 16-16V88a16 16 0 0 0-16-16m-67-35.49a13.69 13.69 0 0 1 10-4.5h.49A16.62 16.62 0 0 1 176 49.08a13.69 13.69 0 0 1-4.5 10c-9.49 8.4-25.24 11.36-35 12.4c1.2-10.59 4.5-25.98 12.5-34.97m-64.09.36A16.63 16.63 0 0 1 96.59 32h.49a13.69 13.69 0 0 1 10 4.5c8.39 9.48 11.35 25.2 12.39 34.92c-9.72-1-25.44-4-34.92-12.39a13.69 13.69 0 0 1-4.5-10a16.6 16.6 0 0 1 4.82-12.16ZM40 88h80v32H40Zm16 48h64v64H56Zm144 64h-64v-64h64Zm16-80h-80V88h80z">
+                            </path>
+                        </g>
+                    </svg>
+                    <span class="text-white">{{ $weddingCard->message_gift }}</span>
+                </a>
+                <div id="box-gift">
+                    <div class="gift-container" id="gift-container">
+                        <div class="gift-card">
+                            <div class="gift-qr">
+                                <img src="{{ asset($weddingCard->groom_qr) }}" alt="" class="groom_qr"
+                                    style="max-width:100%">
+                                <img src="{{ asset($weddingCard->bride_qr) }}" alt="" class="groom_qr"
+                                    style="max-width:100%">
+                            </div>
+                            <div class="gift-body">
+                            </div>
                         </div>
-                        <div class="gift-body">
-                        </div>
-                    </div>
-                 
 
+
+                    </div>
                 </div>
+
             </div>
 
-        </div>
 
+        </section>
+    @endif
 
-    </section>
     <!-- END GỬI QUÀ -->
 
     <!-- THANKYOU -->
     <!-- THANK YOU -->
     <section id="thankyou" class="section-thankyou bg_overlay uk-position-z-index">
         <div class="uk-overlay uk-overlay-primary uk-position-cover"> </div>
-        <img src="{{ asset($weddingCard->banner_thanks) }}" alt=""
-            class="thankyou-bg thankyou_img" style="object-position:">
+        <img src="{{ asset($weddingCard->banner_thanks) }}" alt="" class="thankyou-bg thankyou_img"
+            style="object-position:">
         <div class="thankyou-body container uk-position-relative uk-position-z-index">
             <h2 class="script-font uk-heading-medium uk-text-center text-white" data-aos="fade-up"
                 data-aos-duration="2000">Thank you!</h2>
-            <p class="thankyou-des" data-aos="fade-down" data-aos-duration="3000">{{ $weddingCard->message_thanks }}</p>
-         
-       
+            <p class="thankyou-des" data-aos="fade-down" data-aos-duration="3000">{{ $weddingCard->message_thanks }}
+            </p>
+
+
         </div>
     </section>
     <!-- END THANK YOU --><!-- END THANKYOU -->
@@ -1097,19 +1118,19 @@ style="background-image:url({{ asset($weddingCard->banner_love_story) }})">
         $(':root').css('--bg', '');
     </script>
     <!-- AUDIO -->
-    <audio src="{{ asset('template08/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" controls="" autoplay=""
-        id="audio">
+    <audio src="{{ asset('template08/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" controls=""
+        autoplay="" id="audio">
 
     </audio>
     <!-- END AUDIO --> <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2023 thuộc về LS Wedding  <a href="#" class="facebook">
-              <i class="ri-facebook-fill"></i>
-          </a></p>
+            <p>SOHA Wedding Studio <a href="#" class="facebook">
+                    <i class="ri-facebook-fill"></i>
+                </a></p>
         </div>
     </footer>
-    <button style="z-index: 20;"  class="toggleAudio">
+    <button style="z-index: 20;" class="toggleAudio">
         <i class="ri-volume-mute-fill"></i>
     </button>
     <!-- END FOOTER -->

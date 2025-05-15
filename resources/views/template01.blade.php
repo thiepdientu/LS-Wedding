@@ -484,13 +484,18 @@
                         <p class="banner_location_name">{{ $weddingCard->name_place_wedding }}</p>
                         <p class="banner_location_adress">{{ $weddingCard->address_wedding }}</p>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
-                                <i class="ri-phone-fill"></i>
-                            </a>
+                            @if ($weddingCard->groom_phone != ',')
+                                <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
+                                    <i class="ri-phone-fill"></i>
+                                </a>
+                            @endif
+                            @if ($weddingCard->address_wedding_map != ',')
+                                <a href="{{ $weddingCard->address_wedding_map }}" class="invi_map" target="_blank">
+                                    <i class="ri-map-2-fill"></i>
+                                </a>
+                            @endif
 
-                            <a href="{{ $weddingCard->address_wedding_map }}" class="invi_map" target="_blank">
-                                <i class="ri-map-2-fill"></i>
-                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -517,8 +522,11 @@
                     </div>
                     <div class="about-body" data-aos="fade-up" data-aos-duration="3000">
                         <h3 class="bride_name"> {{ $weddingCard->bride_name }}</h3>
-                        <p class="bride_birthday">
-                           {{ $weddingCard->des_bride }} </p>
+                        @if ($weddingCard->des_bride != ',')
+                            <p class="bride_birthday">
+                                {{ $weddingCard->des_bride }} </p>
+                        @endif
+
                         {{-- <p class="bride_des">Máy bay</p> --}}
                     </div>
                 </div>
@@ -528,8 +536,10 @@
                     </div>
                     <div class="about-body" data-aos="fade-up" data-aos-duration="3000">
                         <h3 class="groom_name">{{ $weddingCard->groom_name }}</h3>
-                        <p class="groom_birthday">
-                            {{ $weddingCard->des_groom }} </p>
+                        @if ($weddingCard->des_bride != ',')
+                            <p class="groom_birthday">
+                                {{ $weddingCard->des_groom }} </p>
+                        @endif
                         {{-- <p class="groom_des">Phi Công</p> --}}
                     </div>
                 </div>
@@ -596,7 +606,8 @@
                         {{ $weddingCard->message_invite }}
                     </h2>
                     <div class="invitation-card"> <img src="{{ asset($weddingCard->groom_avatar) }}" alt="">
-                        <h3 class="card-title uk-margin-remove uk-text-bold">{{ $weddingCard->groom_eating_title }}</h3>
+                        <h3 class="card-title uk-margin-remove uk-text-bold">{{ $weddingCard->groom_eating_title }}
+                        </h3>
                         <address class="uk-margin-remove">
                             <p>
                             <p>{{ $weddingCard->address_groom }}</p>
@@ -632,19 +643,24 @@
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
-                                <i class="ri-phone-fill"></i>
-                            </a>
+                            @if ($weddingCard->groom_phone != ',')
+                                <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
+                                    <i class="ri-phone-fill"></i>
+                                </a>
+                            @endif
 
-                            <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
-                                <i class="ri-map-2-fill"></i>
-                            </a>
+                            @if ($weddingCard->groom_map != ',')
+                                <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
+                                    <i class="ri-map-2-fill"></i>
+                                </a>
+                            @endif
                         </div>
 
 
                     </div>
                     <div class="invitation-card"> <img src="{{ asset($weddingCard->bride_avatar) }}" alt="">
-                        <h3 class="card-title uk-margin-remove uk-text-bold">{{ $weddingCard->bride_eating_title }}</h3>
+                        <h3 class="card-title uk-margin-remove uk-text-bold">{{ $weddingCard->bride_eating_title }}
+                        </h3>
                         <address class="uk-margin-remove">
                             <p>{{ $weddingCard->address_bride }}</p>
                         </address>
@@ -678,13 +694,18 @@
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number">
-                                <i class="ri-phone-fill"></i>
-                            </a>
+                            @if ($weddingCard->bride_phone != ',')
+                                <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number">
+                                    <i class="ri-phone-fill"></i>
+                                </a>
+                            @endif
+                            @if ($weddingCard->bride_map != ',')
+                                <a href="{{ $weddingCard->bride_map }}" class="invi_map" target="_blank">
+                                    <i class="ri-map-2-fill"></i>
+                                </a>
+                            @endif
 
-                            <a href="{{ $weddingCard->bride_map }}" class="invi_map" target="_blank">
-                                <i class="ri-map-2-fill"></i>
-                            </a>
+
                         </div>
 
 
@@ -713,48 +734,48 @@
     @endphp
 
     @if (!empty($stories))
-    <section id="time-line" class="time-line-section img_bg bg_overlay"
-    style="background-image:url({{ asset($weddingCard->banner_love_story) }}); margin-bottom: 80px;">
+        <section id="time-line" class="time-line-section img_bg bg_overlay"
+            style="background-image:url({{ asset($weddingCard->banner_love_story) }}); margin-bottom: 80px;">
 
-    <div class="time-line container">
+            <div class="time-line container">
 
-        <div class="section-heading">
+                <div class="section-heading">
 
-            <p class="subtitle"></p>
+                    <p class="subtitle"></p>
 
-            <h2 class="section-title">
+                    <h2 class="section-title">
 
-                Love Story
-            </h2>
+                        Love Story
+                    </h2>
 
-
-        </div>
-
-        <div class="timeline-list">
-
-            @foreach ($stories as $story)
-                <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
-
-                    <div class="timeline-media">
-                        <img src="{{ asset($story['image']) }}" alt=""
-                            class="timline-img">
-                    </div>
-
-                    <div class="timeline-body">
-                        <span class="story-date script-font" style="font-size: 18px;">{{ $story['date'] }}</span>
-                        <span class="title script-font">{{ $story['story'] }}</span>
-                    </div>
 
                 </div>
-            @endforeach
-        </div>
 
-    </div>
+                <div class="timeline-list">
 
-</section> 
+                    @foreach ($stories as $story)
+                        <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
+
+                            <div class="timeline-media">
+                                <img src="{{ asset($story['image']) }}" alt="" class="timline-img">
+                            </div>
+
+                            <div class="timeline-body">
+                                <span class="story-date script-font"
+                                    style="font-size: 18px;">{{ $story['date'] }}</span>
+                                <span class="title script-font">{{ $story['story'] }}</span>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+
+        </section>
     @endif
 
-   
+
 
     <!-- END TIMELINE -->
 
@@ -823,13 +844,12 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0 0 0 /10%);
         }
-        
     </style>
     <!-- END VIDEO -->
 
     <!-- LỜI CHÚC -->
     <!-- TIN NHẮN -->
-    <section id="message" class="section-message uk-background-cover uk-section"
+    {{-- <section id="message" class="section-message uk-background-cover uk-section"
         style="background-image:url({{ asset($weddingCard->banner_top) }}); display:block">
         <div class="uk-position-cover uk-overlay uk-overlay-primary" style="opacity:.5"> </div>
         <div class="message-container container uk-position-relative uk-position-z-index">
@@ -896,7 +916,7 @@
                 });
             </script>
         </div>
-    </section>
+    </section> --}}
     <!-- END TIN NHẮN -->
     <script>
         fetch('/wp-json/wp/v2/comments?post=999&per_page=100', {
@@ -960,41 +980,45 @@
 
 
     <!-- GỬI QUÀ -->
-    <section id="gift" class="section-gift" style="display:block">
-        <div class="container">
-            <p class="subtitle"></p>
 
-            <a href="#box-gift" data-fancybox="" class="btn btn-primary">
-                <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#fff">
-                        <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2"></path>
-                        <path
-                            d="M216 72h-35.08c.39-.33.79-.65 1.17-1A29.53 29.53 0 0 0 192 49.57A32.62 32.62 0 0 0 158.44 16A29.53 29.53 0 0 0 137 25.91a54.94 54.94 0 0 0-9 14.48a54.94 54.94 0 0 0-9-14.48A29.53 29.53 0 0 0 97.56 16A32.62 32.62 0 0 0 64 49.57A29.53 29.53 0 0 0 73.91 71c.38.33.78.65 1.17 1H40a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16v64a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-64a16 16 0 0 0 16-16V88a16 16 0 0 0-16-16m-67-35.49a13.69 13.69 0 0 1 10-4.5h.49A16.62 16.62 0 0 1 176 49.08a13.69 13.69 0 0 1-4.5 10c-9.49 8.4-25.24 11.36-35 12.4c1.2-10.59 4.5-25.98 12.5-34.97m-64.09.36A16.63 16.63 0 0 1 96.59 32h.49a13.69 13.69 0 0 1 10 4.5c8.39 9.48 11.35 25.2 12.39 34.92c-9.72-1-25.44-4-34.92-12.39a13.69 13.69 0 0 1-4.5-10a16.6 16.6 0 0 1 4.82-12.16ZM40 88h80v32H40Zm16 48h64v64H56Zm144 64h-64v-64h64Zm16-80h-80V88h80z">
-                        </path>
-                    </g>
-                </svg>
-                <span style="color: white;">{{ $weddingCard->message_gift }}</span>
-            </a>
-            <div id="box-gift">
-                <div class="gift-container" id="gift-container">
-                    <div class="gift-card">
-                        <div class="gift-qr">
-                            <img src="{{ asset($weddingCard->groom_qr) }}" alt="" class="groom_qr"
-                                style="max-width:100%">
-                            <img src="{{ asset($weddingCard->bride_qr) }}" alt="" class="groom_qr"
-                                style="max-width:100%">
+    @if ($weddingCard->message_gift != ',')
+        <section id="gift" class="section-gift" style="display:block">
+            <div class="container">
+                <p class="subtitle"></p>
+
+                <a href="#box-gift" data-fancybox="" class="btn btn-primary">
+                    <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="#fff">
+                            <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2"></path>
+                            <path
+                                d="M216 72h-35.08c.39-.33.79-.65 1.17-1A29.53 29.53 0 0 0 192 49.57A32.62 32.62 0 0 0 158.44 16A29.53 29.53 0 0 0 137 25.91a54.94 54.94 0 0 0-9 14.48a54.94 54.94 0 0 0-9-14.48A29.53 29.53 0 0 0 97.56 16A32.62 32.62 0 0 0 64 49.57A29.53 29.53 0 0 0 73.91 71c.38.33.78.65 1.17 1H40a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16v64a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-64a16 16 0 0 0 16-16V88a16 16 0 0 0-16-16m-67-35.49a13.69 13.69 0 0 1 10-4.5h.49A16.62 16.62 0 0 1 176 49.08a13.69 13.69 0 0 1-4.5 10c-9.49 8.4-25.24 11.36-35 12.4c1.2-10.59 4.5-25.98 12.5-34.97m-64.09.36A16.63 16.63 0 0 1 96.59 32h.49a13.69 13.69 0 0 1 10 4.5c8.39 9.48 11.35 25.2 12.39 34.92c-9.72-1-25.44-4-34.92-12.39a13.69 13.69 0 0 1-4.5-10a16.6 16.6 0 0 1 4.82-12.16ZM40 88h80v32H40Zm16 48h64v64H56Zm144 64h-64v-64h64Zm16-80h-80V88h80z">
+                            </path>
+                        </g>
+                    </svg>
+                    <span style="color: white;">{{ $weddingCard->message_gift }}</span>
+                </a>
+                <div id="box-gift">
+                    <div class="gift-container" id="gift-container">
+                        <div class="gift-card">
+                            <div class="gift-qr">
+                                <img src="{{ asset($weddingCard->groom_qr) }}" alt="" class="groom_qr"
+                                    style="max-width:100%">
+                                <img src="{{ asset($weddingCard->bride_qr) }}" alt="" class="groom_qr"
+                                    style="max-width:100%">
+                            </div>
+                            <div class="gift-body">
+                            </div>
                         </div>
-                        <div class="gift-body">
-                        </div>
+
                     </div>
-
                 </div>
+
             </div>
 
-        </div>
 
+        </section>
+    @endif
 
-    </section>
     <!-- END GỬI QUÀ -->
 
     <!-- THANKYOU -->
@@ -1026,7 +1050,7 @@
     <!-- END AUDIO --> <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2025 LS Wedding</p>
+            <p>SOHA Wedding Studio</p>
         </div>
     </footer>
     <button class="toggleAudio">

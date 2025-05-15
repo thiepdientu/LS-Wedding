@@ -577,7 +577,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 60vh;
+    min-height: 90vh;
     color: var(--text-white);
     row-gap: 40px;
 }

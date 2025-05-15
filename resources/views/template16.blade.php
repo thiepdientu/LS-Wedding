@@ -65,7 +65,7 @@
                             n(e, "\ud83c\uddfa\ud83c\uddf3", "\ud83c\uddfa\u200b\ud83c\uddf3") && !n(e,
                                 "\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f",
                                 "\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f"
-                                );
+                            );
                     case "emoji":
                         return !n(e, "\ud83d\udc26\u200d\u2b1b", "\ud83d\udc26\u200b\u2b1b")
                 }
@@ -526,18 +526,19 @@
             position: absolute;
             clip: rect(1px, 1px, 1px, 1px);
         }
+
         .banner-bg {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 0;
-    }
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
     </style>
 
 
-    
-</style>
+
+    </style>
     <link rel="stylesheet" href="{{ asset('template16/css/style.css') }}">
 </head>
 
@@ -558,18 +559,20 @@
     </div>
     <!-- END PRELOAD --> <!-- BANNER -->
     <section id="banner" class="section-banner" style="color: #cdc391;">
-        <div class="banner-container container" >
-            <img src="{{ asset('template16/images/backgroudn.jpg') }}"
-            alt="" class="banner-bg" style="object-position:center center; ">
+        <div class="banner-container container">
+            <img src="{{ asset('template16/images/backgroudn.jpg') }}" alt="" class="banner-bg"
+                style="object-position:center center; ">
             <div class="banner-bg" style="background: #0564c529;"></div>
-            
+
             <h1 class="banner-title" data-aos="fade-down" data-aos-duration="2000">
                 <p class="script-font" style="font-size: 30px;">Save The Date</p>
             </h1>
             <div data-aos="fade-down" data-aos-duration="2000" class="banner-name">
-                <h1 style="color: #cdc391;font-size:40px;font-style:italic;" >{{ $weddingCard->groom_name }}<br>
-                  &<br>
-                  {{ $weddingCard->bride_name }} </div></h3>
+                <h1 style="color: #cdc391;font-size:40px;font-style:italic;">{{ $weddingCard->groom_name }}<br>
+                    &<br>
+                    {{ $weddingCard->bride_name }}
+            </div>
+            </h3>
             <div style="color:#cdc391;" class="banner-date">
                 <div data-aos="fade-right" data-aos-duration="2000" class="date1">
                     <span class="name_day day_name"> @php
@@ -594,19 +597,27 @@
             </div>
             <div class="banner-location" data-aos="fade-up" data-aos-duration="2000">
 
-                <h4 style="color: #cdc391;" class="name_palace banner_location_name">{{ $weddingCard->wedding_message }}</h4>
-                <p  style="color: #cdc391;font-weight:bold;" data-aos="zoom-in" data-aos-duration="2000"  class="banner_location_name" style="font-size: 26px;font-weight:bold;">
+                <h4 style="color: #cdc391;" class="name_palace banner_location_name">
+                    {{ $weddingCard->wedding_message }}</h4>
+                <p style="color: #cdc391;font-weight:bold;" data-aos="zoom-in" data-aos-duration="2000"
+                    class="banner_location_name" style="font-size: 26px;font-weight:bold;">
                     {{ $weddingCard->name_place_wedding }}</p>
-                <p  style="color: #cdc391;" class="invitation_address banner_location_adress">{{ $weddingCard->address_wedding }}</p>
+                <p style="color: #cdc391;" class="invitation_address banner_location_adress">
+                    {{ $weddingCard->address_wedding }}</p>
             </div>
-            <div  style="color: #cdc391;" class="social-link">
-                <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="">
-                    <i class="ri-phone-fill"></i>
-                </a>
+            <div style="color: #cdc391;" class="social-link">
+                @if ($weddingCard->groom_phone != ',')
+                    <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="">
+                        <i class="ri-phone-fill"></i>
+                    </a>
+                @endif
 
-                <a href="{{ $weddingCard->address_wedding_map }}">
-                    <i class="ri-map-fill"></i>
-                </a>
+                @if ($weddingCard->address_wedding_map != ',')
+                    <a href="{{ $weddingCard->address_wedding_map }}">
+                        <i class="ri-map-fill"></i>
+                    </a>
+                @endif
+
             </div>
         </div>
     </section>
@@ -730,20 +741,18 @@
             $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : [];
         @endphp
         <div class="album container">
-          @if (!empty($album))
-                    @foreach (json_decode($weddingCard->album, true) as $image)
-                   
+            @if (!empty($album))
+                @foreach (json_decode($weddingCard->album, true) as $image)
+                    <div data-aos="fade-up" data-aos-duration="1000" class="album-item">
+                        <a data-fancybox="gallery" href="{{ asset($image) }}">
+                            <img src="{{ asset($image) }}" alt="">
+                        </a>
+                    </div>
+                @endforeach
+            @endif
 
-                        <div data-aos="fade-up" data-aos-duration="1000" class="album-item">
-                          <a data-fancybox="gallery" href="{{ asset($image) }}">
-                              <img src="{{ asset($image) }}" alt="">
-                          </a>
-                      </div>
-                    @endforeach
-                @endif
 
-           
-            
+
         </div>
     </section>
     <!-- END ALBUM -->
@@ -790,7 +799,7 @@
     <section id="countdown-secton" class="uk-background-cover uk-section uk-section-large uk-text-center uk-light"
         style="background-image:url({{ asset($weddingCard->banner_coundown) }})">
         <div class="uk-container">
-           
+
             <h2 class="uk-heading-small uk-text-center main-font">
                 SAVE THE DATE </h2>
             <svg class="heartbeat" width="64" height="64" viewBox="0 0 24 24"
@@ -847,12 +856,12 @@
             </div>
             <div class="invitation">
                 <div class="invitation-container">
-                  <h2 class="main-color uk-heading-small uk-text-center section-title  uk-text-cappercase">
-                    {{ $weddingCard->message_invite }}
-                </h2>
-                    <div class="invitation-card"> <img
-                            src="{{ asset($weddingCard->bride_avatar) }}" alt="">
-                        <h3 class="card-title uk-margin-remove main-font" style="font-weight:bold;">{{ $weddingCard->bride_eating_title }}</h3>
+                    <h2 class="main-color uk-heading-small uk-text-center section-title  uk-text-cappercase">
+                        {{ $weddingCard->message_invite }}
+                    </h2>
+                    <div class="invitation-card"> <img src="{{ asset($weddingCard->bride_avatar) }}" alt="">
+                        <h3 class="card-title uk-margin-remove main-font" style="font-weight:bold;">
+                            {{ $weddingCard->bride_eating_title }}</h3>
                         <address class="uk-margin-remove">
                             <p>Địa chỉ: {{ $weddingCard->address_bride }}</p>
                         </address>
@@ -860,26 +869,30 @@
                             <div class="invi_time">
                                 <p class="fw-bold">Vào lúc
                                     <span style="font-weight:900;" class="invi_hours main-font">
-                                      {{ $weddingCard->time_bride }} </span>
+                                        {{ $weddingCard->time_bride }} </span>
                                 </p>
                                 <div class="invi_group_time">
 
                                     <span data-aos="fade-right" data-aos-duration="1000" class="invi_date_text">
-                                      @php
-                                      \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
-                                      $date = \Carbon\Carbon::parse($weddingCard->bride_eating_date);
-                                      $weekdayBride = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
-                                  @endphp
-                                  {{ $weekdayBride }} </span>
-                                    <span style="color:#D7AB71;" data-aos="zoom-in" data-aos-duration="1000" class="invi_date_number">
-                                        <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->day }}</p> /
-                                        <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->month }}</p>
+                                        @php
+                                            \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
+                                            $date = \Carbon\Carbon::parse($weddingCard->bride_eating_date);
+                                            $weekdayBride = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
+                                        @endphp
+                                        {{ $weekdayBride }} </span>
+                                    <span style="color:#D7AB71;" data-aos="zoom-in" data-aos-duration="1000"
+                                        class="invi_date_number">
+                                        <p class="invi_date">
+                                            {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->day }}</p> /
+                                        <p class="invi_month">
+                                            {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->month }}</p>
                                     </span>
                                     <span data-aos="fade-left" data-aos-duration="1000" class="invi_year_text">
-                                      {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->year }} </span>
+                                        {{ \Carbon\Carbon::parse($weddingCard->bride_eating_date)->year }} </span>
                                 </div>
 
-                                <p data-aos="fade-up" data-aos-duration="1000" class="invi_amlich">{{ $weddingCard->time_bride_al }}</p>
+                                <p data-aos="fade-up" data-aos-duration="1000" class="invi_amlich">
+                                    {{ $weddingCard->time_bride_al }}</p>
                             </div>
 
                         </div>
@@ -888,16 +901,16 @@
                                 <i class="ri-phone-fill"></i>
                             </a>
 
-                                                 <a href="{{ $weddingCard->bride_map }}" class="invi_map" target="_blank">
-                    <i class="ri-map-2-fill"></i>
-                    </a> 
+                            <a href="{{ $weddingCard->bride_map }}" class="invi_map" target="_blank">
+                                <i class="ri-map-2-fill"></i>
+                            </a>
                         </div>
 
 
                     </div>
-                    <div class="invitation-card"> <img src="{{ asset($weddingCard->groom_avatar) }}"
-                            alt="">
-                        <h3 class="card-title uk-margin-remove main-font" style="font-weight:bold;">{{ $weddingCard->groom_eating_title }}</h3>
+                    <div class="invitation-card"> <img src="{{ asset($weddingCard->groom_avatar) }}" alt="">
+                        <h3 class="card-title uk-margin-remove main-font" style="font-weight:bold;">
+                            {{ $weddingCard->groom_eating_title }}</h3>
                         <address class="uk-margin-remove">
                             <p>Địa chỉ : {{ $weddingCard->address_groom }}</p>
                         </address>
@@ -905,26 +918,29 @@
                             <div class="invi_time">
                                 <p class="">Vào lúc
                                     <span class="main-font" style="font-weight:bold;" class="invi_hours">
-                                      {{ $weddingCard->time_groom }} </span>
+                                        {{ $weddingCard->time_groom }} </span>
                                 </p>
                                 <div class="invi_group_time">
 
                                     <span data-aos="fade-right" data-aos-duration="1000" class="invi_date_text">
-                                      @php
-                                      \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
-                                      $date = \Carbon\Carbon::parse($weddingCard->groom_eating_date);
-                                      $weekdayGroom = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
-                                  @endphp
-                                  {{ $weekdayGroom }} </span>
+                                        @php
+                                            \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
+                                            $date = \Carbon\Carbon::parse($weddingCard->groom_eating_date);
+                                            $weekdayGroom = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
+                                        @endphp
+                                        {{ $weekdayGroom }} </span>
                                     <span style="color:#D7AB71;" class="invi_date_number">
-                                        <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->day }}</p> /
-                                        <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->month }}</p>
+                                        <p class="invi_date">
+                                            {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->day }}</p> /
+                                        <p class="invi_month">
+                                            {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->month }}</p>
                                     </span>
                                     <span data-aos="fade-left" data-aos-duration="1000" class="invi_year_text">
-                                      {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->year }} </span>
+                                        {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->year }} </span>
                                 </div>
 
-                                <p data-aos="fade-up" data-aos-duration="1000" class="invi_amlich">{{ $weddingCard->time_groom_al }}</p>
+                                <p data-aos="fade-up" data-aos-duration="1000" class="invi_amlich">
+                                    {{ $weddingCard->time_groom_al }}</p>
                             </div>
 
                         </div>
@@ -933,9 +949,9 @@
                                 <i class="ri-phone-fill"></i>
                             </a>
 
-                                                 <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
-                    <i class="ri-map-2-fill"></i>
-                    </a>  
+                            <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
+                                <i class="ri-map-2-fill"></i>
+                            </a>
                         </div>
 
 
@@ -1096,7 +1112,8 @@
     <section id="gift" class="section-gift" style="display:block">
         <div class="container">
             <p class="subtitle"></p>
-            <h2 class="uk-heading-small uk-text-center script-font uk-text-cappercase">{{ $weddingCard->message_gift }}
+            <h2 class="uk-heading-small uk-text-center script-font uk-text-cappercase">
+                {{ $weddingCard->message_gift }}
             </h2>
             <a href="#box-gift" data-fancybox="" class="btn btn-primary">
                 <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -1107,7 +1124,7 @@
                         </path>
                     </g>
                 </svg>
-               <span></span>
+                <span></span>
             </a>
             <div id="box-gift">
                 <div class="gift-container" id="gift-container">
@@ -1142,7 +1159,7 @@
                 data-aos-duration="2000">Thank you!</h2>
             <p class="thankyou-des" data-aos="fade-up" data-aos-duration="3000"></p>
             <p data-aos="fade-down" data-aos-duration="3000">{{ $weddingCard->message_thanks }}</p>
-    
+
         </div>
     </section>
     <!-- END THANK YOU --><!-- END THANKYOU -->
