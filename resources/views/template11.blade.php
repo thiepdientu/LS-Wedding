@@ -1034,9 +1034,8 @@
         <img src="{{ asset($weddingCard->banner_thanks) }}" alt="" class="thankyou-bg thankyou_img"
             style="object-position:">
         <div class="thankyou-body container uk-position-relative uk-position-z-index">
-            <h2 class="script-font uk-heading-medium uk-text-center text-white" data-aos="fade-down"
-                data-aos-duration="2000">Thank you!</h2>
-            <span data-aos="fade_down" data-aos-duration="3000">{{ $weddingCard->message_thanks }}</span>
+            <h2 class="script-font uk-heading-medium uk-text-center text-white" >Thank you!</h2>
+            <span>{{ $weddingCard->message_thanks }}</span>
             <p></p>
 
         </div>
