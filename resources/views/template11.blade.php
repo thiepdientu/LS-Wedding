@@ -1058,7 +1058,7 @@
     <!-- END AUDIO --> <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-
+            <p>SOHA Wedding Studio</p>
         </div>
     </footer>
     <button class="toggleAudio">
