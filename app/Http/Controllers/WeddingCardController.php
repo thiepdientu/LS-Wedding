@@ -220,88 +220,38 @@ class WeddingCardController extends Controller
         $weddingCard = WeddingCard::create($validated);
         $weddingId = $weddingCard->id; // Lấy ID của thiệp vừa tạo
 
-        $realPathBannerTop = "";
-        $realPathBannerPreview = "";
-        $realPathAvatarGroom = "";
-        $realPathAvatarBride = "";
-        $realPathGroomQr = "";
-        $realPathBrideQr = "";
-        $realPathBannerCoundown = "";
-        $realPathBannerThanks = "";
-        $realPathBannerStory = "";
-        if ($request->hasFile('banner_top_image')) {
-            $path = $request->file('banner_top_image')->store("weddings/$weddingId", 'public');
-            $realPathBannerTop = Storage::url($path);
-        }
+        $updateData = [];
 
-        if ($request->hasFile('banner_preview_image')) {
-            $path = $request->file('banner_preview_image')->store("weddings/$weddingId", 'public');
-            $realPathBannerPreview = Storage::url($path);
-        }
+        $imageFields = [
+            'banner_top_image' => 'banner_top',
+            'banner_preview_image' => 'banner_preview',
+            'banner_coundown_image' => 'banner_coundown',
+            'banner_story_image' => 'banner_love_story',
+            'banner_thanks_image' => 'banner_thanks',
+            'avatar_groom' => 'groom_avatar',
+            'avatar_bride' => 'bride_avatar',
+            'groom_qr_image' => 'groom_qr',
+            'bride_qr_image' => 'bride_qr',
+        ];
 
-        if ($request->hasFile('banner_coundown_image')) {
-            $path = $request->file('banner_coundown_image')->store("weddings/$weddingId", 'public');
-            $realPathBannerCoundown = Storage::url($path);
-        }
-
-        if ($request->hasFile('banner_story_image')) {
-            $path = $request->file('banner_story_image')->store("weddings/$weddingId", 'public');
-            $realPathBannerStory = Storage::url($path);
-        }
-
-
-        if ($request->hasFile('banner_thanks_image')) {
-            $path = $request->file('banner_thanks_image')->store("weddings/$weddingId", 'public');
-            $realPathBannerThanks = Storage::url($path);
-        }
-
-
-        if ($request->hasFile('avatar_groom')) {
-            $path = $request->file('avatar_groom')->store("weddings/$weddingId", 'public');
-            $realPathAvatarGroom = Storage::url($path);
-        }
-
-        if ($request->hasFile('avatar_bride')) {
-            $path = $request->file('avatar_bride')->store("weddings/$weddingId", 'public');
-            $realPathAvatarBride = Storage::url($path);
-        }
-
-        if ($request->hasFile('groom_qr_image')) {
-            $path = $request->file('groom_qr_image')->store("weddings/$weddingId", 'public');
-            $realPathGroomQr = Storage::url($path);
-        }
-
-        if ($request->hasFile('bride_qr_image')) {
-            $path = $request->file('bride_qr_image')->store("weddings/$weddingId", 'public');
-            $realPathBrideQr = Storage::url($path);
-        }
-
-
-        // 3️⃣ Lưu ảnh vào thư mục public/{id}
-        $imagePaths = [];
-
-        if ($request->hasFile('image')) {
-
-            foreach ($request->file('image') as $image) {
-
-                $path = $image->store("weddings/$weddingId", 'public');
-                $imagePaths[] = Storage::url($path);
+        foreach ($imageFields as $inputName => $columnName) {
+            if ($request->hasFile($inputName)) {
+                $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
+                $updateData[$columnName] = Storage::disk('s3')->url($path);
             }
         }
 
-        // 4️⃣ Cập nhật đường dẫn ảnh vào database
-        $weddingCard->update(['album' => json_encode($imagePaths)]);
+        // Album (nhiều ảnh)
+        if ($request->hasFile('image')) {
+            $imagePaths = [];
+            foreach ($request->file('image') as $image) {
+                $path = $image->storePublicly("weddings/$weddingId", 's3');
+                $imagePaths[] = Storage::disk('s3')->url($path);
+            }
+            $updateData['album'] = json_encode($imagePaths);
+        }
 
-        // 4️⃣ Cập nhật image
-        $weddingCard->update(['banner_top' => $realPathBannerTop]);
-        $weddingCard->update(['banner_preview' => $realPathBannerPreview]);
-        $weddingCard->update(['groom_avatar' => $realPathAvatarGroom]);
-        $weddingCard->update(['bride_avatar' => $realPathAvatarBride]);
-        $weddingCard->update(['banner_coundown' => $realPathBannerCoundown]);
-        $weddingCard->update(['banner_love_story' => $realPathBannerStory]);
-        $weddingCard->update(['banner_thanks' => $realPathBannerThanks]);
-        $weddingCard->update(['groom_qr' => $realPathGroomQr]);
-        $weddingCard->update(['bride_qr' => $realPathBrideQr]);
+        $weddingCard->update($updateData);
 
 
         // Trả về view với thông báo thành công
@@ -402,66 +352,38 @@ class WeddingCardController extends Controller
         $weddingId = $weddingCard->id;
         $weddingCard->update($data);
 
-        if ($request->hasFile('banner_top_image')) {
-            $path = $request->file('banner_top_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['banner_top' => Storage::url($path)]);
-        }
+        $updateData = [];
 
+        $imageFields = [
+            'banner_top_image' => 'banner_top',
+            'banner_preview_image' => 'banner_preview',
+            'banner_coundown_image' => 'banner_coundown',
+            'banner_story_image' => 'banner_love_story',
+            'banner_thanks_image' => 'banner_thanks',
+            'avatar_groom' => 'groom_avatar',
+            'avatar_bride' => 'bride_avatar',
+            'groom_qr_image' => 'groom_qr',
+            'bride_qr_image' => 'bride_qr',
+        ];
 
-        if ($request->hasFile('banner_preview_image')) {
-            $path = $request->file('banner_preview_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['banner_preview' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('banner_coundown_image')) {
-            $path = $request->file('banner_coundown_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['banner_coundown' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('banner_story_image')) {
-            $path = $request->file('banner_story_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['banner_love_story' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('banner_thanks_image')) {
-            $path = $request->file('banner_thanks_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['banner_thanks' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('avatar_groom')) {
-            $path = $request->file('avatar_groom')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['groom_avatar' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('avatar_bride')) {
-            $path = $request->file('avatar_bride')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['bride_avatar' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('groom_qr_image')) {
-            $path = $request->file('groom_qr_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['groom_qr' => Storage::url($path)]);
-        }
-
-        if ($request->hasFile('bride_qr_image')) {
-            $path = $request->file('bride_qr_image')->store("weddings/$weddingId", 'public');
-            $weddingCard->update(['bride_qr' => Storage::url($path)]);
-        }
-
-        // 3️⃣ Lưu ảnh vào thư mục public/{id}
-        $imagePaths = [];
-
-        if ($request->hasFile('image')) {
-
-            foreach ($request->file('image') as $image) {
-
-                $path = $image->store("weddings/$weddingId", 'public');
-                $imagePaths[] = Storage::url($path);
+        foreach ($imageFields as $inputName => $columnName) {
+            if ($request->hasFile($inputName)) {
+                $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
+                $updateData[$columnName] = Storage::disk('s3')->url($path);
             }
-            // 4️⃣ Cập nhật đường dẫn ảnh vào database
-            $weddingCard->update(['album' => json_encode($imagePaths)]);
         }
 
+        // Album (nhiều ảnh)
+        if ($request->hasFile('image')) {
+            $imagePaths = [];
+            foreach ($request->file('image') as $image) {
+                $path = $image->storePublicly("weddings/$weddingId", 's3');
+                $imagePaths[] = Storage::disk('s3')->url($path);
+            }
+            $updateData['album'] = json_encode($imagePaths);
+        }
+
+        $weddingCard->update($updateData);
 
         // return redirect()->route('wedding.edit', $key)->with('success', 'Cập nhật thiệp cưới thành công!');
         return response()->json([

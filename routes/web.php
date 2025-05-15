@@ -7,6 +7,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test-s3', function () {
+    try {
+        Storage::disk('s3')->put('test.txt', 'Hello from Laravel');
+        return 'Kết nối S3 thành công!';
+    } catch (\Exception $e) {
+        return 'Lỗi kết nối S3: ' . $e->getMessage();
+    }
+});
+
 Route::get('/test-db', function () {
     try {
         DB::connection()->getPdo();
