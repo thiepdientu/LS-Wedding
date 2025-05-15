@@ -44,6 +44,8 @@ class WeddingCardController extends Controller
         switch ($weddingCard->template) {
             case "1":
                 return view('template01', compact('weddingCard'));
+            case "1n":
+                    return view('template01new', compact('weddingCard'));
             case "2":
                 return view('template02', compact('weddingCard'));
             case "3":
@@ -100,6 +102,8 @@ class WeddingCardController extends Controller
         switch ($key) {
             case "1":
                 return view('template01', compact('weddingCard'));
+            case "1n":
+                    return view('template01new', compact('weddingCard'));
             case "2":
                 return view('template02', compact('weddingCard'));
             case "3":
