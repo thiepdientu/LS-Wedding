@@ -677,7 +677,7 @@
         style="background-image:url({{ asset($weddingCard->banner_coundown) }})">
         <div class="uk-container">
 
-            <h2 class="uk-heading-small uk-text-center main-font">
+            <h2 style="font-size: 20px;font-weight: 100;" class="uk-heading-small uk-text-center ">
                 SAVE THE DATE </h2>
             <svg class="heartbeat" width="34" height="34" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
