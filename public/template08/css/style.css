@@ -338,9 +338,12 @@ body {
     justify-content: center;
     align-items: center;
     padding: 40px;
-
     min-height: 70vh;
     width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 .banner-title {
     font-size: 40px;

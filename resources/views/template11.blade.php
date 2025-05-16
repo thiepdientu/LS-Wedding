@@ -851,9 +851,9 @@
         style="background-image:url({{ asset($weddingCard->banner_coundown) }}); margin-top: 200px;padding-top: 200px;">
         <div class="uk-container">
             <p class="uk-text-center">CÙNG ĐẾM NGƯỢC THỜI GIAN</p>
-            <h2 class="uk-heading-small uk-text-center ">
-                SAVE THE DATE </h2>
-            <svg class="heartbeat" width="64" height="64" viewBox="0 0 24 24"
+            {{-- <h2 class="uk-heading-small uk-text-center ">
+                SAVE THE DATE </h2> --}}
+            <svg class="heartbeat" width="34" height="34" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
                 <path fill="red"
                     d="M16.5 13.287c-2.475-2.716-5.5-.712-5.5 2.112c0 2.56 1.814 4.035 3.358 5.292l.044.036l.427.35c.571.475 1.121.923 1.671.923s1.1-.448 1.671-.923C19.789 19.73 22 18.224 22 15.399c0-.927-.326-1.767-.853-2.38c-1.075-1.251-2.985-1.556-4.647.268Z">
