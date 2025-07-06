@@ -556,7 +556,7 @@
             <div class="count-down section-countdown img_bg bg_overlay"
                 style="background-image:url({{ asset($weddingCard->banner_coundown) }})">
 
-                <h2 style="font-size: 20px;" class="section-title">
+                <h2 style="font-size: 20px;margin-top:80px;" class="section-title">
                     CÙNG ĐẾM NGƯỢC THỜI GIAN </h2>
                 <svg class="heartbeat" width="34" height="34" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
