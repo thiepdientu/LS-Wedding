@@ -830,37 +830,42 @@
                     <div class="invitation-card"> <img
                             src="{{ asset($weddingCard->groom_avatar) }}"
                             alt="">
-                        <h3 class="card-title uk-margin-remove">TƯ GIA NHÀ TRAI</h3>
+                        <h3 class="card-title uk-margin-remove">{{ $weddingCard->groom_eating_title }}</h3>
                         <address class="uk-margin-remove main-font">
-                            <p>ẤP Hà, XÃ TÂN BÌNH, HUYỆN THANH BÌNH, TỈNH ĐỒNG THÁP</p>
+                            <p>{{ $weddingCard->address_groom }}</p>
                         </address>
                         <div class="invitation-body">
                             <div class="invi_time">
                                 <p class="fw-bold">Vào lúc
                                     <span class="invi_hours">
-                                        10:00 </span>
+                                        {{ $weddingCard->time_groom }} </span>
                                 </p>
                                 <div class="invi_group_time">
 
                                     <span class="invi_date_text">
-                                        Chủ Nhật </span>
+                                        @php
+                                            \Carbon\Carbon::setLocale('vi'); // Đặt ngôn ngữ tiếng Việt
+                                            $date = \Carbon\Carbon::parse($weddingCard->groom_eating_date);
+                                            $weekdayGroom = ucwords($date->translatedFormat('l')); // Viết hoa chữ cái đầu của mỗi từ // Viết hoa chữ cái đầu // Lấy thứ tiếng Việt
+                                        @endphp
+                                        {{ $weekdayGroom }}</span>
                                     <span class="invi_date_number">
-                                        <p class="invi_date">04</p> /
-                                        <p class="invi_month">02</p>
+                                        <p class="invi_date">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->day }}</p> /
+                                        <p class="invi_month">{{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->month }}</p>
                                     </span>
                                     <span class="invi_year_text">
-                                        2024 </span>
+                                        {{ \Carbon\Carbon::parse($weddingCard->groom_eating_date)->year }} </span>
                                 </div>
 
-                                <p class="invi_amlich">Nhằm ngày 25 tháng 12 năm Quý Mão</p>
+                                <p class="invi_amlich">{{ $weddingCard->time_groom_al }}</p>
                             </div>
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84)981742365" class="phone_number">
+                            <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
                                 <i class="ri-phone-fill"></i>
                             </a>
-                            <a href="https://maps.app.goo.gl/fPfvAhoTgquMLP8m9" class="invi_map" target="_blank">
+                            <a href="{{ $weddingCard->groom_map }}" class="invi_map" target="_blank">
                                 <i class="ri-map-2-fill"></i>
                             </a>
                         </div>
