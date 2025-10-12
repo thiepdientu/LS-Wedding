@@ -432,168 +432,7 @@
 
     <!-- END COUNTDOWN END INVITATION--->
 
-<!-- DRESS CODE -->
-{{-- <section class="dresscode" id="dresscode">
-      <div class="container">
-                 <div class="dresscodecolor-container">
-        <h2 class="section-title uk-text-center">
-          Quy tắc trang phục        </h2>
-        <div class="dress-code-container">
-          <div class="dress-code-img">
-            <img src="{{ asset('template10/images/dresscode-icon.png') }}" alt="">
-          </div>
-         
-                      <div class="dress-code-color uk-flex-wrap">
-            
-                            <div class="dress-color-item" style="background-color: #dd3333">
 
-                </div>
-                            <div class="dress-color-item" style="background-color: #ffffff">
-
-                </div>
-
-             
-                            <div class="dress-color-item" style="background-color: #eeee22">
-
-                </div>
-                            <div class="dress-color-item" style="background-color: #000000">
-
-                </div>
-                        </div>
-                            
-                  </div>
-        </div> 
-             
-                    <div class="dresscode-time-container uk-panel uk-section">
-            <h2 class="section-title uk-text-center">
-            Wedding Timeline            </h2>
-                        <div class=" uk-position-relative uk-margin-large-top" uk-scrollspy="cls: uk-animation-slide-bottom; target: .dress-items; delay: 500; repeat: true">
-                  
-                  <div class="uk-position-center " style="width:2px; height:100% ; background-color:white;"></div>
-                  <div class="uk-flex-center uk-child-width-1-1" uk-grid="">
-                                      <!-- --------------- -->
-                    <div>
-
-                        <div class="dress-items uk-position-relative uk-child-width-1-2 uk-margin-top uk-grid-collapse uk-flex-center" uk-grid="">
-                          
-                          <span class="uk-position-top-center uk-border-circle " style="width:24px; height:24px; background-color:white;"></span>
-                          <div>
-                            <div class="dress-media uk-text-right uk-margin-right">
-                            <img src="{{ asset('template10/images/1.png') }}" alt="">
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <div class="dress-content uk-text-left uk-margin-left">
-                            <h2 class="dress-time">10h45-11h00</h2>
-                            <h3 class="dress-title uk-text-default uk-margin-remove">Đón Khách</h3>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-                      <!-- --------------- -->
-                                      <!-- --------------- -->
-                    <div>
-
-                        <div class="dress-items uk-position-relative uk-child-width-1-2 uk-margin-top uk-grid-collapse uk-flex-center" uk-grid="">
-                          
-                          <span class="uk-position-top-center uk-border-circle " style="width:24px; height:24px; background-color:white;"></span>
-                          <div>
-                            <div class="dress-media uk-text-right uk-margin-right">
-                            <img src="{{ asset('template10/images/3.png') }}" alt="">
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <div class="dress-content uk-text-left uk-margin-left">
-                            <h2 class="dress-time">11h30</h2>
-                            <h3 class="dress-title uk-text-default uk-margin-remove">Chụp ảnh , giao lưu cô dâu chú rể</h3>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-                      <!-- --------------- -->
-                                      <!-- --------------- -->
-                    <div>
-
-                        <div class="dress-items uk-position-relative uk-child-width-1-2 uk-margin-top uk-grid-collapse uk-flex-center" uk-grid="">
-                          
-                          <span class="uk-position-top-center uk-border-circle " style="width:24px; height:24px; background-color:white;"></span>
-                          <div>
-                            <div class="dress-media uk-text-right uk-margin-right">
-                            <img src="{{ asset('template10/images/4.png') }}" alt="">
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <div class="dress-content uk-text-left uk-margin-left">
-                            <h2 class="dress-time">12h00</h2>
-                            <h3 class="dress-title uk-text-default uk-margin-remove">Cắt banh kem</h3>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-                      <!-- --------------- -->
-                                      <!-- --------------- -->
-                    <div>
-
-                        <div class="dress-items uk-position-relative uk-child-width-1-2 uk-margin-top uk-grid-collapse uk-flex-center" uk-grid="">
-                          
-                          <span class="uk-position-top-center uk-border-circle " style="width:24px; height:24px; background-color:white;"></span>
-                          <div>
-                            <div class="dress-media uk-text-right uk-margin-right">
-                            <img src="{{ asset('template10/images/5.png') }}" alt="">
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <div class="dress-content uk-text-left uk-margin-left">
-                            <h2 class="dress-time">12h30</h2>
-                            <h3 class="dress-title uk-text-default uk-margin-remove">Dùng tiệc</h3>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-                      <!-- --------------- -->
-                                      <!-- --------------- -->
-                    <div>
-
-                        <div class="dress-items uk-position-relative uk-child-width-1-2 uk-margin-top uk-grid-collapse uk-flex-center" uk-grid="">
-                          
-                          <span class="uk-position-top-center uk-border-circle " style="width:24px; height:24px; background-color:white;"></span>
-                          <div>
-                            <div class="dress-media uk-text-right uk-margin-right">
-                            <img src="{{ asset('template10/images/1.png') }}" alt="">
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <div class="dress-content uk-text-left uk-margin-left">
-                            <h2 class="dress-time">13h</h2>
-                            <h3 class="dress-title uk-text-default uk-margin-remove">Ca nhạc , game , tung hoa</h3>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-                      <!-- --------------- -->
-                                    </div>
-            </div>
-     
-        </div>
-              </div>
-    </section> --}}
-
-    <!-- END DRESS CODE -->
 
 <!-- TIMELINE -->
 @php
@@ -740,13 +579,13 @@ $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : 
     box-shadow: 0 0 20px rgba(0 0 0 /10%);
 }
 </style>
-{{-- <section id="video">
+<section id="video">
 <div class="container">
 
 <h2 class="section-title ">
     NHŨNG KHOẢNH KHẮC CỦA CHÚNG MÌNH</h2>
 </div>
-<div class="video-container">
+<div style="padding: 20px;" class="video-container">
 
     <div class="video-list">
                 <div class="video-item">
@@ -754,73 +593,61 @@ $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : 
                 
     </div>
 </div>
-</section> --}}
-
-<!-- END VIDEO -->
-<script>
+</section>
 
 
 
 
-<!-- GỬI QUÀ -->
 
 <section id="gift" class="section-gift" style="display:block">
-      <div class="container">
-        <p class="subtitle"></p>
-                <a href="#box-gift" data-fancybox="" class="btn btn-primary">
-          <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-            <g fill="#fff">
-                <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2"></path>
-                <path d="M216 72h-35.08c.39-.33.79-.65 1.17-1A29.53 29.53 0 0 0 192 49.57A32.62 32.62 0 0 0 158.44 16A29.53 29.53 0 0 0 137 25.91a54.94 54.94 0 0 0-9 14.48a54.94 54.94 0 0 0-9-14.48A29.53 29.53 0 0 0 97.56 16A32.62 32.62 0 0 0 64 49.57A29.53 29.53 0 0 0 73.91 71c.38.33.78.65 1.17 1H40a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16v64a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-64a16 16 0 0 0 16-16V88a16 16 0 0 0-16-16m-67-35.49a13.69 13.69 0 0 1 10-4.5h.49A16.62 16.62 0 0 1 176 49.08a13.69 13.69 0 0 1-4.5 10c-9.49 8.4-25.24 11.36-35 12.4c1.2-10.59 4.5-25.98 12.5-34.97m-64.09.36A16.63 16.63 0 0 1 96.59 32h.49a13.69 13.69 0 0 1 10 4.5c8.39 9.48 11.35 25.2 12.39 34.92c-9.72-1-25.44-4-34.92-12.39a13.69 13.69 0 0 1-4.5-10a16.6 16.6 0 0 1 4.82-12.16ZM40 88h80v32H40Zm16 48h64v64H56Zm144 64h-64v-64h64Zm16-80h-80V88h80z"></path>
-            </g>
-        </svg>
-          <span style="color:rgb(255, 255, 255)">{{ $weddingCard->message_gift }}</span>
-        </a>
-        <div id="box-gift">
-        <div class="gift-container" id="gift-container">
-                                <div class="gift-card">
-                    <div class="gift-qr">
-                        <img src="{{ asset($weddingCard->groom_qr) }}" alt="" class="groom_qr" style="max-width:100%">
+        <div class="container">
+            <p class="subtitle"></p>
+
+            <a href="#box-gift" data-fancybox="" class="btn btn-primary">
+                <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#fff">
+                        <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2"></path>
+                        <path
+                            d="M216 72h-35.08c.39-.33.79-.65 1.17-1A29.53 29.53 0 0 0 192 49.57A32.62 32.62 0 0 0 158.44 16A29.53 29.53 0 0 0 137 25.91a54.94 54.94 0 0 0-9 14.48a54.94 54.94 0 0 0-9-14.48A29.53 29.53 0 0 0 97.56 16A32.62 32.62 0 0 0 64 49.57A29.53 29.53 0 0 0 73.91 71c.38.33.78.65 1.17 1H40a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16v64a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-64a16 16 0 0 0 16-16V88a16 16 0 0 0-16-16m-67-35.49a13.69 13.69 0 0 1 10-4.5h.49A16.62 16.62 0 0 1 176 49.08a13.69 13.69 0 0 1-4.5 10c-9.49 8.4-25.24 11.36-35 12.4c1.2-10.59 4.5-25.98 12.5-34.97m-64.09.36A16.63 16.63 0 0 1 96.59 32h.49a13.69 13.69 0 0 1 10 4.5c8.39 9.48 11.35 25.2 12.39 34.92c-9.72-1-25.44-4-34.92-12.39a13.69 13.69 0 0 1-4.5-10a16.6 16.6 0 0 1 4.82-12.16ZM40 88h80v32H40Zm16 48h64v64H56Zm144 64h-64v-64h64Zm16-80h-80V88h80z">
+                        </path>
+                    </g>
+                </svg>
+                <span style="color:white">{{ $weddingCard->message_gift }}</span>
+            </a>
+            <div id="box-gift">
+                <div class="gift-container" id="gift-container">
+                    <div class="gift-card">
+                        <div class="gift-qr">
+                            <img src="{{ asset($weddingCard->groom_qr) }}"
+                                  alt="" class="groom_qr" style="max-width:100%">
+                                  <img src="{{ asset($weddingCard->bride_qr) }}"
+                                  alt="" class="groom_qr" style="max-width:100%">
+                                </div>
+                        <div class="gift-body">
+                        </div>
                     </div>
-                    <div class="gift-body">
-                    <p>{{ $weddingCard->groom_name }}</p>
-                    </div>
+
                 </div>
-                                <div class="gift-card">
-                    <div class="gift-qr">
-                        <img src="{{ asset($weddingCard->bride_qr) }}" alt="" class="groom_qr" style="max-width:100%">
-                    </div>
-                    <div class="gift-body">
-                    <p>{{ $weddingCard->bride_name }}</p>
-                    </div>
-                </div>
-                           
+            </div>
+
         </div>
-        </div>
-        
-      </div>
 
 
     </section>
-    
-<!-- END GỬI QUÀ -->
 
 
-
-<!-- THANKYOU -->
-
-<!-- THANK YOU -->
 <section id="thankyou" class="section-thankyou bg_overlay uk-position-z-index">
 	<div class="uk-overlay uk-overlay-primary uk-position-cover"> </div>
       <img src="{{ asset($weddingCard->banner_thanks) }}" alt="" class="thankyou-bg thankyou_img" style="object-position:">
       <div class="thankyou-body container uk-position-relative uk-position-z-index">
         <h2 class="script-font uk-heading-medium uk-text-center text-white" data-aos="fade-up" data-aos-duration="2000">Thank you</h2>
         <p class="thankyou-des" data-aos="fade-down" data-aos-duration="3000">{{ $weddingCard->message_thanks }}</p>
-<p></p>
+
   
-    </div></section>
-    <!-- END THANK YOU -->
-<!-- END THANKYOU -->
+    </div>
+  
+    </section>
+
 
 <script>
 
@@ -836,18 +663,17 @@ $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : 
 <audio src="{{ asset('template10/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" controls="" autoplay="" id="audio">
 
 </audio>
-<!-- END AUDIO --> <!-- FOOTER -->
+
  <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2025 thuộc về LS Wedding <a href="#" class="facebook">
-              <i class="ri-facebook-fill"></i>
+            <p>SOHA Wedding Studio <a href="#" class="facebook">
+              
           </a></p>
         </div>
 </footer>
 <button class="toggleAudio">
         <i class="ri-volume-mute-fill"></i>
 </button>
-    <!-- END FOOTER -->
 
     <script src="{{ asset('template07/js/fancybox.umd.js') }}" id="fancybox js-js"></script>
 <script src="{{ asset('template07/js/uikit.min.js') }}" id="uikit js-js"></script>
