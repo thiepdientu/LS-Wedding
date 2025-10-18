@@ -1179,7 +1179,7 @@
     <!-- END AUDIO --> <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2025 thuộc về LS Wedding</p>
+            <p>Soha Wedding Studio</p>
         </div>
     </footer>
     <button class="toggleAudio">

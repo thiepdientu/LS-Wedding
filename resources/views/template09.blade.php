@@ -613,9 +613,7 @@ fetch('/wp-json/wp/v2/comments?post=1077&per_page=100',
 <!-- END AUDIO --> <!-- FOOTER -->
  <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2025 thuộc về LS Wedding  <a href="#" class="facebook">
-              <i class="ri-facebook-fill"></i>
-          </a></p>
+            <p>Soha Wedding Studio</p>
         </div>
 </footer>
 <button class="toggleAudio">

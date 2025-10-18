@@ -1085,13 +1085,11 @@
 
     </audio>
     <!-- END AUDIO --> <!-- FOOTER -->
-    <!-- <footer>
+    <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2024 thuộc về <a href="https://www.facebook.com/profile.php?id=61564156101208">TitWedding </a> <a href="https://www.facebook.com/profile.php?id=61564156101208" class="facebook">
-              <i class="ri-facebook-fill"></i>
-          </a></p>
+            <p>Soha Wedding Studio</p>
         </div>
-</footer> -->
+</footer> 
     <button class="toggleAudio">
         <i class="ri-volume-mute-fill"></i>
     </button>

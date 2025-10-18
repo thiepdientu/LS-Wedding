@@ -1027,7 +1027,7 @@
     <!-- END AUDIO --> <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2025 LS Wedding</p>
+            <p>SOHA Wedding Studio</p>
         </div>
     </footer>
     <button class="toggleAudio">

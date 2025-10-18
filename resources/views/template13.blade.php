@@ -813,7 +813,7 @@ $(document).ready(function(){
 <!-- END AUDIO --> <!-- FOOTER -->
  <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2023 thuộc về Thiệp cưới điện tử®</p>
+            <p>Soha Wedding Studio</p>
         </div>
 </footer>
 <button class="toggleAudio">

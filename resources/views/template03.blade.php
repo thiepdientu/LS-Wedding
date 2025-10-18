@@ -1281,10 +1281,7 @@ Số 09, Chu Văn An, Yết Kiêu, Hà Đông, Hà Nội ( đón khách 16:30 - 
     <!-- END AUDIO --> <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-            <p>Copyrighter 2025 thuộc về <a class="uk-text-bold"
-                    href="https://www.facebook.com/profile.php?id=61564156101208" class="facebook">
-                    LS Wedding
-                </a></p>
+            <p>Soha Wedding Studio</p>
         </div>
     </footer>
     <button class="toggleAudio">

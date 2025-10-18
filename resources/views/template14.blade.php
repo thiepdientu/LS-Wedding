@@ -955,7 +955,7 @@ fetch('/wp-json/wp/v2/comments?post=1058&per_page=100',
 <!-- END AUDIO --> <!-- FOOTER -->
  <footer>
         <div class="footer-bottom">
-            <p>Bản quyền 2023 thuộc về Thiệp cưới điện tử®</p>
+            <p>Soha Wedding Studio</p>
         </div>
 </footer>
 <button class="toggleAudio">
