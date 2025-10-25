@@ -583,7 +583,7 @@
                 </div>
                 <div class="social-link">
                     @if ($weddingCard->groom_phone != ',')
-                        <a href="tel:+84{{ $weddingCard->groom_phone }}" class="">
+                        <a href="tel:{{ $weddingCard->groom_phone }}" class="">
                             <i class="ri-phone-fill"></i>
                         </a>
                     @endif
@@ -875,7 +875,7 @@
                         </div>
                         <div class="social-link">
                             @if ($weddingCard->bride_phone != ',')
-                                <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number">
+                                <a href="tel:{{ $weddingCard->bride_phone }}" class="phone_number">
                                     <i class="ri-phone-fill"></i>
                                 </a>
                             @endif
@@ -926,7 +926,7 @@
                         </div>
                         <div class="social-link">
                             @if ($weddingCard->groom_phone != ',')
-                                <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
+                                <a href="tel:{{ $weddingCard->groom_phone }}" class="phone_number">
                                     <i class="ri-phone-fill"></i>
                                 </a>
                             @endif

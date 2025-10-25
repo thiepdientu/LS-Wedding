@@ -773,7 +773,7 @@
                                 <p style="font-size: 20px;font-weight:bold">{{ $weddingCard->address_groom }} </p>
 
                                 <div class="uk-light">
-                                    <a href="tel:+84{{ $weddingCard->groom_phone }}"
+                                    <a href="tel:{{ $weddingCard->groom_phone }}"
                                         class="uk-icon-button uk-margin-small-right" target="_blank"
                                         uk-icon="receiver"></a>
                                     <a href="{{ $weddingCard->groom_map }}"
@@ -803,7 +803,7 @@
                                 <p style="font-size: 20px;font-weight:bold">{{ $weddingCard->address_bride }} </p>
 
                                 <div class="uk-light">
-                                    <a href="tel:+84{{ $weddingCard->bride_phone }}"
+                                    <a href="tel:{{ $weddingCard->bride_phone }}"
                                         class="uk-icon-button uk-margin-small-right" target="_blank"
                                         uk-icon="receiver"></a>
                                     <a href="{{ $weddingCard->bride_map }}"
@@ -832,7 +832,7 @@
 
 
                                 <div class="uk-light">
-                                    <a href="tel:+84{{ $weddingCard->bride_phone }}"
+                                    <a href="tel:{{ $weddingCard->bride_phone }}"
                                         class="uk-icon-button uk-margin-small-right" target="_blank"
                                         uk-icon="receiver"></a>
                                     <a href="{{ $weddingCard->address_wedding_map }}"

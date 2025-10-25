@@ -760,7 +760,7 @@ Số 09, Chu Văn An, Yết Kiêu, Hà Đông, Hà Nội ( đón khách 16:30 - 
      
             </div>
                                 <div class="social-link">
-                    <a href="tel:(+84)981742365" class="phone_number">
+                    <a href="tel:0981742365" class="phone_number">
                     <i class="ri-phone-fill"></i>
                     </a>
                     <a href="" class="phone_number" data-fancybox="">
@@ -800,7 +800,7 @@ Số 09, Chu Văn An, Yết Kiêu, Hà Đông, Hà Nội ( đón khách 16:30 - 
      
             </div>
                                 <div class="social-link">
-                    <a href="tel:(+84)981742365" class="phone_number">
+                    <a href="tel:0981742365" class="phone_number">
                     <i class="ri-phone-fill"></i>
                     </a>
                     <a href="" class="phone_number" data-fancybox="">

@@ -136,7 +136,7 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
           <span>Bản đồ</span>
         </a>
 
-        <a href="tel:(+84){{ $weddingCard->groom_phone }}" target="_blank" class="btn btn-pri">
+        <a href="tel:{{ $weddingCard->groom_phone }}" target="_blank" class="btn btn-pri">
           <i class="ri-phone-fill"></i>
           <span>Số Điện Thoại</span>
         </a>
@@ -359,7 +359,7 @@ if ($weddingCard->love_story != ',') {
 					
             </div>
                                 <div class="social-link"> 
-                    <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number"> 
+                    <a href="tel:{{ $weddingCard->bride_phone }}" class="phone_number"> 
                     <i class="ri-phone-fill"></i> 
                     </a>
                   
@@ -402,7 +402,7 @@ if ($weddingCard->love_story != ',') {
 					
             </div>
                                 <div class="social-link"> 
-                    <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number"> 
+                    <a href="tel:{{ $weddingCard->groom_phone }}" class="phone_number"> 
                     <i class="ri-phone-fill"></i> 
                     </a>
                    

@@ -484,7 +484,7 @@
                         <p class="banner_location_name">{{ $weddingCard->name_place_wedding }}</p>
                         <p class="banner_location_adress">{{ $weddingCard->address_wedding }}</p>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
+                            <a href="tel:{{ $weddingCard->groom_phone }}" class="phone_number">
                                 <i class="ri-phone-fill"></i>
                             </a>
 
@@ -632,7 +632,7 @@
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->groom_phone }}" class="phone_number">
+                            <a href="tel:{{ $weddingCard->groom_phone }}" class="phone_number">
                                 <i class="ri-phone-fill"></i>
                             </a>
 
@@ -678,7 +678,7 @@
 
                         </div>
                         <div class="social-link">
-                            <a href="tel:(+84){{ $weddingCard->bride_phone }}" class="phone_number">
+                            <a href="tel:{{ $weddingCard->bride_phone }}" class="phone_number">
                                 <i class="ri-phone-fill"></i>
                             </a>
 
