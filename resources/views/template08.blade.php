@@ -565,7 +565,7 @@
             <div class="banner-container container">
                 <h1 class="banner-title script-font text-white" data-aos="fade-down" data-aos-duration="2000">
                     {{ $weddingCard->wedding_message }}</h1>
-                <img src="{{ asset('template08/images/hy-icon.png') }}" alt="" class="banner-icon">
+                {{-- <img src="{{ asset('template08/images/hy-icon.png') }}" alt="" class="banner-icon"> --}}
                 <div data-aos="fade-up" data-aos-duration="2000" class="banner-name">
                     {{ $weddingCard->groom_name }}<br>
                     &amp;<br>
@@ -602,7 +602,7 @@
     <!-- ABOUT -->
     <section id="about" class="section-about">
         <div class="section-heading">
-            <h2 class="section-title">CHÚ RỂ VÀ CÔ DÂU</h2>
+            {{-- <h2 class="section-title">CÔ DÂU VÀ CHÚ RỂ  </h2> --}}
 
         </div>
         <div class="about-container container">
@@ -611,7 +611,7 @@
                     <img src="{{ asset($weddingCard->bride_avatar) }}" alt="" class="bride_img">
                 </div>
                 <div class="about-data uk-text-center" data-aos="fade-down" data-aos-duration="1000">
-                    <h3 class="bride_name">{{ $weddingCard->bride_name }}</h3>
+                    <h3 class="bride_name script-font">{{ $weddingCard->bride_name }}</h3>
                     @if ($weddingCard->des_bride != ',')
                         <p class="bride_des">{{ $weddingCard->des_bride }} </p>
                     @endif
@@ -625,7 +625,7 @@
                     <img src="{{ asset($weddingCard->groom_avatar) }}" alt="" class="groom_img">
                 </div>
                 <div class="about-data uk-text-center" data-aos="fade-down" data-aos-duration="1000">
-                    <h3 class="groom_name">{{ $weddingCard->groom_name }}</h3>
+                    <h3 class="groom_name script-font">{{ $weddingCard->groom_name }}</h3>
                     @if ($weddingCard->des_groom != ',')
                         <p class="groom_des">{{ $weddingCard->des_groom }}</p>
                     @endif
@@ -780,7 +780,7 @@
         style="background-image:url({{ asset($weddingCard->banner_coundown) }})">
         <div class="uk-container">
 
-            <h2 class="uk-heading-small uk-text-center script-font">
+            <h2 class="uk-heading-small uk-text-center script-font" style="margin-top:160px;">
                 Cùng Đếm Ngược Thời Gian </h2>
             <svg class="heartbeat" width="34" height="34" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
