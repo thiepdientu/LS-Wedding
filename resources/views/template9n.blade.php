@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="https://lswedding.s3.ap-southeast-1.amazonaws.com/weddings/20/muTcoAlwmGE5Xz3oZBMNyLDIDRVXkomIjeYTMmr2.jpg">
-
-    <!-- Search Engine Optimization by Rank Math - https://rankmath.com/ -->
-    <title>Khả Dương ❤️ Trần Huyền - Thiệp cưới online</title>
+    <title> {{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }} - Thiệp cưới online</title>
     <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
-    <link rel="canonical" href="https://thiepmoionline68.github.io/HuyenDuong-Wedding/">
+    <link rel="canonical" href="{{ url()->current() }}">
     <meta property="og:locale" content="vi_VN">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Khả Dương ❤️ Trần Huyền - Thiệp cưới online">
-    <meta property="og:url" content="https://thiepmoionline68.github.io/template1/">
-    <meta property="og:site_name" content="Khả Dương ❤️ Trần Huyền - Thiệp cưới online">
-    <meta property="og:updated_time" content="2024-03-27T02:16:16+00:00">
-    <meta property="og:image" content="https://lswedding.s3.ap-southeast-1.amazonaws.com/weddings/20/muTcoAlwmGE5Xz3oZBMNyLDIDRVXkomIjeYTMmr2.jpg">
-    <meta property="og:image:secure_url" content="https://lswedding.s3.ap-southeast-1.amazonaws.com/weddings/20/muTcoAlwmGE5Xz3oZBMNyLDIDRVXkomIjeYTMmr2.jpg">
-    <meta property="og:image:width" content="1080">
+    <meta property="og:title" content="{{ $weddingCard->groom_name }} ❤️ {{ $weddingCard->bride_name }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ $weddingCard->groom_name }} ❤️{{ $weddingCard->bride_name }}">
+    <meta property="og:updated_time" content="2024-03-13T11:56:14+00:00">
+    <meta property="og:image" content="{{ asset($weddingCard->banner_preview) }}">
+    <meta property="og:image:secure_url" content="{{ asset($weddingCard->banner_preview) }}">
+    <meta property="og:image:width" content="961">
     <meta property="og:image:height" content="1440">
-    <meta property="og:image:alt" content="Khả Dương ❤️ Trần Huyền - Thiệp cưới online">
+    <meta property="og:image:alt" content="Thiệp 01">
     <meta property="og:image:type" content="image/jpeg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Khả Dương ❤️ Trần Huyền - Thiệp cưới online">
-    <meta name="twitter:image" content="https://lswedding.s3.ap-southeast-1.amazonaws.com/weddings/20/muTcoAlwmGE5Xz3oZBMNyLDIDRVXkomIjeYTMmr2.jpg">
+    <meta name="twitter:title" content="{{ $weddingCard->groom_name }}❤️ {{ $weddingCard->bride_name }}">
+    <meta name="twitter:image" content="{{ asset($weddingCard->banner_preview) }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;600&family=Great+Vibes&family=Alex+Brush&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
