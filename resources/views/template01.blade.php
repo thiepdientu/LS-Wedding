@@ -462,7 +462,7 @@
             <div class="container">
                 <div class="banner-container">
                     <h2 class="banner-title" data-aos="fade-down" data-aos-duration="3000">
-                        <p>Save The Date</p>
+                        <p class="script-font">Save The Date</p>
                     </h2>
                     <p class="banner-slogan script-font" data-aos="fade-up" data-aos-duration="3000"></p>
                     <div class="banner-name">
@@ -556,7 +556,7 @@
             <div class="count-down section-countdown img_bg bg_overlay"
                 style="background-image:url({{ asset($weddingCard->banner_coundown) }})">
 
-                <h2 style="font-size: 20px;margin-top:80px;" class="section-title">
+                <h2 style="font-size: 20px;margin-top:140px;" class="section-title">
                     CÙNG ĐẾM NGƯỢC THỜI GIAN </h2>
                 <svg class="heartbeat" width="34" height="34" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
