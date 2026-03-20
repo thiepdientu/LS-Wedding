@@ -290,7 +290,7 @@
     <section class="py-20 bg-white px-4">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-16 reveal">
-                <span class="text-primary uppercase tracking-[0.4em] text-[10px] font-bold">Moments</span>
+                
                 <h2 class="text-5xl font-serif italic mt-4">Album</h2>
             </div>
             @php
@@ -356,7 +356,7 @@
                     <div class="w-64 h-64 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white shadow-lg">
                         <img src="{{ asset($weddingCard->groom_avatar) }}" class="w-full h-full object-cover" alt="Chú rể">
                     </div>
-                    <h3 class="text-3xl font-serif text-gray-700 mb-6">{{ $weddingCard->message_invite }}</h3>
+                    <h3 class="text-3xl font-serif text-gray-700 mb-6">{{ $weddingCard->groom_eating_title }}</h3>
                     <div class="space-y-1 text-sm text-gray-500 mb-6 font-light">
                         <p>{{ $weddingCard->address_groom }}</p>
                        
