@@ -31,6 +31,10 @@
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//unpkg.com">
 
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
 
     <style id="wp-emoji-styles-inline-css">
         img.wp-smiley,
@@ -465,7 +469,7 @@
                         <p class="script-font">Save The Date</p>
                     </h2>
                     <p class="banner-slogan script-font" data-aos="fade-up" data-aos-duration="3000"></p>
-                    <div class="banner-name">
+                    <div class="banner-name dancing-script">
                         {{ $weddingCard->groom_name }}<br>
                         <span>&amp;</span><br>
                         {{ $weddingCard->bride_name }}
