@@ -1,0 +1,11 @@
+# Blade UI Checklist
+- Semantic HTML
+- Responsive mobile/tablet/desktop
+- Keyboard accessible
+- Labels and validation feedback
+- CSRF on state-changing forms
+- Empty/error/success states handled where relevant
+- Components reused where repetition is meaningful
+- No business logic in Blade
+- Escaped output by default
+- Vite assets load correctly

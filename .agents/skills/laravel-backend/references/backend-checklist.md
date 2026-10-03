@@ -1,0 +1,11 @@
+# Backend Checklist
+- Route is named and correctly grouped
+- Authentication/authorization enforced
+- User input validated
+- Controller remains thin
+- Business logic has a clear owner
+- Database writes are atomic when necessary
+- Exceptions are not swallowed
+- Redirect/response semantics are correct
+- Tests cover success and failure paths
+- N+1 and pagination considered
