@@ -84,6 +84,8 @@ class WeddingCardController extends Controller
                 return view('template19', compact('weddingCard'));
             case "20":
                 return view('template20', compact('weddingCard'));
+            case "21":
+                return view('template21', compact('weddingCard'));
 
             default:
                 return view('welcome');
@@ -140,8 +142,10 @@ class WeddingCardController extends Controller
             //     return view('template18', compact('weddingCard'));
             // case "19":
             //     return view('template19', compact('weddingCard'));
-            // case "20":
-            //     return view('template20', compact('weddingCard'));
+            case "20":
+                return view('template20', compact('weddingCard'));
+            case "21":
+                return view('template21', compact('weddingCard'));
 
             default:
                 return view('welcome');

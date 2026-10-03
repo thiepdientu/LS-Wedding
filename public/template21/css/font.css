@@ -1,0 +1,174 @@
+/* font primary */
+@font-face {
+  font-family: 'primary-font';
+  src: url('../fonts/primary/Be_Vietnam_Pro/BeVietnamPro-Light.ttf');
+  font-display: swap;
+  font-weight: 100;
+}
+@font-face {
+  font-family: 'primary-font';
+  src: url('../fonts/primary/Be_Vietnam_Pro/BeVietnamPro-Thin.ttf');
+  font-display: swap;
+  font-weight: 200;
+}
+@font-face {
+  font-family: 'primary-font';
+  src: url('../fonts/primary/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf');
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'primary-font';
+  src: url('../fonts/primary/Be_Vietnam_Pro/BeVietnamPro-Medium.ttf');
+  font-display: swap;
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'primary-font';
+  src: url('../fonts/primary/Be_Vietnam_Pro/BeVietnamPro-Black.ttf');
+  font-display: swap;
+  font-weight: 800;
+}
+@font-face {
+  font-family: 'primary-font-1';
+  src: url('../fonts/primary/1FTV-VIP-Noah-Text-Light.otf');
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'primary-font-2';
+  src: url('../fonts/primary/Questrial-Regular.ttf');
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'primary-font-3';
+  src: url('../fonts/primary/forest-regular.ttf');
+  font-display: swap;
+  font-weight: 400;
+}
+
+/* ----- */
+@font-face {
+  font-family: 'primary-font-1';
+  src: url('../fonts/title-font/Argue-Regular.ttf');
+  font-display: swap;
+}
+
+/* ============== TITLE ====== */
+/* font title*/
+@font-face {
+  font-family: 'title-font-1';
+  src: url('../fonts/title-font/SVN-Ginger.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-2';
+  src: url('../fonts/title-font/1FTV-Camaro.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-3';
+  src: url('../fonts/title-font/1FTV-Magesta-1.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-4';
+  src: url('../fonts/title-font/SVN-BonVoyage-Regular.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-5';
+  src: url('../fonts/title-font/Argue-Regular.ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-6';
+  src: url('../fonts/title-font/MRCH-NewYork-new.ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-7';
+  src: url('../fonts/title-font/LF-Aretha-Bridge-new.ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-8';
+  src: url('../fonts/title-font/MTD-Grange-new.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-9';
+  src: url('../fonts/title-font/HLT\ Aire\ Light\ Pro.ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-10';
+  src: url('../fonts/title-font/1FTVVIPAstriteLinery-Regular.ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'title-font-11';
+  src: url('../fonts/title-font/1FTV-VIP-Morgan.ttf');
+  font-display: swap;
+}
+
+/* script font */
+@font-face {
+  font-family: 'script-font-1';
+  src: url('../fonts/script-font/SVN-Ameyallinda-Signature.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'script-font-2';
+  src: url('../../../../../wp-content/themes/prowedding/assets/fonts/script-font/SVN-Clodia.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'script-font-3';
+  src: url('../fonts/script-font/1FTV-Southera-Handwritten-new.ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'script-font-4';
+  src: url('../fonts/script-font/Mallong-Regular-new.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'script-font-5';
+  src: url('../fonts/script-font/MTD-Elipses-new.otf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'script-font-6';
+  src: url('../fonts/script-font/SVN-Janelotus.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'script-font-7';
+  src: url('../fonts/script-font/SVN-Rushtick-new.otf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'script-font-8';
+  src: url('../fonts/script-font/SVN-Signatie.otf')
+}
+@font-face {
+  font-family: 'script-font-9';
+  src: url('../fonts/script-font/WindSong-Regular.ttf')
+}
+
+@font-face {
+  font-family: 'script-font-10';
+  src: url('../fonts/script-font/MJ-VIP-Daytonica-new.ttf');
+  font-display: swap;
+}
+
+/* cream font */
+@font-face {
+  font-family: 'cream-font-1';
+  src: url('../fonts/cream/iCielCadena.otf');
+  font-display: swap;
+}

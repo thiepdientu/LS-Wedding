@@ -1,0 +1,206 @@
+/* Fade mờ dần */
+.fadeout { 
+  animation: fadeout 2s forwards;
+}
+@keyframes fadeout {
+  to { opacity: 1; }
+}
+
+/* Bay sang trái */
+.fadeout-left {
+  animation: fadeoutLeft 6s forwards;
+}
+@keyframes fadeoutLeft {
+  to {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+}
+
+/* Bay sang phải */
+.fadeout-right {
+  animation: fadeoutRight 6s forwards;
+}
+@keyframes fadeoutRight {
+  to {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+}
+
+/* Bay lên */
+.fadeout-up {
+  animation: fadeoutUp .6s forwards;
+}
+@keyframes fadeoutUp {
+  to {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+
+/* Rơi xuống */
+.fadeout-down {
+  animation: fadeoutDown .6s forwards;
+}
+@keyframes fadeoutDown {
+  to {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+/* Thu nhỏ */
+.scaleout {
+  animation: scaleOut .5s forwards;
+}
+@keyframes scaleOut {
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Phóng to rồi biến mất */
+.zoomout {
+  animation: zoomOut .5s forwards;
+}
+@keyframes zoomOut {
+  to {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+/* lắc lư */
+.shake-top {
+	-webkit-animation: shake-top 2s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
+	animation: shake-top 2s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite both;
+}
+@-webkit-keyframes shake-top {
+  0%,
+  100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transform-origin: 50% 0;
+            transform-origin: 50% 0;
+  }
+  10% {
+    -webkit-transform: rotate(2deg);
+            transform: rotate(2deg);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: rotate(-4deg);
+            transform: rotate(-4deg);
+  }
+  30%,
+  50%,
+  70% {
+    -webkit-transform: rotate(4deg);
+            transform: rotate(4deg);
+  }
+  80% {
+    -webkit-transform: rotate(-2deg);
+            transform: rotate(-2deg);
+  }
+  90% {
+    -webkit-transform: rotate(2deg);
+            transform: rotate(2deg);
+  }
+}
+@keyframes shake-top {
+  0%,
+  100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transform-origin: 50% 0;
+            transform-origin: 50% 0;
+  }
+  10% {
+    -webkit-transform: rotate(2deg);
+            transform: rotate(2deg);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: rotate(-4deg);
+            transform: rotate(-4deg);
+  }
+  30%,
+  50%,
+  70% {
+    -webkit-transform: rotate(4deg);
+            transform: rotate(4deg);
+  }
+  80% {
+    -webkit-transform: rotate(-2deg);
+            transform: rotate(-2deg);
+  }
+  90% {
+    -webkit-transform: rotate(2deg);
+            transform: rotate(2deg);
+  }
+}
+ @keyframes rotate {
+        100% {
+            transform: rotate(1turn);
+        }
+    }
+
+.rainbow::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    background-size: 50% 30%;
+    filter: blur(6px);
+    background-image: linear-gradient(#fff);
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes sway {
+  0%   { transform: rotate(-6deg); }
+  50%  { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
+}
+@keyframes swayy {
+  0%   { transform: rotate(6deg); }
+  50%  { transform: rotate(-6deg); }
+  100% { transform: rotate(6deg); }
+}
+@keyframes floatsway {
+  0%   { transform: translateY(0px)   rotate(-5deg); }
+  25%  { transform: translateY(-12px) rotate(0deg);  }
+  50%  { transform: translateY(-18px) rotate(5deg);  }
+  75%  { transform: translateY(-10px) rotate(0deg);  }
+  100% { transform: translateY(0px)   rotate(-5deg); }
+}
+.animation-balloon {
+  transform-origin: center bottom; /* xoay từ đáy */
+  animation: sway 3s ease-in-out infinite;
+}
+.animation-balloon-2 {
+  transform-origin: center bottom; /* xoay từ đáy */
+  animation: swayy 3s ease-in-out infinite;
+}
+.animation-shake {
+  transform-origin: center bottom; 
+  animation: floatsway 4s ease-in-out infinite
+}
+
+@keyframes scale {
+  0%   { transform: scale(0.9); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(0.9); }
+}
+.animation-scale {
+  transform-origin: center center; 
+  animation: scale 4s ease-in-out infinite
+}
