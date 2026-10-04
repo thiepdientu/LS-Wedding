@@ -8,9 +8,12 @@ class WeddingCard extends Model
 {
     //
     protected $fillable = [
-        'identifyWedding' ,  // Định danh thiệp
-        'banner_preview' ,  // banner preview
-        'template' ,  // mẫu thiệp
+        'identifyWedding',  // Định danh thiệp / slug
+        'status',           // active, locked, draft
+        'customer_email',   // Email khách hàng
+        'expires_at',       // Ngày hết hạn
+        'banner_preview',   // banner preview
+        'template',         // mẫu thiệp
         'bride_name',           // Tên cô dâu
         'groom_name',           // Tên chú rể
         'des_bride',
@@ -52,4 +55,88 @@ class WeddingCard extends Model
         'groom_map',            // Bản đồ nhà chú rể
         'bride_map',            // Bản đồ nhà cô dâu
     ];
+
+    protected $casts = [
+        'wedding_date' => 'date',
+        'groom_birthday' => 'date',
+        'bride_birthday' => 'date',
+        'groom_eating_date' => 'date',
+        'bride_eating_date' => 'date',
+        'expires_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
+     * Mã hiển thị chuẩn dạng #TC-1042
+     */
+    public function getFormattedIdAttribute(): string
+    {
+        return '#TC-' . (1000 + $this->id);
+    }
+
+    /**
+     * Tên cặp đôi: Chú rể & Cô dâu
+     */
+    public function getCoupleNameAttribute(): string
+    {
+        return trim(($this->groom_name ?: 'Chú rể') . ' & ' . ($this->bride_name ?: 'Cô dâu'));
+    }
+
+    /**
+     * Tên template hiển thị thân thiện
+     */
+    public function getTemplateNameAttribute(): string
+    {
+        $templates = [
+            '1' => 'Hiện đại 01 (Minimal)',
+            '1n' => 'Hiện đại 01 New',
+            '2' => 'Cổ điển 02 (Vintage)',
+            '3' => 'Hiện đại 03 (Floral)',
+            '4' => 'Thanh lịch 04 (Pastel)',
+            '5' => 'Sang trọng 05 (Royal)',
+            '6' => 'Tự nhiên 06 (Botanical)',
+            '7' => 'Nghệ thuật 07 (Artistic)',
+            '8' => 'Truyền thống 08 (Heritage)',
+            '9' => 'Tối giản 09 (Nordic)',
+            '10' => 'Lãng mạn 10 (Sweet Pink)',
+            '11' => 'Cổ điển 11 (Elegance)',
+            '12' => 'Hiện đại 12 (Trendy)',
+            '13' => 'Sang trọng 13 (Glamour)',
+            '14' => 'Thơ mộng 14 (Dreamy)',
+            '15' => 'Nhiệt đới 15 (Tropical)',
+            '16' => 'Tinh tế 16 (Subtle)',
+            '17' => 'Hoàng gia 17 (Imperial)',
+            '18' => 'Mộc mạc 18 (Rustic)',
+            '19' => 'Quý phái 19 (Noble)',
+            '20' => 'Đương đại 20 (Contemporary)',
+            '21' => 'Đơn giản 21 (Simple)',
+        ];
+
+        return $templates[$this->template] ?? ('Mẫu ' . ($this->template ?: '01'));
+    }
+
+    /**
+     * Cấu hình nhãn và style hiển thị trạng thái
+     */
+    public function getStatusInfoAttribute(): array
+    {
+        return match ($this->status) {
+            'locked' => [
+                'label' => 'Đã ẩn (Khóa)',
+                'badge_class' => 'bg-rose-50 text-rose-700 ring-1 ring-rose-200',
+                'dot_class' => 'bg-rose-500',
+            ],
+            'draft' => [
+                'label' => 'Bản Nháp',
+                'badge_class' => 'bg-slate-100 text-slate-700 ring-1 ring-slate-200',
+                'dot_class' => 'bg-slate-400',
+            ],
+            default => [
+                'label' => 'Đang hoạt động',
+                'badge_class' => 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200',
+                'dot_class' => 'bg-emerald-500',
+            ],
+        };
+    }
 }

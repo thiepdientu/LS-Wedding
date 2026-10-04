@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeddingCardController;
+use App\Http\Controllers\Admin\WeddingCardController as AdminWeddingCardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,15 +27,18 @@ Route::get('/test-db', function () {
     }
 });
 
-Route::get('admin/all-wedding', function () {
-    try {
-         DB::connection()->getPdo();
-         $cards = DB::select("SELECT * FROM wedding_cards;");
-         dd($cards);
+// ==========================================
+// Phân hệ Quản trị (Admin Wedding SaaS)
+// ==========================================
+Route::prefix('admin')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.wedding-cards.index');
+    });
 
-    } catch (\Exception $e) {
-        return "Lỗi kết nối: " . $e->getMessage();
-    }
+    Route::get('/wedding-cards', [AdminWeddingCardController::class, 'index'])->name('admin.wedding-cards.index');
+    Route::post('/wedding-cards/{id}/toggle-status', [AdminWeddingCardController::class, 'toggleStatus'])->name('admin.wedding-cards.toggle-status');
+    Route::get('/wedding-cards/{id}/customer-info', [AdminWeddingCardController::class, 'getCustomerInfo'])->name('admin.wedding-cards.customer-info');
+    Route::delete('/wedding-cards/{id}', [AdminWeddingCardController::class, 'destroy'])->name('admin.wedding-cards.destroy');
 });
 
 
@@ -45,7 +49,7 @@ Route::get('/weddingInvite/{key}', [WeddingCardController::class, 'showWeddingCa
 // Hiển thị form chỉnh sửa dữ liệu
 Route::get('admin/edit/{id}', [WeddingCardController::class, 'edit'])->name('wedding.edit');
 // Hiển thị form chỉnh sửa dữ liệu theo tên
-Route::get('admin/editByName/{id}', [WeddingCardController::class, 'editByName'])->name('wedding.edit');
+Route::get('admin/editByName/{id}', [WeddingCardController::class, 'editByName'])->name('wedding.editByName');
 // Cập nhật dữ liệu thiệp cưới
 Route::post('/update/{id}', [WeddingCardController::class, 'update'])->name('wedding.update');
 Route::get('admin/create', [WeddingCardController::class, 'create'])->name('wedding.create');

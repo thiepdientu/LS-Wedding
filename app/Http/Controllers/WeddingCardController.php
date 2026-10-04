@@ -195,7 +195,7 @@ class WeddingCardController extends Controller
             'banner_love_story' => 'required|string|max:5000',
             'love_story' => 'required|string|max:5000',
             'banner_coundown' => 'required|string|max:5000',
-            'album' => 'required|string|max:50000',
+            'album' => 'nullable|string|max:50000',
             'date_coundown' => 'required|string|max:500',
             'address_groom' => 'required|string|max:500',
             'address_bride' => 'required|string|max:500',
@@ -245,17 +245,26 @@ class WeddingCardController extends Controller
             }
         }
 
-        // Album (nhiều ảnh)
-        if ($request->hasFile('image')) {
+        // Album ảnh (xử lý theo manifest kéo thả/thêm/sửa/xóa hoặc file truyền thống)
+        if ($request->filled('album_manifest')) {
+            $updateData['album'] = $this->processAlbumManifest($request, $weddingId);
+        } elseif ($request->hasFile('image')) {
             $imagePaths = [];
             foreach ($request->file('image') as $image) {
-                $path = $image->storePublicly("weddings/$weddingId", 's3');
-                $imagePaths[] = Storage::disk('s3')->url($path);
+                try {
+                    $path = $image->storePublicly("weddings/$weddingId", 's3');
+                    $imagePaths[] = Storage::disk('s3')->url($path);
+                } catch (\Throwable $e) {
+                    $path = $image->store("weddings/$weddingId", 'public');
+                    $imagePaths[] = Storage::disk('public')->url($path);
+                }
             }
             $updateData['album'] = json_encode($imagePaths);
         }
 
-        $weddingCard->update($updateData);
+        if (!empty($updateData)) {
+            $weddingCard->update($updateData);
+        }
 
 
         // Trả về view với thông báo thành công
@@ -306,54 +315,59 @@ class WeddingCardController extends Controller
      */
     public function update(Request $request, $key)
     {
+        $weddingCard = WeddingCard::findOrFail($key);
+        $weddingId = $weddingCard->id;
+
         $data = $request->validate([
             'identifyWedding' => 'required|string|max:255',
             'template' => 'required|string|max:255',
-            'banner_preview' => 'required|string|max:1000',
+            'status' => 'nullable|string|in:active,locked,draft',
+            'customer_email' => 'nullable|email|max:255',
+            'expires_at' => 'nullable|date',
             'bride_name' => 'required|string|max:255',
             'groom_name' => 'required|string|max:255',
-            'banner_top' => 'required|string|max:255',
-            'wedding_time' => 'required|string|max:255',
             'wedding_date' => 'required|date',
-            'wedding_message' => 'required|string|max:1000',
-            'address_wedding' => 'required|string|max:1000',
-            'name_place_wedding' => 'required|string|max:1000',
-            'address_wedding_map' => 'required|string|max:1000',
-            'bride_birthday' => 'required|date',
-            'groom_birthday' => 'required|date',
-            'bride_avatar' => 'required|string|max:5000',
-            'groom_avatar' => 'required|string|max:5000',
-            'des_bride' => 'required|string|max:5000',
-            'des_groom' => 'required|string|max:5000',
-            'banner_love_story' => 'required|string|max:5000',
-            'love_story' => 'required|string|max:5000',
-            'banner_coundown' => 'required|string|max:5000',
-            'album' => 'required|string|max:50000',
-            'date_coundown' => 'required|string|max:500',
-            'address_groom' => 'required|string|max:500',
-            'address_bride' => 'required|string|max:500',
-            'groom_eating_title' => 'required|string|max:500',
-            'bride_eating_title' => 'required|string|max:500',
-            'groom_eating_date' => 'required|date',
-            'bride_eating_date' => 'required|date',
-            'time_groom' => 'required|string|max:500',
-            'time_groom_al' => 'required|string|max:500',
-            'time_bride' => 'required|string|max:500',
-            'time_bride_al' => 'required|string|max:500',
-            'bride_phone' => 'required|string|max:15',
-            'groom_phone' => 'required|string|max:15',
-            'message_invite' => 'required|string|max:1000',
-            'message_gift' => 'required|string|max:1000',
-            'banner_thanks' => 'required|string|max:1000',
-            'message_thanks' => 'required|string|max:1000',
-            'groom_qr' => 'required|string|max:500',
-            'bride_qr' => 'required|string|max:500',
-            'groom_map' => 'required|string|max:500',
-            'bride_map' => 'required|string|max:500',
+            'wedding_time' => 'required|string|max:255',
+            'name_place_wedding' => 'nullable|string|max:1000',
+            'address_wedding' => 'nullable|string|max:1000',
+            'address_wedding_map' => 'nullable|string|max:2000',
+            'wedding_message' => 'nullable|string|max:2000',
+            'bride_birthday' => 'nullable|date',
+            'groom_birthday' => 'nullable|date',
+            'bride_phone' => 'nullable|string|max:25',
+            'groom_phone' => 'nullable|string|max:25',
+            'des_bride' => 'nullable|string|max:5000',
+            'des_groom' => 'nullable|string|max:5000',
+            'date_coundown' => 'nullable|string|max:500',
+            'address_groom' => 'nullable|string|max:500',
+            'address_bride' => 'nullable|string|max:500',
+            'groom_eating_title' => 'nullable|string|max:500',
+            'bride_eating_title' => 'nullable|string|max:500',
+            'groom_eating_date' => 'nullable|date',
+            'bride_eating_date' => 'nullable|date',
+            'time_groom' => 'nullable|string|max:500',
+            'time_groom_al' => 'nullable|string|max:500',
+            'time_bride' => 'nullable|string|max:500',
+            'time_bride_al' => 'nullable|string|max:500',
+            'message_invite' => 'nullable|string|max:2000',
+            'message_gift' => 'nullable|string|max:2000',
+            'message_thanks' => 'nullable|string|max:2000',
+            'love_story' => 'nullable|string|max:5000',
+            'groom_map' => 'nullable|string|max:2000',
+            'bride_map' => 'nullable|string|max:2000',
+            // Image URLs passed as text
+            'banner_preview' => 'nullable|string|max:2000',
+            'banner_top' => 'nullable|string|max:2000',
+            'bride_avatar' => 'nullable|string|max:5000',
+            'groom_avatar' => 'nullable|string|max:5000',
+            'banner_love_story' => 'nullable|string|max:5000',
+            'banner_coundown' => 'nullable|string|max:5000',
+            'banner_thanks' => 'nullable|string|max:2000',
+            'groom_qr' => 'nullable|string|max:2000',
+            'bride_qr' => 'nullable|string|max:2000',
+            'album' => 'nullable|string|max:50000',
         ]);
 
-        $weddingCard = WeddingCard::findOrFail($key);
-        $weddingId = $weddingCard->id;
         $weddingCard->update($data);
 
         $updateData = [];
@@ -372,27 +386,89 @@ class WeddingCardController extends Controller
 
         foreach ($imageFields as $inputName => $columnName) {
             if ($request->hasFile($inputName)) {
-                $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
-                $updateData[$columnName] = Storage::disk('s3')->url($path);
+                try {
+                    $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
+                    $updateData[$columnName] = Storage::disk('s3')->url($path);
+                } catch (\Throwable $e) {
+                    $path = $request->file($inputName)->store("weddings/$weddingId", 'public');
+                    $updateData[$columnName] = Storage::disk('public')->url($path);
+                }
             }
         }
 
-        // Album (nhiều ảnh)
-        if ($request->hasFile('image')) {
+        // Album ảnh (xử lý theo manifest kéo thả/thêm/sửa/xóa hoặc file truyền thống)
+        if ($request->filled('album_manifest')) {
+            $updateData['album'] = $this->processAlbumManifest($request, $weddingId);
+        } elseif ($request->hasFile('image')) {
             $imagePaths = [];
-            foreach ($request->file('image') as $image) {
-                $path = $image->storePublicly("weddings/$weddingId", 's3');
-                $imagePaths[] = Storage::disk('s3')->url($path);
+            // Preserve existing album if array
+            if ($weddingCard->album) {
+                $decoded = json_decode($weddingCard->album, true);
+                if (is_array($decoded)) {
+                    $imagePaths = $decoded;
+                }
+            }
+
+            foreach ($request->file('image') as $img) {
+                try {
+                    $path = $img->storePublicly("weddings/$weddingId", 's3');
+                    $imagePaths[] = Storage::disk('s3')->url($path);
+                } catch (\Throwable $e) {
+                    $path = $img->store("weddings/$weddingId", 'public');
+                    $imagePaths[] = Storage::disk('public')->url($path);
+                }
             }
             $updateData['album'] = json_encode($imagePaths);
         }
 
-        $weddingCard->update($updateData);
+        if (!empty($updateData)) {
+            $weddingCard->update($updateData);
+        }
 
-        // return redirect()->route('wedding.edit', $key)->with('success', 'Cập nhật thiệp cưới thành công!');
-        return response()->json([
-            'message' => 'Cap nhat thiep cuoi thanh cong!'
-        ]);
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật thiệp cưới thành công!'
+            ]);
+        }
+
+        return redirect()->route('wedding.edit', $key)->with('success', 'Cập nhật thiệp cưới thành công!');
+    }
+
+    /**
+     * Xử lý album ảnh từ manifest và files upload (giữ nguyên thứ tự kéo thả, hỗ trợ thêm, sửa, xóa)
+     */
+    private function processAlbumManifest(Request $request, int|string $weddingId): string
+    {
+        $manifest = json_decode((string) $request->input('album_manifest'), true);
+        if (!is_array($manifest)) {
+            return json_encode([]);
+        }
+
+        $finalAlbum = [];
+
+        foreach ($manifest as $item) {
+            $type = $item['type'] ?? '';
+
+            if ($type === 'existing' && !empty($item['url'])) {
+                $finalAlbum[] = $item['url'];
+            } elseif ($type === 'new' && !empty($item['key'])) {
+                $fileKey = $item['key'];
+                // Check if file exists in album_new_files array
+                if ($request->hasFile("album_new_files.{$fileKey}")) {
+                    $file = $request->file("album_new_files.{$fileKey}");
+                    try {
+                        $path = $file->storePublicly("weddings/{$weddingId}", 's3');
+                        $finalAlbum[] = Storage::disk('s3')->url($path);
+                    } catch (\Throwable $e) {
+                        $path = $file->store("weddings/{$weddingId}", 'public');
+                        $finalAlbum[] = Storage::disk('public')->url($path);
+                    }
+                }
+            }
+        }
+
+        return json_encode($finalAlbum);
     }
 
     /**
