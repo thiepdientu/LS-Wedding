@@ -6,10 +6,9 @@ use App\Http\Controllers\Admin\WeddingCardController as AdminWeddingCardControll
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/test-s3', function () {
     try {
