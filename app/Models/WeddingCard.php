@@ -84,36 +84,65 @@ class WeddingCard extends Model
     }
 
     /**
+     * Ngày giờ thành hôn định dạng chuẩn: 10:00:00 12/10/2026
+     */
+    public function getFormattedWeddingDatetimeAttribute(): string
+    {
+        if (!$this->wedding_date) {
+            return 'Chưa thiết lập';
+        }
+
+        $time = trim((string) $this->wedding_time);
+        if (empty($time)) {
+            $time = '00:00:00';
+        } elseif (preg_match('/^\d{1,2}:\d{2}$/', $time)) {
+            $time .= ':00';
+        }
+
+        return $time . ' ' . $this->wedding_date->format('d/m/Y');
+    }
+
+    public const TEMPLATES = [
+        '1' => 'Hiện đại 01 (Minimal)',
+        '1n' => 'Hiện đại 01 New',
+        '2' => 'Cổ điển 02 (Vintage)',
+        '3' => 'Hiện đại 03 (Floral)',
+        '4' => 'Thanh lịch 04 (Pastel)',
+        '5' => 'Sang trọng 05 (Royal)',
+        '6' => 'Tự nhiên 06 (Botanical)',
+        '7' => 'Nghệ thuật 07 (Artistic)',
+        '8' => 'Truyền thống 08 (Heritage)',
+        '9' => 'Tối giản 09 (Nordic)',
+        '10' => 'Lãng mạn 10 (Sweet Pink)',
+        '11' => 'Cổ điển 11 (Elegance)',
+        '12' => 'Hiện đại 12 (Trendy)',
+        '13' => 'Sang trọng 13 (Glamour)',
+        '14' => 'Thơ mộng 14 (Dreamy)',
+        '15' => 'Nhiệt đới 15 (Tropical)',
+        '16' => 'Tinh tế 16 (Subtle)',
+        '17' => 'Hoàng gia 17 (Imperial)',
+        '18' => 'Mộc mạc 18 (Rustic)',
+        '19' => 'Quý phái 19 (Noble)',
+        '20' => 'Đương đại 20 (Contemporary)',
+        '21' => 'Đơn giản 21 (Simple)',
+    ];
+
+    /**
+     * Danh sách tất cả template khả dụng
+     *
+     * @return array<string, string>
+     */
+    public static function getTemplateOptions(): array
+    {
+        return self::TEMPLATES;
+    }
+
+    /**
      * Tên template hiển thị thân thiện
      */
     public function getTemplateNameAttribute(): string
     {
-        $templates = [
-            '1' => 'Hiện đại 01 (Minimal)',
-            '1n' => 'Hiện đại 01 New',
-            '2' => 'Cổ điển 02 (Vintage)',
-            '3' => 'Hiện đại 03 (Floral)',
-            '4' => 'Thanh lịch 04 (Pastel)',
-            '5' => 'Sang trọng 05 (Royal)',
-            '6' => 'Tự nhiên 06 (Botanical)',
-            '7' => 'Nghệ thuật 07 (Artistic)',
-            '8' => 'Truyền thống 08 (Heritage)',
-            '9' => 'Tối giản 09 (Nordic)',
-            '10' => 'Lãng mạn 10 (Sweet Pink)',
-            '11' => 'Cổ điển 11 (Elegance)',
-            '12' => 'Hiện đại 12 (Trendy)',
-            '13' => 'Sang trọng 13 (Glamour)',
-            '14' => 'Thơ mộng 14 (Dreamy)',
-            '15' => 'Nhiệt đới 15 (Tropical)',
-            '16' => 'Tinh tế 16 (Subtle)',
-            '17' => 'Hoàng gia 17 (Imperial)',
-            '18' => 'Mộc mạc 18 (Rustic)',
-            '19' => 'Quý phái 19 (Noble)',
-            '20' => 'Đương đại 20 (Contemporary)',
-            '21' => 'Đơn giản 21 (Simple)',
-        ];
-
-        return $templates[$this->template] ?? ('Mẫu ' . ($this->template ?: '01'));
+        return self::TEMPLATES[$this->template] ?? ('Mẫu ' . ($this->template ?: '01'));
     }
 
     /**

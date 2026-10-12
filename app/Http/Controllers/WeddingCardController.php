@@ -128,20 +128,20 @@ class WeddingCardController extends Controller
                 return view('template11', compact('weddingCard'));
             case "12":
                  return view('template9n', compact('weddingCard'));
-            // case "13":
-            //     return view('template13', compact('weddingCard'));
-            // case "14":
-            //     return view('template14', compact('weddingCard'));
+             case "13":
+                 return view('template13', compact('weddingCard'));
+            case "14":
+                return view('template14', compact('weddingCard'));
            case "15":
                 return view('template15', compact('weddingCard'));
             case "16":
                return view('template16', compact('weddingCard'));
-            // case "17":
-            //     return view('template17', compact('weddingCard'));
-            // case "18":
-            //     return view('template18', compact('weddingCard'));
-            // case "19":
-            //     return view('template19', compact('weddingCard'));
+            case "17":
+                return view('template17', compact('weddingCard'));
+            case "18":
+                return view('template18', compact('weddingCard'));
+            case "19":
+                return view('template19', compact('weddingCard'));
             case "20":
                 return view('template20', compact('weddingCard'));
             case "21":
@@ -287,27 +287,40 @@ class WeddingCardController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Tìm kiếm thiệp cưới theo ID số hoặc theo slug (identifyWedding).
+     */
+    protected function resolveWeddingCard(int|string $key): WeddingCard
+    {
+        $weddingCard = is_numeric($key)
+            ? WeddingCard::find($key)
+            : null;
+
+        if (!$weddingCard) {
+            $weddingCard = WeddingCard::where('identifyWedding', $key)->first();
+        }
+
+        if (!$weddingCard) {
+            abort(404, 'Thiệp cưới không tồn tại');
+        }
+
+        return $weddingCard;
+    }
+
+    /**
+     * Show the form for editing the specified resource (hỗ trợ cả ID và identifyWedding).
      */
     public function edit($key)
     {
-        $weddingCard = WeddingCard::findOrFail($key);
-        if (!$weddingCard) {
-            abort(404, 'Thiep cuoi khong ton tai');
-        }
+        $weddingCard = $this->resolveWeddingCard($key);
         return view('weddingform', compact('weddingCard'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource by name (backward compatibility).
      */
     public function editByName($key)
     {
-        $weddingCard = DB::table('wedding_cards')->where('identifyWedding', $key)->first();
-        if (!$weddingCard) {
-            abort(404, 'Thiep cuoi khong ton tai');
-        }
-        return view('weddingform', compact('weddingCard'));
+        return $this->edit($key);
     }
 
     /**
@@ -315,7 +328,7 @@ class WeddingCardController extends Controller
      */
     public function update(Request $request, $key)
     {
-        $weddingCard = WeddingCard::findOrFail($key);
+        $weddingCard = $this->resolveWeddingCard($key);
         $weddingId = $weddingCard->id;
 
         $data = $request->validate([

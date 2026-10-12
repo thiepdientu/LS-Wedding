@@ -7,10 +7,10 @@ use Tests\TestCase;
 
 class AdminWeddingCardTest extends TestCase
 {
-    public function test_admin_root_redirects_to_wedding_cards_index(): void
+    public function test_admin_root_redirects_to_dashboard(): void
     {
         $response = $this->get('/admin');
-        $response->assertRedirect(route('admin.wedding-cards.index'));
+        $response->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_admin_wedding_cards_index_returns_successful_response(): void
@@ -20,6 +20,7 @@ class AdminWeddingCardTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Quản lý Danh sách Thiệp');
         $response->assertSee('Thêm thiệp mới');
+        $response->assertSee('THỜI GIAN THÀNH HÔN');
     }
 
     public function test_admin_search_filters_wedding_cards(): void
@@ -34,10 +35,40 @@ class AdminWeddingCardTest extends TestCase
     {
         WeddingCard::where('id', '>', 0)->first()?->update(['status' => 'locked']);
 
-        $response = $this->get(route('admin.wedding-cards.index', ['status' => 'locked']));
+        $response = $this->get(route('admin.wedding-cards.index', ['status' => 'locked', 'date_range' => '']));
 
         $response->assertStatus(200);
         $response->assertSee('Đã ẩn (Khóa)');
+    }
+
+    public function test_admin_template_filter(): void
+    {
+        $response = $this->get(route('admin.wedding-cards.index', ['template' => '1']));
+
+        $response->assertStatus(200);
+        $response->assertSee('Tất cả mẫu thiệp');
+        $response->assertSee('Hiện đại 01 (Minimal)');
+    }
+
+    public function test_admin_wedding_date_range_filter(): void
+    {
+        // Lọc tháng 10/2026: chỉ có thiệp cưới ngày 17/10/2026
+        $response = $this->get(route('admin.wedding-cards.index', [
+            'date_range' => '01/10/2026 - 31/10/2026'
+        ]));
+
+        $response->assertStatus(200);
+        $response->assertSee('Gia Huy & Phương Anh');
+        $response->assertDontSee('Thế Hùng Mới & Ngọc Mai Mới');
+
+        // Lọc tháng 11/2026 bằng dấu phân cách "đến" của Flatpickr
+        $responseVietnamese = $this->get(route('admin.wedding-cards.index', [
+            'date_range' => '01/11/2026 đến 30/11/2026'
+        ]));
+
+        $responseVietnamese->assertStatus(200);
+        $responseVietnamese->assertSee('Thế Hùng Mới & Ngọc Mai Mới');
+        $responseVietnamese->assertDontSee('Gia Huy & Phương Anh');
     }
 
     public function test_admin_toggle_status_endpoint(): void
@@ -96,6 +127,26 @@ class AdminWeddingCardTest extends TestCase
         $response->assertSee('Chỉnh sửa:');
         $response->assertSee('Thông tin Lễ Thành Hôn Chính');
         $response->assertSee('wed.vn/');
+    }
+
+    public function test_wedding_card_edit_view_loads_by_slug_successfully(): void
+    {
+        $card = WeddingCard::whereNotNull('identifyWedding')->where('identifyWedding', '!=', '')->first();
+        if (!$card) {
+            $this->markTestSkipped('No wedding card with slug found.');
+        }
+
+        $response = $this->get(route('wedding.edit', $card->identifyWedding));
+
+        $response->assertStatus(200);
+        $response->assertSee('Chỉnh sửa:');
+    }
+
+    public function test_wedding_card_edit_view_returns_404_for_invalid_card(): void
+    {
+        $response = $this->get(route('wedding.edit', 'non-existent-wedding-slug-999999'));
+
+        $response->assertStatus(404);
     }
 
     public function test_wedding_card_update_submits_successfully(): void

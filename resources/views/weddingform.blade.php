@@ -772,34 +772,11 @@
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Mẫu giao diện (Template) <span class="text-rose-500">*</span></label>
                     <select name="template" class="w-full px-3 py-2 text-sm text-slate-800 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 transition-all">
                         @php
-                            $templateList = [
-                                '1' => 'Hiện đại 01 (Minimal)',
-                                '1n' => 'Hiện đại 01 New',
-                                '2' => 'Cổ điển 02 (Vintage)',
-                                '3' => 'Hiện đại 03 (Floral)',
-                                '4' => 'Thanh lịch 04 (Pastel)',
-                                '5' => 'Sang trọng 05 (Royal)',
-                                '6' => 'Tự nhiên 06 (Botanical)',
-                                '7' => 'Nghệ thuật 07 (Artistic)',
-                                '8' => 'Truyền thống 08 (Heritage)',
-                                '9' => 'Tối giản 09 (Nordic)',
-                                '10' => 'Lãng mạn 10 (Sweet Pink)',
-                                '11' => 'Cổ điển 11 (Elegance)',
-                                '12' => 'Hiện đại 12 (Trendy)',
-                                '13' => 'Sang trọng 13 (Glamour)',
-                                '14' => 'Thơ mộng 14 (Dreamy)',
-                                '15' => 'Nhiệt đới 15 (Tropical)',
-                                '16' => 'Tinh tế 16 (Subtle)',
-                                '17' => 'Hoàng gia 17 (Imperial)',
-                                '18' => 'Mộc mạc 18 (Rustic)',
-                                '19' => 'Quý phái 19 (Noble)',
-                                '20' => 'Đương đại 20 (Contemporary)',
-                                '21' => 'Đơn giản 21 (Simple)',
-                            ];
-                            $currentTemplate = old('template', $weddingCard->template ?? '1');
+                            $templateList = \App\Models\WeddingCard::getTemplateOptions();
+                            $currentTemplate = old('template', $weddingCard->template ?? request('template', '1'));
                         @endphp
                         @foreach ($templateList as $code => $title)
-                            <option value="{{ $code }}" {{ $currentTemplate == $code ? 'selected' : '' }}>
+                            <option value="{{ $code }}" {{ (string)$currentTemplate === (string)$code ? 'selected' : '' }}>
                                 {{ $code }}. {{ $title }}
                             </option>
                         @endforeach

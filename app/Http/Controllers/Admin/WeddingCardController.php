@@ -38,23 +38,33 @@ class WeddingCardController extends Controller
             }
         }
 
-        // 3. Lọc theo khoảng ngày (date range: 'dd/mm/yyyy - dd/mm/yyyy' hoặc date_from, date_to)
-        if ($dateRange = $request->input('date_range')) {
-            $dates = explode(' - ', $dateRange);
-            if (count($dates) === 2) {
-                try {
-                    $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->startOfDay();
-                    $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->endOfDay();
-                    $query->whereBetween('created_at', [$startDate, $endDate]);
-                } catch (\Exception $e) {
-                    // Bỏ qua nếu định dạng ngày không hợp lệ
-                }
+        // 3. Lọc theo template
+        if ($template = $request->input('template')) {
+            if ($template !== 'all') {
+                $query->where('template', $template);
             }
+        }
+
+        // 4. Lọc theo khoảng ngày tổ chức lễ thành hôn (wedding_date)
+        // Mặc định từ ngày đầu tiên của năm nay đến ngày hiện tại
+        $defaultDateRange = Carbon::now()->startOfYear()->format('d/m/Y') . ' - ' . Carbon::now()->format('d/m/Y');
+
+        if ($request->has('date_range')) {
+            $dateRange = trim((string) $request->input('date_range'));
+        } else {
+            $dateRange = $defaultDateRange;
+        }
+
+        if (!empty($dateRange) && ($parsedDates = $this->parseDateRange($dateRange))) {
+            $query->whereBetween('wedding_date', [
+                $parsedDates[0]->toDateString(),
+                $parsedDates[1]->toDateString(),
+            ]);
         } elseif ($request->filled('date_from') && $request->filled('date_to')) {
             try {
                 $startDate = Carbon::parse($request->input('date_from'))->startOfDay();
                 $endDate = Carbon::parse($request->input('date_to'))->endOfDay();
-                $query->whereBetween('created_at', [$startDate, $endDate]);
+                $query->whereBetween('wedding_date', [$startDate->toDateString(), $endDate->toDateString()]);
             } catch (\Exception $e) {
                 // Ignore
             }
@@ -63,14 +73,21 @@ class WeddingCardController extends Controller
         // Sắp xếp ID giảm dần (mới nhất lên đầu)
         $cards = $query->orderByDesc('id')->paginate(10)->withQueryString();
 
+        // Danh sách mẫu thiệp để lọc
+        $templates = WeddingCard::getTemplateOptions();
+
         // Đếm số lượng theo trạng thái để hiển thị thống kê
         $totalCount = WeddingCard::count();
         $activeCount = WeddingCard::where('status', 'active')->count();
         $lockedCount = WeddingCard::where('status', 'locked')->count();
         $draftCount = WeddingCard::where('status', 'draft')->count();
 
+        $currentDateRange = $dateRange;
+
         return view('admin.wedding-cards.index', compact(
             'cards',
+            'templates',
+            'currentDateRange',
             'totalCount',
             'activeCount',
             'lockedCount',
@@ -148,5 +165,73 @@ class WeddingCardController extends Controller
 
         return redirect()->route('admin.wedding-cards.index')
             ->with('success', "Đã xóa thiệp {$formattedId} ({$name}) thành công.");
+    }
+
+    /**
+     * Phân tích chuỗi ngày để lấy [startDate, endDate]
+     * Hỗ trợ các phân cách: " - ", " đến ", " to ", "–", hoặc 1 ngày đơn lẻ.
+     *
+     * @return array{0: Carbon, 1: Carbon}|null
+     */
+    protected function parseDateRange(string $dateRange): ?array
+    {
+        $dateRange = trim($dateRange);
+        if (empty($dateRange)) {
+            return null;
+        }
+
+        // Tách theo các loại phân cách phổ biến: " - ", " đến ", " to ", "–", "—"
+        $parts = preg_split('/\s+(?:-|đến|to|–|—)\s+/ui', $dateRange);
+
+        if (!$parts || count($parts) === 0) {
+            return null;
+        }
+
+        if (count($parts) === 1) {
+            if (str_contains($dateRange, ' đến ')) {
+                $parts = explode(' đến ', $dateRange);
+            } elseif (str_contains($dateRange, ' to ')) {
+                $parts = explode(' to ', $dateRange);
+            } elseif (str_contains($dateRange, ' - ')) {
+                $parts = explode(' - ', $dateRange);
+            }
+        }
+
+        try {
+            if (count($parts) >= 2) {
+                $startDate = Carbon::createFromFormat('d/m/Y', trim($parts[0]))->startOfDay();
+                $endDate = Carbon::createFromFormat('d/m/Y', trim($parts[1]))->endOfDay();
+
+                if ($startDate->gt($endDate)) {
+                    [$startDate, $endDate] = [$endDate, $startDate];
+                }
+
+                return [$startDate, $endDate];
+            }
+
+            if (count($parts) === 1 && !empty($parts[0])) {
+                $singleDate = Carbon::createFromFormat('d/m/Y', trim($parts[0]));
+                return [$singleDate->copy()->startOfDay(), $singleDate->copy()->endOfDay()];
+            }
+        } catch (\Throwable $e) {
+            try {
+                if (count($parts) >= 2) {
+                    $startDate = Carbon::parse(trim($parts[0]))->startOfDay();
+                    $endDate = Carbon::parse(trim($parts[1]))->endOfDay();
+                    if ($startDate->gt($endDate)) {
+                        [$startDate, $endDate] = [$endDate, $startDate];
+                    }
+                    return [$startDate, $endDate];
+                }
+                if (count($parts) === 1) {
+                    $single = Carbon::parse(trim($parts[0]));
+                    return [$single->copy()->startOfDay(), $single->copy()->endOfDay()];
+                }
+            } catch (\Throwable) {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

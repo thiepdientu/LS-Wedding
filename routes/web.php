@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeddingCardController;
 use App\Http\Controllers\Admin\WeddingCardController as AdminWeddingCardController;
+use App\Http\Controllers\Admin\TemplateController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,13 +35,25 @@ Route::get('/test-db', function () {
 // ==========================================
 Route::prefix('admin')->group(function () {
     Route::get('/', function () {
-        return redirect()->route('admin.wedding-cards.index');
+        return redirect()->route('admin.dashboard');
     });
+
+    // Bảng điều khiển tổng quan (Dashboard)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/wedding-cards', [AdminWeddingCardController::class, 'index'])->name('admin.wedding-cards.index');
     Route::post('/wedding-cards/{id}/toggle-status', [AdminWeddingCardController::class, 'toggleStatus'])->name('admin.wedding-cards.toggle-status');
     Route::get('/wedding-cards/{id}/customer-info', [AdminWeddingCardController::class, 'getCustomerInfo'])->name('admin.wedding-cards.customer-info');
     Route::delete('/wedding-cards/{id}', [AdminWeddingCardController::class, 'destroy'])->name('admin.wedding-cards.destroy');
+
+    // Quản lý mẫu giao diện (Templates)
+    Route::get('/templates', [TemplateController::class, 'index'])->name('admin.templates.index');
+
+    // Cài đặt hệ thống (System Settings)
+    Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
+    Route::post('/settings/test-s3', [SettingController::class, 'testS3'])->name('admin.settings.test-s3');
+    Route::post('/settings/clear-cache', [SettingController::class, 'clearCache'])->name('admin.settings.clear-cache');
 });
 
 

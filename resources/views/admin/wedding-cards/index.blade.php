@@ -2,6 +2,39 @@
 
 @section('title', 'Quản lý Danh sách Thiệp - WeddingSaaS')
 
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+    .flatpickr-calendar {
+        border-radius: 1rem !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid rgba(226, 232, 240, 0.9) !important;
+        font-family: inherit !important;
+        padding: 4px;
+    }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, 
+    .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, 
+    .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, 
+    .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover {
+        background: #4f46e5 !important;
+        border-color: #4f46e5 !important;
+        color: #fff !important;
+    }
+    .flatpickr-day.inRange {
+        background: #eef2ff !important;
+        border-color: #eef2ff !important;
+        color: #4338ca !important;
+        box-shadow: -5px 0 0 #eef2ff, 5px 0 0 #eef2ff !important;
+    }
+    .flatpickr-months .flatpickr-month {
+        color: #1e293b;
+    }
+    .flatpickr-current-month .flatpickr-monthDropdown-months {
+        font-weight: 600;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="px-6 py-8 max-w-7xl w-full mx-auto space-y-6">
 
@@ -60,8 +93,28 @@
                     </div>
                 </div>
 
-                <!-- Date Range Picker / Input -->
-                <div class="relative min-w-[210px] w-full sm:w-auto">
+                <!-- Template Dropdown -->
+                <div class="relative min-w-[170px] w-full sm:w-auto">
+                    <select name="template" 
+                            id="template-filter"
+                            onchange="document.getElementById('filter-form').submit()" 
+                            class="w-full appearance-none pl-3.5 pr-9 py-2 text-sm text-slate-700 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all cursor-pointer">
+                        <option value="all" {{ request('template', 'all') === 'all' ? 'selected' : '' }}>Tất cả mẫu thiệp</option>
+                        @foreach($templates as $tplKey => $tplName)
+                            <option value="{{ $tplKey }}" {{ request('template') == (string)$tplKey ? 'selected' : '' }}>
+                                {{ $tplName }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Date Range Picker / Input (Flatpickr) -->
+                <div class="relative min-w-[240px] w-full sm:w-auto">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -69,17 +122,28 @@
                     </div>
                     <input type="text" 
                            name="date_range" 
-                           value="{{ request('date_range', '01/10/2026 - 31/10/2026') }}" 
-                           placeholder="dd/mm/yyyy - dd/mm/yyyy"
-                           class="w-full pl-9 pr-4 py-2 text-sm text-slate-700 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-sans">
+                           id="wedding-date-range"
+                           value="{{ $currentDateRange }}" 
+                           placeholder="Chọn khoảng ngày cưới..." 
+                           readonly
+                           class="w-full pl-9 pr-8 py-2 text-sm text-slate-700 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-sans cursor-pointer">
+                    <button type="button" 
+                            id="clear-date-btn" 
+                            onclick="clearWeddingDateRange()" 
+                            class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors {{ empty($currentDateRange) ? 'hidden' : '' }}" 
+                            title="Xóa khoảng ngày để xem tất cả">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
 
                 <!-- Action Filter / Reset -->
                 <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-xl transition-colors">
                     Lọc
                 </button>
-                @if(request()->hasAny(['search', 'status', 'date_range']))
-                    <a href="{{ route('admin.wedding-cards.index') }}" class="px-3 py-2 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors" title="Đặt lại bộ lọc">
+                @if(request()->hasAny(['search', 'status', 'template']) || (request()->has('date_range') && request('date_range') !== ''))
+                    <a href="{{ route('admin.wedding-cards.index', ['date_range' => '']) }}" class="px-3 py-2 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors" title="Xem tất cả thiệp không lọc">
                         Xóa lọc
                     </a>
                 @endif
@@ -97,7 +161,7 @@
                         <th scope="col" class="py-3.5 px-4">TÊN CẶP ĐÔI</th>
                         <th scope="col" class="py-3.5 px-4">ĐƯỜNG DẪN (URL)</th>
                         <th scope="col" class="py-3.5 px-4">TEMPLATE</th>
-                        <th scope="col" class="py-3.5 px-4">THỜI HẠN</th>
+                        <th scope="col" class="py-3.5 px-4">THỜI GIAN THÀNH HÔN</th>
                         <th scope="col" class="py-3.5 px-4 text-center">TRẠNG THÁI</th>
                         <th scope="col" class="py-3.5 pl-4 pr-6 text-right">THAO TÁC</th>
                     </tr>
@@ -187,22 +251,15 @@
                                 {{ $card->template_name }}
                             </td>
 
-                            <!-- Thời hạn -->
-                            <td class="py-4 px-4 whitespace-nowrap">
-                                <div class="flex flex-col text-xs">
-                                    <span class="font-medium text-slate-700">
-                                        {{ $card->created_at ? $card->created_at->format('d/m/Y') : ($card->wedding_date ? $card->wedding_date->format('d/m/Y') : '01/10/2026') }}
+                            <!-- Thời gian thành hôn -->
+                            <td class="py-4 px-4 whitespace-nowrap text-xs">
+                                @if($card->wedding_date)
+                                    <span class="font-mono text-slate-700 font-medium bg-slate-50 px-2 py-1 rounded-md border border-slate-200/60">
+                                        {{ $card->formatted_wedding_datetime }}
                                     </span>
-                                    <span class="text-slate-400 text-[11px]">
-                                        @if($card->expires_at)
-                                            Hết: {{ $card->expires_at->format('d/m/Y') }}
-                                        @elseif($card->status === 'active')
-                                            Hết: {{ $card->created_at ? $card->created_at->addYear()->format('d/m/Y') : '01/10/2027' }}
-                                        @else
-                                            -
-                                        @endif
-                                    </span>
-                                </div>
+                                @else
+                                    <span class="text-slate-400 italic">Chưa thiết lập</span>
+                                @endif
                             </td>
 
                             <!-- Trạng thái -->
@@ -417,7 +474,57 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
 <script>
+    // Flatpickr Range Picker for wedding_date
+    let weddingDateFlatpickr = null;
+    document.addEventListener('DOMContentLoaded', function () {
+        const vnLocale = (typeof flatpickr !== 'undefined' && flatpickr.l10ns && flatpickr.l10ns.vn) 
+            ? flatpickr.l10ns.vn 
+            : {};
+
+        weddingDateFlatpickr = flatpickr("#wedding-date-range", {
+            mode: "range",
+            dateFormat: "d/m/Y",
+            locale: Object.assign({}, vnLocale, {
+                rangeSeparator: " - "
+            }),
+            allowInput: false,
+            onChange: function(selectedDates, dateStr, instance) {
+                const clearBtn = document.getElementById('clear-date-btn');
+                if (dateStr) {
+                    if (clearBtn) clearBtn.classList.remove('hidden');
+                } else {
+                    if (clearBtn) clearBtn.classList.add('hidden');
+                }
+
+                // Tự động submit form khi chọn đủ 2 ngày (bắt đầu & kết thúc)
+                if (selectedDates.length === 2) {
+                    document.getElementById('filter-form').submit();
+                }
+            },
+            onClose: function(selectedDates, dateStr, instance) {
+                // Nếu người dùng chọn 1 ngày rồi đóng lịch, cũng tự submit
+                if (selectedDates.length === 1) {
+                    document.getElementById('filter-form').submit();
+                }
+            }
+        });
+    });
+
+    // Xóa khoảng ngày để xem tất cả
+    function clearWeddingDateRange() {
+        if (weddingDateFlatpickr) {
+            weddingDateFlatpickr.clear();
+        }
+        const input = document.getElementById('wedding-date-range');
+        if (input) input.value = '';
+        const clearBtn = document.getElementById('clear-date-btn');
+        if (clearBtn) clearBtn.classList.add('hidden');
+        document.getElementById('filter-form').submit();
+    }
+
     // Copy URL to Clipboard
     function copyToClipboard(url, label) {
         if (!url) {

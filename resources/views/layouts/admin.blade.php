@@ -40,6 +40,7 @@
         }
         [x-cloak] { display: none !important; }
     </style>
+    @stack('styles')
 </head>
 <body class="h-full text-slate-800 antialiased flex flex-col md:flex-row bg-[#f8fafc]">
 
@@ -89,29 +90,42 @@
         <!-- Menu Links -->
         <nav class="flex-1 px-3.5 py-5 space-y-1.5 overflow-y-auto">
             <!-- Tổng quan (Dashboard) -->
-            <a href="#" class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors group">
-                <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            @php $isDashboardActive = request()->routeIs('admin.dashboard'); @endphp
+            <a href="{{ route('admin.dashboard') }}" 
+               class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm {{ $isDashboardActive ? 'font-semibold text-indigo-700 bg-indigo-50/80 rounded-xl shadow-xs border border-indigo-100/60' : 'font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl' }} transition-all group">
+                <svg class="w-5 h-5 {{ $isDashboardActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                 </svg>
                 <span>Tổng quan (Dashboard)</span>
+                @if($isDashboardActive)
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                @endif
             </a>
 
-            <!-- Quản lý Thiệp (Active) -->
+            <!-- Quản lý Thiệp -->
+            @php $isCardsActive = request()->routeIs('admin.wedding-cards.*') || request()->routeIs('wedding.*'); @endphp
             <a href="{{ route('admin.wedding-cards.index') }}" 
-               class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm font-semibold text-indigo-700 bg-indigo-50/80 rounded-xl shadow-xs border border-indigo-100/60 transition-all">
-                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm {{ $isCardsActive ? 'font-semibold text-indigo-700 bg-indigo-50/80 rounded-xl shadow-xs border border-indigo-100/60' : 'font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl' }} transition-all group">
+                <svg class="w-5 h-5 {{ $isCardsActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 <span>Quản lý Thiệp</span>
-                <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                @if($isCardsActive)
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                @endif
             </a>
 
             <!-- Mẫu Giao Diện (Templates) -->
-            <a href="#" class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors group">
-                <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            @php $isTemplatesActive = request()->routeIs('admin.templates.*'); @endphp
+            <a href="{{ route('admin.templates.index') }}" 
+               class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm {{ $isTemplatesActive ? 'font-semibold text-indigo-700 bg-indigo-50/80 rounded-xl shadow-xs border border-indigo-100/60' : 'font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl' }} transition-all group">
+                <svg class="w-5 h-5 {{ $isTemplatesActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
                 </svg>
                 <span>Mẫu Giao Diện (Templates)</span>
+                @if($isTemplatesActive)
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                @endif
             </a>
 
             <!-- Khách hàng -->
@@ -123,12 +137,17 @@
             </a>
 
             <!-- Cài đặt hệ thống -->
-            <a href="#" class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors group">
-                <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            @php $isSettingsActive = request()->routeIs('admin.settings.*'); @endphp
+            <a href="{{ route('admin.settings.index') }}" 
+               class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm {{ $isSettingsActive ? 'font-semibold text-indigo-700 bg-indigo-50/80 rounded-xl shadow-xs border border-indigo-100/60' : 'font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl' }} transition-all group">
+                <svg class="w-5 h-5 {{ $isSettingsActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
                 <span>Cài đặt hệ thống</span>
+                @if($isSettingsActive)
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                @endif
             </a>
         </nav>
 
