@@ -124,7 +124,7 @@
                            name="date_range" 
                            id="wedding-date-range"
                            value="{{ $currentDateRange }}" 
-                           placeholder="Chọn khoảng ngày cưới..." 
+                           placeholder="Tất cả thời gian (chọn để lọc)..." 
                            readonly
                            class="w-full pl-9 pr-8 py-2 text-sm text-slate-700 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all font-sans cursor-pointer">
                     <button type="button" 

@@ -901,39 +901,39 @@
 
     <!-- LỜI CHÚC -->
     <!-- TIN NHẮN -->
-    <!-- <section id="message" class="section-message uk-background-cover uk-section" style="background-image:url(images/926C5FC6-16AB-4C56-9CBE-F9EF8B613250.jpeg); display:block">
- <div class="uk-position-cover uk-overlay uk-overlay-primary" style="opacity:.5"> </div>
+    <section id="message" class="section-message uk-background-cover uk-section" style="background-image:url({{ asset($weddingCard->banner_top ?: 'template11/images/926C5FC6-16AB-4C56-9CBE-F9EF8B613250.jpeg') }}); display:block">
+      <div class="uk-position-cover uk-overlay uk-overlay-primary" style="opacity:.5"> </div>
       <div class="message-container container uk-position-relative uk-position-z-index">
-        <h2 class="section-title uk-light" style="color:white">
-          Gửi lời chúc đến cặp đôi        </h2>
+        <h2 class="section-title uk-light" style="color:white">Gửi lời chúc đến cặp đôi</h2>
         <div class="list_message">
-      
         </div>
        
         <div class="uk-padding-small uk-border-rounded blur-bg" style="border:1px solid white">
-   
           <h3 class="form-title" style="color:white">Gửi lời chúc</h3>
           <form action="" id="messageForm" method="POST">
-  
-          <input type="hidden" id="postId" value="1045">
             <div class="input-group uk-margin-top" style="color:white">
-              <label for="">
-                Tên của bạn              </label>
+              <label for="">Tên của bạn</label>
               <input style="border:1px solid white" id="m_name" type="text" class="input blur-bg" value="" required="">
             </div>
             <div class="input-group uk-margin-top">
-              <label for="" style="color:white">
-                Lời nhắn gửi              </label>
-              <textarea style="border:1px solid white; color:white" id="m_text" class="input-text text-white blur-bg"
-                  name="" cols="30" rows="5" required=""></textarea>
+              <label for="" style="color:white">Lời nhắn gửi</label>
+              <textarea style="border:1px solid white; color:white" id="m_text" class="input-text text-white blur-bg" name="" cols="30" rows="5" required=""></textarea>
             </div>
             <button type="submit" class="btn btn-primary send_message uk-margin-top" style="color:white">Gửi lời chúc</button>
           </form>
         </div>
       </div>
-    </section> -->
+    </section>
     <!-- END TIN NHẮN -->
-
+    <script src="{{ asset('js/wedding-wishes.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            WeddingWishes.init('{{ $weddingCard->id }}', {
+                formSelector: '#messageForm',
+                listSelector: '.list_message'
+            });
+        });
+    </script>
     <!-- END LỜI CHÚC -->
     <!-- FORM XÁC NHẬN -->
     <!-- FROM XÁC NHẬN -->

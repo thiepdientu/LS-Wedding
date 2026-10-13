@@ -846,86 +846,29 @@ background-color: var(--body-bg) !important;
     </div>
     
     <div class="uk-container uk-container-xlarge uk-position-relative">
-    <div class=" list_message">
-    
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Chị Hạnh</h4>
-              <div class="mb-2 uk-text-italic ">
-              Chúc cho cô dâu, chú rể trăm năm hạnh phúc, thủy chung trọn vẹn, đi về có nhau, dù sống đến tuổi răng long đầu bạc nhưng xem nhau như những ngày mới gặp nhé. Happy Wedding!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Cốt Hải</h4>
-              <div class="mb-2 uk-text-italic ">
-              Chúc mừng thằng bạn, cuối cùng mày đã yên bề gia thất rồi. Tao cảm thấy rất mừng cho mày đấy. Hãy sống thật hạnh phúc mày nhé! Chúc 2 vợ chồng sẽ sớm chào đón những thiên thần nhỏ đáng yêu!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Thanh Thủy</h4>
-              <div class="mb-2 uk-text-italic ">
-              Chúc mừng tân lang - tân nương điển trai xinh đẹp của tớ. Chúc 2 cậu sẽ có một khởi đầu mới thuận lợi, cùng nhau xây đắp một mái ấm hạnh phúc mà hai cậu vẫn ao ước nhé. Happy Wedding!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Thủy Tiên</h4>
-              <div class="mb-2 uk-text-italic ">
-               Vậy là sau bao khó khăn, thử thách, cuối cùng hai bạn cũng được cùng nhau xây dựng tổ ấm rồi. Mình mong hai bạn sẽ luôn yêu thương nhau, cùng nhau vun đắp và xây dựng một mái ấm thật tuyệt vời. Chúc hai bạn sớm đón những nàng công chúa và chàng hoàng tử xinh xắn nữa nhé!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Chị 2</h4>
-              <div class="mb-2 uk-text-italic ">
-              Em gái của chị đã lớn rồi, cuối cùng cũng đến lúc có một mái nhà, một gia đình riêng của mình. Chúc em một đời an yên bên cạnh người mà em yêu thương nhé. Cả nhà luôn yêu thương và bên cạnh em!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Quang Thắng</h4>
-              <div class="mb-2 uk-text-italic ">
-              Happy wedding! Chúc hai bạn có cuộc sống mới ngập tràn tiếng cười và niềm vui, sớm có thiên thần nhỏ bồng bé!
-              </div>
-            </div>
-          </div>
-            </div>
+    <div class="list_message" id="list_message" style="max-height: 480px; overflow-y: auto;">
+        <!-- Danh sách lời chúc sẽ được load tự động qua JS -->
+    </div>
 
       <!-- form messger -->
-            <div class=" uk-padding uk-margin-large-top  uk-text-center uk-width-1-2@m uk-width-1-3@l uk-margin-auto bg-white uk-position-relative uk-border-rounded">
+      <div class="uk-padding uk-margin-large-top uk-text-center uk-width-1-2@m uk-width-1-3@l uk-margin-auto bg-white uk-position-relative uk-border-rounded">
         
-        
-        
-        <div class="uk-position-relative ">
-          <h3 class="form-title title-font text-black">Gửi lời chúc đến cặp đôi</h3>
-          <form action="" id="messageForm" method="POST" class="bg-none">
-            <input type="hidden" id="postId" value="2369">
-              <div class=" uk-margin-top" style="color:white">
-                <label for="" class="mb-2">
-                                  </label>
-                <input id="m_name" type="text" class="uk-input bg-none " value="" placeholder="Tên của bạn" required="">
-              </div>
-              <div class=" uk-margin-top">
-                <label for="" class="mb-2">
-                                  </label>
-                <textarea id="m_text" class="uk-textarea bg-none text-black" name="" cols="30" rows="5" required=""></textarea>
-              </div>
-              <button type="submit" class="btn-theme-primary uk-button send_message uk-margin-top">
-                <i class="ti ti-send me-2"></i>
-                <span>Gửi</span>
-              </button>
+        <div class="uk-position-relative">
+          <h3 class="form-title title-font text-black mb-3">Gửi lời chúc đến cặp đôi</h3>
+          <form action="{{ route('wishes.store', $weddingCard->id) }}" id="messageForm" method="POST" class="bg-none">
+            @csrf
+            <div class="uk-margin-top text-start">
+              <label class="mb-1 text-black text-sm font-semibold">Tên của bạn *</label>
+              <input id="m_name" name="sender_name" type="text" class="uk-input bg-none text-black" placeholder="Nhập tên của bạn" required>
+            </div>
+            <div class="uk-margin-top text-start">
+              <label class="mb-1 text-black text-sm font-semibold">Lời chúc *</label>
+              <textarea id="m_text" name="message" class="uk-textarea bg-none text-black" rows="4" placeholder="Nhập lời chúc tốt đẹp nhất dành cho cô dâu & chú rể..." required></textarea>
+            </div>
+            <button type="submit" class="btn-theme-primary uk-button send_message uk-margin-top w-100">
+              <i class="ti ti-send me-2"></i>
+              <span>Gửi lời chúc</span>
+            </button>
           </form>
         </div>
         
@@ -1044,108 +987,21 @@ background-color: var(--body-bg) !important;
   $('head link[rel="icon"]').attr('href','https://weddingday.com.vn/wp-content/uploads/2024/09/FAVICON-5.png')
   $('head title').text('Thiệp cưới hiện đại I03')
   $(".selectpicker").selectpicker();
-</script><script>
-    $(':root').css') }}('--primary-color', '');
-    $(':root').css') }}('--primary-hover', '');
-    $(':root').css') }}('--soft-primary', '');
-    $(':root').css') }}('--secondary-color', '');
 </script>
 <script>
- 
-  //XỬ LÝ GỬI TIN NHẮN
-  $('#messageForm').submit(function (e) { 
-    e.preventDefault();
-    $('.send_message').html('<div uk-spinner></div>')
-    var name = $(this).find('input#m_name').val(),
-    content = $(this).find('textarea#m_text').val();
-
-    var mess_new = `
-    <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-      <div class="uk-position-relative uk-text-danger">
-        <h4 class="title-font uk-text-danger mb-0">${name}</h4>
-        <div class="mb-2 uk-text-italic">
-        ${content}
-        </div>
-      </div>
-    </div>
-    `;
-    //hàm ajax xử lý thêm lời nhắn
-    var nonce = "a0296b762e" ,
-    id = "2369";
-    $.ajax({ // Hàm ajax
-      type : "post", //Phương thức truyền post hoặc get
-      dataType : "html", //Dạng dữ liệu trả về xml, json, script, or html
-      url : 'https://weddingday.com.vn/wp-admin/admin-ajax.php', // Nơi xử lý dữ liệu
-      data : {
-          action: "new_messeger", //Tên action, dữ liệu gởi lên cho server
-          id:id,
-          nonce:nonce,
-          name:name,
-          content:content,
-      },
-      beforeSend: function(){
-              
-      },
-      success: function(response) {    
-        $('.list_message').append(mess_new)
-        $('#messageForm')[0].reset()
-        $('.send_message').html('<span class="text-white">Cám ơn !</span>').addClass('bg-primary-color text-white').attr('disabled','')
-      },
-      error: function( jqXHR, textStatus, errorThrown ){
-          //Làm gì đó khi có lỗi xảy ra
-          alert('lỗi')
-      }
+    $(':root').css('--primary-color', '');
+    $(':root').css('--primary-hover', '');
+    $(':root').css('--soft-primary', '');
+    $(':root').css('--secondary-color', '');
+</script>
+<script src="{{ asset('js/wedding-wishes.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        WeddingWishes.init('{{ $weddingCard->id }}', {
+            formSelector: '#messageForm, .form-wedding',
+            listSelector: '.list_message'
+        });
     });
-    
-  });
-
-  // XỬ LÝ XÁC NHẬN THAM DỰ
-  
-  $('.form-wedding').each(function(){
-    $(this).submit(function (e) { 
-      "use strict";
-      e.preventDefault();
-      $('.form-wedding').find('button').html('<div uk-spinner></div>')
-      var f_location = $(this).find('input#f_location').val(),
-      id = $(this).find('input#f_id').val(),
-      f_name = $(this).find('input#f_name').val(),
-      f_xn = $(this).find('select#f_xn').val(),
-      f_people = $(this).find('input[type="radio"]:checked').val(),
-      f_mess = $(this).find('textarea').val(),
-      nonce = "5e03cdd3c1";
-
-      $.ajax({ // Hàm ajax
-        type : "post", //Phương thức truyền post hoặc get
-        dataType : "html", //Dạng dữ liệu trả về xml, json, script, or html
-        url : 'https://weddingday.com.vn/wp-admin/admin-ajax.php', // Nơi xử lý dữ liệu
-        data : {
-            action: "new_formxn", //Tên action, dữ liệu gởi lên cho server
-            id:id,
-            nonce:nonce,
-            name:f_name,
-            diadiem:f_location,
-            songuoi:f_people,
-            xacnhan:f_xn,
-            loinhan:f_mess,
-        },
-        beforeSend: function(){
-                
-        },
-        success: function(response) {    
-          $('.form-wedding').html('<div class="uk-text-center text-black">Cám ơn bạn đã xác nhận !</div>')
-        },
-        error: function( jqXHR, textStatus, errorThrown ){
-            //Làm gì đó khi có lỗi xảy ra
-            alert('lỗi')
-        }
-      });
-      
-        
-    });
-  })
-  
-
-
 </script>
 <script>
   var myAudio = document.getElementById("audio_play");

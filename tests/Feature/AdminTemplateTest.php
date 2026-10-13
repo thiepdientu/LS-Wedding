@@ -2,10 +2,23 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AdminTemplateTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $admin = User::firstOrCreate(['username' => 'admin'], [
+            'name' => 'Administrator',
+            'email' => 'admin@lswedding.vn',
+            'password' => Hash::make('S0ntit199.,@'),
+        ]);
+        $this->actingAs($admin);
+    }
+
     public function test_admin_templates_index_returns_successful_response(): void
     {
         $response = $this->get(route('admin.templates.index'));

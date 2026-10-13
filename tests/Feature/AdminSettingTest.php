@@ -3,11 +3,24 @@
 namespace Tests\Feature;
 
 use App\Models\SystemSetting;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminSettingTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $admin = User::firstOrCreate(['username' => 'admin'], [
+            'name' => 'Administrator',
+            'email' => 'admin@lswedding.vn',
+            'password' => Hash::make('S0ntit199.,@'),
+        ]);
+        $this->actingAs($admin);
+    }
+
     public function test_admin_settings_index_renders_successfully(): void
     {
         $response = $this->get(route('admin.settings.index'));

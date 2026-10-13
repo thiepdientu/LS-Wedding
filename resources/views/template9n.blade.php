@@ -411,6 +411,42 @@
         </div>
     </section>
 
+    <!-- 6.5 SỔ LƯU BÚT & LỜI CHÚC -->
+    <section id="wishes" class="py-20 bg-[var(--bg-site)] px-6">
+        <div class="max-w-2xl mx-auto reveal">
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-[0.3em] text-primary/70 font-medium">Guestbook</span>
+                <h2 class="text-3xl md:text-4xl font-serif italic text-primary mt-2">Sổ Lưu Bút & Lời Chúc</h2>
+                <div class="w-12 h-[1px] bg-primary/30 mx-auto mt-4 mb-3"></div>
+                <p class="text-xs md:text-sm text-gray-500 font-light">Gửi gắm những lời chúc tốt đẹp nhất dành cho cô dâu & chú rể</p>
+            </div>
+
+            <!-- Danh sách lời chúc -->
+            <div class="list_message mb-8 max-h-96 overflow-y-auto space-y-3 pr-1" id="list_message">
+                <!-- Loaded via JS -->
+            </div>
+
+            <!-- Form gửi lời chúc -->
+            <div class="bg-white p-8 md:p-10 rounded-[2rem] border border-primary/10 shadow-lg shadow-primary/5">
+                <h3 class="text-xl font-serif text-primary text-center mb-6">Gửi Lời Chúc Của Bạn</h3>
+                <form action="{{ route('wishes.store', $weddingCard->id) }}" id="customForm" method="POST" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Tên của bạn *</label>
+                        <input type="text" id="name" name="sender_name" required placeholder="Nhập họ và tên..." class="w-full p-4 bg-[var(--bg-site)] border border-transparent focus:border-primary/20 rounded-2xl outline-none text-sm transition-all text-gray-800">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Lời chúc yêu thương *</label>
+                        <textarea id="messages" name="message" rows="3" required placeholder="Viết vài dòng gửi gắm chúc phúc..." class="w-full p-4 bg-[var(--bg-site)] border border-transparent focus:border-primary/20 rounded-2xl outline-none text-sm transition-all text-gray-800"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-4 btn-premium rounded-2xl font-bold uppercase text-xs tracking-wider shadow-lg shadow-primary/20 transition-transform active:scale-95 cursor-pointer">
+                        Gửi Lời Chúc Mừng
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- 7. THANK YOU SECTION -->
     <section class="relative h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
         <div class="absolute inset-0 z-0">
@@ -566,6 +602,12 @@
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
+    </script>
+    <script src="{{ asset('js/wedding-wishes.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            WeddingWishes.init('{{ $weddingCard->id }}');
+        });
     </script>
 </body>
 </html>

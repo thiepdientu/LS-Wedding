@@ -595,9 +595,43 @@ $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : 
 </div>
 </section>
 
+<!-- LỜI CHÚC (GUESTBOOK) -->
+<section id="message" class="section-message uk-section uk-background-cover" style="background-image:url({{ asset($weddingCard->banner_love_story ?? $weddingCard->banner_top) }}); position: relative;">
+    <div class="uk-position-cover uk-overlay uk-overlay-primary" style="opacity: 0.65; background: rgba(30, 41, 59, 0.75);"></div>
+    <div class="container uk-position-relative uk-position-z-index" style="max-width: 680px; margin: 0 auto; padding: 30px 15px;">
+        <div class="text-center mb-4">
+            <h2 class="script-font uk-heading-small text-white mb-2" style="font-size: 2.2rem;">Sổ Lưu Bút & Lời Chúc</h2>
+            <p class="text-white text-sm opacity-90">Gửi những lời chúc tốt đẹp nhất đến cặp đôi trong ngày trọng đại</p>
+        </div>
 
+        <!-- Danh sách lời chúc -->
+        <div class="list_message" id="list_message" style="max-height: 400px; overflow-y: auto; margin-bottom: 25px; padding-right: 5px;">
+            <!-- Loaded via JS -->
+        </div>
 
-
+        <!-- Form gửi lời chúc -->
+        <div class="p-4 rounded-xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 16px;">
+            <h3 class="text-white font-semibold text-lg text-center mb-3">Gửi Lời Chúc Mừng</h3>
+            <form action="{{ route('wishes.store', $weddingCard->id) }}" id="customForm" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label class="block text-white text-xs font-semibold mb-1">Tên của bạn *</label>
+                    <input type="text" id="name" name="sender_name" required placeholder="Nhập tên của bạn" class="uk-input" style="background: rgba(255, 255, 255, 0.9); border-radius: 8px; color: #1e293b;">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-white text-xs font-semibold mb-1">Lời chúc tốt đẹp *</label>
+                    <textarea id="messages" name="message" rows="3" required placeholder="Viết lời chúc yêu thương gửi đến cô dâu chú rể..." class="uk-textarea" style="background: rgba(255, 255, 255, 0.9); border-radius: 8px; color: #1e293b;"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100" style="padding: 10px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                        <i class="ri-send-plane-fill me-1"></i> Gửi lời chúc
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- END LỜI CHÚC -->
 
 <section id="gift" class="section-gift" style="display:block">
         <div class="container">
@@ -684,6 +718,12 @@ $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : 
 <script src="{{ asset('template07/js/scrollreveal.min.js') }}" id="scrollrevea-js"></script>
 <script src="{{ asset('template07/js/main-wedding.js') }}" id="main wedding-js"></script>
 <script src="{{ asset('template07/js/comment-reply.min.js') }}" id="comment-reply-js" async="" data-wp-strategy="async"></script>
+<script src="{{ asset('js/wedding-wishes.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        WeddingWishes.init('{{ $weddingCard->id }}');
+    });
+</script>
     
 
 

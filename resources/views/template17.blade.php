@@ -804,12 +804,19 @@ background-color: var(--body-bg) !important;
   </section>
   <!-- END INTRO TEXT -->
     <!-- MESSEGER -->
-  <section id="messeger" class="messeger uk-position-relative uk-section ">
-    
-    
-    
-    <div class="uk-container uk-container-xlarge uk-position-relative">
-
+  <section id="messeger" class="messeger uk-position-relative uk-section">
+    <div class="uk-container uk-container-medium uk-position-relative">
+      <div class="uk-text-center uk-margin-bottom">
+        <h2 class="title-font" style="font-size: 2rem;">Sổ Lưu Bút & Lời Chúc</h2>
+        <p class="uk-text-muted">Những lời chúc mừng chân thành từ người thân và bạn bè.</p>
+      </div>
+      <div class="list_message"></div>
+      <div class="uk-text-center uk-margin-top">
+        <a href="#modal-wedding" uk-toggle class="uk-button btn-theme-primary">
+          Gửi lời chúc & Xác nhận tham dự
+        </a>
+      </div>
+    </div>
   </section>
   <!-- END MESSEGER -->
   
@@ -930,97 +937,22 @@ background-color: var(--body-bg) !important;
 </script>
 <script>
  
-  //XỬ LÝ GỬI TIN NHẮN
-  $('#messageForm').submit(function (e) { 
-    e.preventDefault();
-    $('.send_message').html('<div uk-spinner></div>')
-    var name = $(this).find('input#m_name').val(),
-    content = $(this).find('textarea#m_text').val();
-
-    var mess_new = `
-    <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-      <div class="uk-position-relative uk-text-danger">
-        <h4 class="title-font uk-text-danger mb-0">${name}</h4>
-        <div class="mb-2 uk-text-italic">
-        ${content}
-        </div>
-      </div>
-    </div>
-    `;
-    //hàm ajax xử lý thêm lời nhắn
-    var nonce = "24fc4c6daf" ,
-    id = "2367";
-    $.ajax({ // Hàm ajax
-      type : "post", //Phương thức truyền post hoặc get
-      dataType : "html", //Dạng dữ liệu trả về xml, json, script, or html
-      url : 'https://weddingday.com.vn/wp-admin/admin-ajax.php', // Nơi xử lý dữ liệu
-      data : {
-          action: "new_messeger", //Tên action, dữ liệu gởi lên cho server
-          id:id,
-          nonce:nonce,
-          name:name,
-          content:content,
-      },
-      beforeSend: function(){
-              
-      },
-      success: function(response) {    
-        $('.list_message').append(mess_new)
-        $('#messageForm')[0].reset()
-        $('.send_message').html('<span class="text-white">Cám ơn !</span>').addClass('bg-primary-color text-white').attr('disabled','')
-      },
-      error: function( jqXHR, textStatus, errorThrown ){
-          //Làm gì đó khi có lỗi xảy ra
-          alert('lỗi')
-      }
-    });
-    
-  });
+  // Wedding Wishes Core
 
   // XỬ LÝ XÁC NHẬN THAM DỰ
   
-  $('.form-wedding').each(function(){
-    $(this).submit(function (e) { 
-      "use strict";
-      e.preventDefault();
-      $('.form-wedding').find('button').html('<div uk-spinner></div>')
-      var f_location = $(this).find('input#f_location').val(),
-      id = $(this).find('input#f_id').val(),
-      f_name = $(this).find('input#f_name').val(),
-      f_xn = $(this).find('select#f_xn').val(),
-      f_people = $(this).find('input[type="radio"]:checked').val(),
-      f_mess = $(this).find('textarea').val(),
-      nonce = "81bba5fe90";
-
-      $.ajax({ // Hàm ajax
-        type : "post", //Phương thức truyền post hoặc get
-        dataType : "html", //Dạng dữ liệu trả về xml, json, script, or html
-        url : 'https://weddingday.com.vn/wp-admin/admin-ajax.php', // Nơi xử lý dữ liệu
-        data : {
-            action: "new_formxn", //Tên action, dữ liệu gởi lên cho server
-            id:id,
-            nonce:nonce,
-            name:f_name,
-            diadiem:f_location,
-            songuoi:f_people,
-            xacnhan:f_xn,
-            loinhan:f_mess,
-        },
-        beforeSend: function(){
-                
-        },
-        success: function(response) {    
-          $('.form-wedding').html('<div class="uk-text-center text-black">Cám ơn bạn đã xác nhận !</div>')
-        },
-        error: function( jqXHR, textStatus, errorThrown ){
-            //Làm gì đó khi có lỗi xảy ra
-            alert('lỗi')
-        }
-      });
-      
-        
+  // WeddingWishes Handler
+</script>
+<script src="{{ asset('js/wedding-wishes.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        WeddingWishes.init('{{ $weddingCard->id }}', {
+            formSelector: '.form-wedding',
+            listSelector: '.list_message'
+        });
     });
-  })
+</script>
+<script>
   
 
 

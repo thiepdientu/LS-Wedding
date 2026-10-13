@@ -68,6 +68,14 @@ class WeddingCard extends Model
     ];
 
     /**
+     * Danh sách lời chúc của thiệp cưới
+     */
+    public function wishes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(WeddingWish::class, 'wedding_card_id');
+    }
+
+    /**
      * Mã hiển thị chuẩn dạng #TC-1042
      */
     public function getFormattedIdAttribute(): string

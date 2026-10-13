@@ -2,11 +2,24 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use App\Models\WeddingCard;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AdminWeddingCardTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $admin = User::firstOrCreate(['username' => 'admin'], [
+            'name' => 'Administrator',
+            'email' => 'admin@lswedding.vn',
+            'password' => Hash::make('S0ntit199.,@'),
+        ]);
+        $this->actingAs($admin);
+    }
+
     public function test_admin_root_redirects_to_dashboard(): void
     {
         $response = $this->get('/admin');
@@ -23,6 +36,14 @@ class AdminWeddingCardTest extends TestCase
         $response->assertSee('THỜI GIAN THÀNH HÔN');
     }
 
+    public function test_admin_wedding_cards_index_defaults_to_no_date_filter(): void
+    {
+        $response = $this->get(route('admin.wedding-cards.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Tất cả thời gian (chọn để lọc)...');
+    }
+
     public function test_admin_search_filters_wedding_cards(): void
     {
         $response = $this->get(route('admin.wedding-cards.index', ['search' => 'Mai']));
@@ -33,12 +54,17 @@ class AdminWeddingCardTest extends TestCase
 
     public function test_admin_status_filter(): void
     {
-        WeddingCard::where('id', '>', 0)->first()?->update(['status' => 'locked']);
+        $card = WeddingCard::where('id', '>', 0)->first();
+        $oldStatus = $card?->status ?? 'active';
+        $card?->update(['status' => 'locked']);
 
         $response = $this->get(route('admin.wedding-cards.index', ['status' => 'locked', 'date_range' => '']));
 
         $response->assertStatus(200);
         $response->assertSee('Đã ẩn (Khóa)');
+
+        // Khôi phục lại trạng thái ban đầu để không ảnh hưởng các test khác
+        $card?->update(['status' => $oldStatus]);
     }
 
     public function test_admin_template_filter(): void

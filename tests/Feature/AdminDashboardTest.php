@@ -2,10 +2,23 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AdminDashboardTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $admin = User::firstOrCreate(['username' => 'admin'], [
+            'name' => 'Administrator',
+            'email' => 'admin@lswedding.vn',
+            'password' => Hash::make('S0ntit199.,@'),
+        ]);
+        $this->actingAs($admin);
+    }
+
     public function test_admin_root_redirects_to_dashboard(): void
     {
         $response = $this->get('/admin');

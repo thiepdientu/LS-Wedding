@@ -853,131 +853,44 @@
 
     <!-- LỜI CHÚC -->
     <!-- TIN NHẮN -->
-    {{-- <section id="message" class="section-message uk-background-cover uk-section"
+    <section id="message" class="section-message uk-background-cover uk-section"
         style="background-image:url({{ asset($weddingCard->banner_top) }}); display:block">
         <div class="uk-position-cover uk-overlay uk-overlay-primary" style="opacity:.5"> </div>
         <div class="message-container container uk-position-relative uk-position-z-index">
             <h2 class="section-title uk-light" style="color:white">
                 Gửi lời chúc đến cặp đôi </h2>
             <div class="list_message">
-                <!-- <div class="message-item" data-aos="fade-up" data-aos-duration="2000">
-            <i class='bx bxs-quote-alt-left'></i>
-            <h3 class="user_message">Phương Nguyễn</h3>
-            <p class="message_body">Chúc bạn thân của tao lấy một chồng, đẻ hai con đủ nếp đủ tẻ, sống ở nhà ba tầng,
-              mua xe 4 bánh nhé. Phải thật hạnh phúc mày nhé! Hi hi.</p>
-          </div> -->
             </div>
 
             <div class="uk-padding-small uk-border-rounded blur-bg" style="border:1px solid white">
-
                 <h3 class="form-title" style="color:white">Gửi lời chúc</h3>
                 <form action="" id="customForm">
                     <div class="input-group uk-margin-top" style="color:white">
-                        <label for="">
-                            Tên của bạn </label>
+                        <label for="">Tên của bạn</label>
                         <input style="border:1px solid white" id="name" type="text" class="input blur-bg"
                             value="" required="">
                     </div>
                     <div class="input-group uk-margin-top">
-                        <label for="" style="color:white">
-                            Lời chúc </label>
-                            <input style="border:1px solid white" type="text" id="messages"  class="input blur-bg" required>
-                            <label for="" style="color:white">
-                                Xác nhận tham dự </label>
-                                <input style="border:1px solid white" type="text" id="accept"  class="input blur-bg" required>
+                        <label for="" style="color:white">Lời chúc</label>
+                        <input style="border:1px solid white" type="text" id="messages" class="input blur-bg" required>
+                        <label for="" style="color:white">Xác nhận tham dự</label>
+                        <input style="border:1px solid white" type="text" id="accept" class="input blur-bg" placeholder="Có, tôi sẽ đến">
                     </div>
-                    <button type="submit" class="btn btn-primary send_message uk-margin-top" style="color:white">Gửi
-                        lời chúc</button>
+                    <button type="submit" class="btn btn-primary send_message uk-margin-top" style="color:white">Gửi lời chúc</button>
                 </form>
                 <p style="margin-top:10px;" id="status"></p>
-                <a href="https://docs.google.com/spreadsheets/d/1D3RB1ile7AnYpjQTdBWVFN0jeVF0FrsS9iuiV502lVM/edit?usp=sharing" class="btn btn-second send_message uk-margin-top" style="color:white">Xem lời chúc</a>
             </div>
-
-            <script>
-                document.getElementById("customForm").addEventListener("submit", function(event) {
-                    event.preventDefault();
-                    let name = document.getElementById("name").value;
-                    let message = document.getElementById("messages").value;
-                    let accept = document.getElementById("accept").value;         
-                    // Thay thế bằng URL Google Form của bạn
-                    let googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSevfuj5KTGyMpV6X3zli1ZKqIYtA46t6-EHbX6CoWpnW3jzzg/formResponse";
-                    // Các entry ID (tìm trong Google Form)
-                    let formData = new FormData();
-                    formData.append("entry.1121695678", name); 
-                    formData.append("entry.640970141", message); 
-                    formData.append("entry.1377771432", accept);
-        
-                    fetch(googleFormURL, {
-                        method: "POST",
-                        body: formData,
-                        mode: "no-cors"
-                    }).then(() => {
-                        document.getElementById("status").innerText = "Gửi thành công!";
-                        document.getElementById("customForm").reset();
-                    }).catch(error => {
-                        document.getElementById("status").innerText = "Có lỗi xảy ra!";
-                    });
-                });
-            </script>
         </div>
-    </section> --}}
+    </section>
     <!-- END TIN NHẮN -->
+    <script src="{{ asset('js/wedding-wishes.js') }}"></script>
     <script>
-        fetch('/wp-json/wp/v2/comments?post=999&per_page=100', {
-                method: 'GET',
-            })
-
-            .then(response => response.json())
-            .then(data => {
-                mess_item = ''
-                for (let i in data) {
-                    if (!i) {
-                        $('.list_message').attr('class', 'hidden')
-                    }
-                    c_author = data[i].author_name
-                    c_content = data[i].content.rendered
-
-                    mess_item +=
-                        '<div class="blur-bg uk-padding-small uk-border-rounded uk-light"> <h3 class="user_message">' +
-                        c_author + '</h3> <p class="message_body">' + c_content + '</p> </div>'
-                }
-                $('.list_message').html(mess_item)
-            })
-
-        //FORM
-        $('#messageForm').submit(function(e) {
-            e.preventDefault();
-            const postId = $(this).find('#postId').val()
-            const name = $(this).find('#m_name').val()
-            const mess = $(this).find('#m_text').val()
-            const data = JSON.stringify({
-                post: postId,
-                author_name: name,
-                content: mess,
+        document.addEventListener('DOMContentLoaded', function () {
+            WeddingWishes.init('{{ $weddingCard->id }}', {
+                formSelector: '#customForm',
+                listSelector: '.list_message',
+                statusSelector: '#status'
             });
-            ACTION_URL = '/wp-json/wp/v2/comments'
-            fetch(ACTION_URL, {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: data,
-                })
-                .then((response) => {
-                    if (response.ok === true) {
-                        mess_new =
-                            '<div class=" uk-light blur-bg uk-padding-small uk-border-rounded" data-aos="fade-up" data-aos-duration="2000"> <i class="bx bxs-quote-alt-left"></i> <h3 class="user_message">' +
-                            name + '</h3> <p class="message_body">' + mess + '</p> </div>'
-                        $('.list_message').prepend(mess_new)
-                        $('#messageForm')[0].reset()
-                    }
-                    return response.json();
-                })
-                .then((object) => {
-                    // Comment submission failed.
-                    // Output `object.message` to see the error message.
-                })
-                .catch(error => console.error('Error:', error));
         });
     </script>
     <!-- END LỜI CHÚC -->

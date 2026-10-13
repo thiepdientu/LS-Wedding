@@ -115,6 +115,19 @@
                 @endif
             </a>
 
+            <!-- Quản lý Lời chúc & Sổ lưu bút -->
+            @php $isWishesActive = request()->routeIs('admin.wishes.*'); @endphp
+            <a href="{{ route('admin.wishes.index') }}" 
+               class="flex items-center gap-3.5 px-3.5 py-2.5 text-sm {{ $isWishesActive ? 'font-semibold text-indigo-700 bg-indigo-50/80 rounded-xl shadow-xs border border-indigo-100/60' : 'font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl' }} transition-all group">
+                <svg class="w-5 h-5 {{ $isWishesActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                <span>Quản lý Lời chúc</span>
+                @if($isWishesActive)
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                @endif
+            </a>
+
             <!-- Mẫu Giao Diện (Templates) -->
             @php $isTemplatesActive = request()->routeIs('admin.templates.*'); @endphp
             <a href="{{ route('admin.templates.index') }}" 
@@ -151,13 +164,36 @@
             </a>
         </nav>
 
-        <!-- Footer / Version -->
-        <div class="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-            <span>Phiên bản v2.4</span>
-            <span class="inline-flex items-center gap-1 text-emerald-600 font-medium">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                Trực tuyến
-            </span>
+        <!-- User Profile & Logout -->
+        <div class="p-3 border-t border-slate-100 flex flex-col gap-2">
+            <div class="flex items-center justify-between px-2 py-1.5 bg-slate-50/80 rounded-xl border border-slate-100">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                        {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-semibold text-slate-800 truncate">{{ auth()->user()->name ?? 'Administrator' }}</span>
+                        <span class="text-[11px] text-slate-400 truncate">&#64;{{ auth()->user()->username ?? 'admin' }}</span>
+                    </div>
+                </div>
+                <form action="{{ route('admin.logout') }}" method="POST" class="inline m-0">
+                    @csrf
+                    <button type="submit" 
+                            class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                            title="Đăng xuất khỏi hệ thống">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="flex items-center justify-between px-2 text-[11px] text-slate-400">
+                <span>Phiên bản v2.4</span>
+                <span class="inline-flex items-center gap-1 text-emerald-600 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Trực tuyến
+                </span>
+            </div>
         </div>
     </aside>
 

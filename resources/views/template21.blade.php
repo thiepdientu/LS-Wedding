@@ -616,15 +616,16 @@
         <p class="text-xs text-white/80 mt-1">Xin vui lòng xác nhận để gia đình chuẩn bị chu đáo nhất</p>
       </div>
 
-      <form id="rsvp-form" class="space-y-4 bg-black/20 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-xl">
+      <form id="rsvp-form" action="{{ route('wishes.store', $weddingCard->id) }}" method="POST" class="space-y-4 bg-black/20 backdrop-blur-md p-6 rounded-2xl border border-white/20 shadow-xl">
+        @csrf
         <div>
-          <label class="block text-xs font-semibold text-[#FCE8AB] mb-1">Họ và tên của bạn</label>
-          <input type="text" id="rsvp-name" required placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]">
+          <label class="block text-xs font-semibold text-[#FCE8AB] mb-1">Họ và tên của bạn *</label>
+          <input type="text" id="rsvp-name" name="sender_name" required placeholder="Nhập tên của bạn..." class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]">
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-[#FCE8AB] mb-1">Bạn sẽ tham dự chứ?</label>
-          <select id="rsvp-status" class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]">
+          <select id="rsvp-status" name="attendance_status" class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]">
             <option value="yes">Chắc chắn rồi! Tôi sẽ tham dự</option>
             <option value="no">Tiếc quá, tôi bận mất rồi</option>
           </select>
@@ -632,7 +633,7 @@
 
         <div>
           <label class="block text-xs font-semibold text-[#FCE8AB] mb-1">Số lượng người đi cùng</label>
-          <select id="rsvp-guests" class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]">
+          <select id="rsvp-guests" name="guest_count" class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]">
             <option value="1">1 người</option>
             <option value="2">2 người</option>
             <option value="3">3 người</option>
@@ -641,8 +642,8 @@
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-[#FCE8AB] mb-1">Gửi lời chúc phúc</label>
-          <textarea id="rsvp-message" rows="3" placeholder="Gửi vài dòng chúc phúc tới cô dâu chú rể..." class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]"></textarea>
+          <label class="block text-xs font-semibold text-[#FCE8AB] mb-1">Gửi lời chúc phúc *</label>
+          <textarea id="rsvp-message" name="message" rows="3" required placeholder="Gửi vài dòng chúc phúc tới cô dâu chú rể..." class="w-full px-4 py-2.5 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#FCE8AB]"></textarea>
         </div>
 
         <button type="submit" class="w-full btn-gold py-3 rounded-lg text-sm uppercase tracking-wider shadow-lg transition-transform active:scale-95 cursor-pointer">
@@ -653,6 +654,14 @@
           Cảm ơn bạn đã gửi lời chúc và xác nhận! ❤️
         </div>
       </form>
+
+      <!-- Danh sách lời chúc đã gửi -->
+      <div class="mt-8">
+        <h3 class="font-script text-2xl text-[#FCE8AB] text-center mb-4">Sổ Lưu Bút & Lời Chúc</h3>
+        <div id="rsvp-wishes-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+          <!-- Loaded via JS -->
+        </div>
+      </div>
     </div>
   </section>
 
@@ -873,18 +882,17 @@
         contentGroom.classList.add('hidden');
       });
     }
+  });
+</script>
 
-    // 7. Xử lý Form RSVP
-    const rsvpForm = document.getElementById('rsvp-form');
-    const rsvpSuccess = document.getElementById('rsvp-success');
-
-    if (rsvpForm) {
-      rsvpForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        rsvpSuccess.classList.remove('hidden');
-        rsvpForm.reset();
-      });
-    }
+<script src="{{ asset('js/wedding-wishes.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    WeddingWishes.init('{{ $weddingCard->id }}', {
+      formSelector: '#rsvp-form',
+      listSelector: '#rsvp-wishes-list',
+      statusSelector: '#rsvp-success'
+    });
   });
 </script>
 

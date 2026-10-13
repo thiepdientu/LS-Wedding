@@ -632,62 +632,14 @@ $(document).ready(function(){
       </div>
     </section>
     <!-- END TIN NHẮN -->
+<script src="{{ asset('js/wedding-wishes.js') }}"></script>
 <script>
-fetch('/wp-json/wp/v2/comments?post=1013&per_page=100',
-    {
-     method: 'GET',
-    }
-    )
-    
-  .then(response => response.js') }}on())
-  .then(data => {
-    mess_item = ''
-    for(let i in data){
-        if(!i) {
-          $('.list_message').attr('class','hidden')
-        }
-        c_author = data[i].author_name
-        c_content = data[i].content.rendered
-       
-        mess_item += '<div class="blur-bg uk-padding-small uk-border-rounded uk-light"> <h3 class="user_message">'+c_author+'</h3> <p class="message_body">'+c_content+'</p> </div>'
-    }
-    $('.list_message').html(mess_item)
-  })
-
-  //FORM
- $('#messageForm').submit(function (e) { 
-  e.preventDefault();
-  const postId = $(this).find('#postId').val()
-  const name = $(this).find('#m_name').val()
-  const mess = $(this).find('#m_text').val()
-  const data = JSON.stringify({
-    post: postId,
-    author_name: name,
-    content: mess,
-  });
-  ACTION_URL = '/wp-json/wp/v2/comments'
-  fetch(ACTION_URL, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: data,
-  })
-    .then((response) => {
-      if (response.ok === true) {
-        mess_new = '<div class=" uk-light blur-bg uk-padding-small uk-border-rounded" data-aos="fade-up" data-aos-duration="2000"> <i class="bx bxs-quote-alt-left"></i> <h3 class="user_message">'+name+'</h3> <p class="message_body">'+mess+'</p> </div>'
-        $('.list_message').prepend(mess_new)
-        $('#messageForm')[0].reset()
-      }
-      return response.js') }}on();
-    })
-    .then((object) => {
-      // Comment submission failed.
-      // Output `object.message` to see the error message.
-    })
-    .catch(error => console.error('Error:', error));
- });
- 
+    document.addEventListener('DOMContentLoaded', function () {
+        WeddingWishes.init('{{ $weddingCard->id }}', {
+            formSelector: '#messageForm',
+            listSelector: '.list_message'
+        });
+    });
 </script>
 <!-- END LỜI CHÚC -->
 <!-- GỬI QUÀ -->

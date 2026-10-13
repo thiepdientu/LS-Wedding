@@ -46,14 +46,8 @@ class WeddingCardController extends Controller
         }
 
         // 4. Lọc theo khoảng ngày tổ chức lễ thành hôn (wedding_date)
-        // Mặc định từ ngày đầu tiên của năm nay đến ngày hiện tại
-        $defaultDateRange = Carbon::now()->startOfYear()->format('d/m/Y') . ' - ' . Carbon::now()->format('d/m/Y');
-
-        if ($request->has('date_range')) {
-            $dateRange = trim((string) $request->input('date_range'));
-        } else {
-            $dateRange = $defaultDateRange;
-        }
+        // Mặc định không lọc theo thời gian (hiển thị tất cả)
+        $dateRange = trim((string) $request->input('date_range', ''));
 
         if (!empty($dateRange) && ($parsedDates = $this->parseDateRange($dateRange))) {
             $query->whereBetween('wedding_date', [

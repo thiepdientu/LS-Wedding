@@ -659,114 +659,48 @@ background-color: var(--body-bg) !important;
   </section> --}}
   <!-- END WEDDING TIMELINE -->
   
-    <!-- MESSEGER -->
-  {{-- <section id="messeger" class="messeger uk-position-relative uk-section ">
-    
+  <!-- MESSEGER -->
+  <section id="messeger" class="messeger uk-position-relative uk-section ">
     <div class="uk-position-cover uk-cover-container">
       <img src="{{ asset('template18/images/z5864245094811_bf2915fb40546879d4c8b11deb9a4bb1-1.jpg') }}" alt="" uk-cover="">
     </div>
-    <div class="uk-position-cover uk-overlay-primary">
-      
-    </div>
+    <div class="uk-position-cover uk-overlay-primary"></div>
     
     <div class="uk-container uk-container-xlarge uk-position-relative">
-    <div class=" list_message">
-    
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Chị Hạnh</h4>
-              <div class="mb-2 uk-text-italic ">
-              Chúc cho cô dâu, chú rể trăm năm hạnh phúc, thủy chung trọn vẹn, đi về có nhau, dù sống đến tuổi răng long đầu bạc nhưng xem nhau như những ngày mới gặp nhé. Happy Wedding!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Cốt Hải</h4>
-              <div class="mb-2 uk-text-italic ">
-              Chúc mừng thằng bạn, cuối cùng mày đã yên bề gia thất rồi. Tao cảm thấy rất mừng cho mày đấy. Hãy sống thật hạnh phúc mày nhé! Chúc 2 vợ chồng sẽ sớm chào đón những thiên thần nhỏ đáng yêu!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Thanh Thủy</h4>
-              <div class="mb-2 uk-text-italic ">
-              Chúc mừng tân lang - tân nương điển trai xinh đẹp của tớ. Chúc 2 cậu sẽ có một khởi đầu mới thuận lợi, cùng nhau xây đắp một mái ấm hạnh phúc mà hai cậu vẫn ao ước nhé. Happy Wedding!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Thủy Tiên</h4>
-              <div class="mb-2 uk-text-italic ">
-               Vậy là sau bao khó khăn, thử thách, cuối cùng hai bạn cũng được cùng nhau xây dựng tổ ấm rồi. Mình mong hai bạn sẽ luôn yêu thương nhau, cùng nhau vun đắp và xây dựng một mái ấm thật tuyệt vời. Chúc hai bạn sớm đón những nàng công chúa và chàng hoàng tử xinh xắn nữa nhé!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Chị 2</h4>
-              <div class="mb-2 uk-text-italic ">
-              Em gái của chị đã lớn rồi, cuối cùng cũng đến lúc có một mái nhà, một gia đình riêng của mình. Chúc em một đời an yên bên cạnh người mà em yêu thương nhé. Cả nhà luôn yêu thương và bên cạnh em!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">Quang Thắng</h4>
-              <div class="mb-2 uk-text-italic ">
-              Happy wedding! Chúc hai bạn có cuộc sống mới ngập tràn tiếng cười và niềm vui, sớm có thiên thần nhỏ bồng bé!
-              </div>
-            </div>
-          </div>
-        
-          <div class="messenger-item mt-3 uk-text-center p-4 uk-width-1-2@m mx-auto uk-position-relative" data-aos="fade-up">
-            <div class="uk-position-relative text-white">
-              <h4 class="title-font text-primary-color mb-0">quy</h4>
-              <div class="mb-2 uk-text-italic ">
-              chúc mừng
-              </div>
-            </div>
-          </div>
-            </div>
+      <div class="list_message text-white">
+      </div>
 
       <!-- form messger -->
-            <div class=" uk-padding uk-margin-large-top  uk-text-center uk-width-1-2@m uk-width-1-3@l uk-margin-auto bg-white uk-position-relative uk-border-rounded">
-        
-        
-        
+      <div class="uk-padding uk-margin-large-top uk-text-center uk-width-1-2@m uk-width-1-3@l uk-margin-auto bg-white uk-position-relative uk-border-rounded">
         <div class="uk-position-relative ">
           <h3 class="form-title title-font text-black">Gửi lời chúc đến cặp đôi</h3>
           <form action="" id="messageForm" method="POST" class="bg-none">
-            <input type="hidden" id="postId" value="2424">
-              <div class=" uk-margin-top" style="color:white">
-                <label for="" class="mb-2">
-                                  </label>
-                <input id="m_name" type="text" class="uk-input bg-none " value="" placeholder="Tên của bạn" required="">
+              <div class="uk-margin-top">
+                <input id="m_name" type="text" class="uk-input bg-none text-black" value="" placeholder="Tên của bạn" required="">
               </div>
-              <div class=" uk-margin-top">
-                <label for="" class="mb-2">
-                                  </label>
-                <textarea id="m_text" class="uk-textarea bg-none text-black" name="" cols="30" rows="5" required=""></textarea>
+              <div class="uk-margin-top">
+                <textarea id="m_text" class="uk-textarea bg-none text-black" placeholder="Lời chúc của bạn..." cols="30" rows="5" required=""></textarea>
               </div>
               <button type="submit" class="btn-theme-primary uk-button send_message uk-margin-top">
                 <i class="ti ti-send me-2"></i>
-                <span>Gửi</span>
+                <span>Gửi lời chúc</span>
               </button>
           </form>
         </div>
-        
       </div>
       <!-- end form messeger -->
     </div>
-  </section> --}}
+  </section>
   <!-- END MESSEGER -->
+  <script src="{{ asset('js/wedding-wishes.js') }}"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          WeddingWishes.init('{{ $weddingCard->id }}', {
+              formSelector: '#messageForm',
+              listSelector: '.list_message'
+          });
+      });
+  </script>
   
   <!-- GIFT -->
   <div class="uk-position-fixed uk-position-bottom-right uk-position-small" style="bottom: 4rem">

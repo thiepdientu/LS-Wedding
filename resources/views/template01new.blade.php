@@ -867,94 +867,18 @@
                         lời chúc</button>
                 </form>
                 <p style="margin-top:10px;" id="status"></p>
-                <a href="https://docs.google.com/spreadsheets/d/1D3RB1ile7AnYpjQTdBWVFN0jeVF0FrsS9iuiV502lVM/edit?usp=sharing" class="btn btn-second send_message uk-margin-top" style="color:white">Xem lời chúc</a>
             </div>
-
-            <script>
-                document.getElementById("customForm").addEventListener("submit", function(event) {
-                    event.preventDefault();
-                    let name = document.getElementById("name").value;
-                    let message = document.getElementById("messages").value;
-                    let accept = document.getElementById("accept").value;         
-                    // Thay thế bằng URL Google Form của bạn
-                    let googleFormURL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSevfuj5KTGyMpV6X3zli1ZKqIYtA46t6-EHbX6CoWpnW3jzzg/formResponse";
-                    // Các entry ID (tìm trong Google Form)
-                    let formData = new FormData();
-                    formData.append("entry.1121695678", name); 
-                    formData.append("entry.640970141", message); 
-                    formData.append("entry.1377771432", accept);
-        
-                    fetch(googleFormURL, {
-                        method: "POST",
-                        body: formData,
-                        mode: "no-cors"
-                    }).then(() => {
-                        document.getElementById("status").innerText = "Gửi thành công!";
-                        document.getElementById("customForm").reset();
-                    }).catch(error => {
-                        document.getElementById("status").innerText = "Có lỗi xảy ra!";
-                    });
-                });
-            </script>
         </div>
     </section>
     <!-- END TIN NHẮN -->
+    <script src="{{ asset('js/wedding-wishes.js') }}"></script>
     <script>
-        fetch('/wp-json/wp/v2/comments?post=999&per_page=100', {
-                method: 'GET',
-            })
-
-            .then(response => response.json())
-            .then(data => {
-                mess_item = ''
-                for (let i in data) {
-                    if (!i) {
-                        $('.list_message').attr('class', 'hidden')
-                    }
-                    c_author = data[i].author_name
-                    c_content = data[i].content.rendered
-
-                    mess_item +=
-                        '<div class="blur-bg uk-padding-small uk-border-rounded uk-light"> <h3 class="user_message">' +
-                        c_author + '</h3> <p class="message_body">' + c_content + '</p> </div>'
-                }
-                $('.list_message').html(mess_item)
-            })
-
-        //FORM
-        $('#messageForm').submit(function(e) {
-            e.preventDefault();
-            const postId = $(this).find('#postId').val()
-            const name = $(this).find('#m_name').val()
-            const mess = $(this).find('#m_text').val()
-            const data = JSON.stringify({
-                post: postId,
-                author_name: name,
-                content: mess,
+        document.addEventListener('DOMContentLoaded', function () {
+            WeddingWishes.init('{{ $weddingCard->id }}', {
+                formSelector: '#customForm',
+                listSelector: '.list_message',
+                statusSelector: '#status'
             });
-            ACTION_URL = '/wp-json/wp/v2/comments'
-            fetch(ACTION_URL, {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: data,
-                })
-                .then((response) => {
-                    if (response.ok === true) {
-                        mess_new =
-                            '<div class=" uk-light blur-bg uk-padding-small uk-border-rounded" data-aos="fade-up" data-aos-duration="2000"> <i class="bx bxs-quote-alt-left"></i> <h3 class="user_message">' +
-                            name + '</h3> <p class="message_body">' + mess + '</p> </div>'
-                        $('.list_message').prepend(mess_new)
-                        $('#messageForm')[0].reset()
-                    }
-                    return response.json();
-                })
-                .then((object) => {
-                    // Comment submission failed.
-                    // Output `object.message` to see the error message.
-                })
-                .catch(error => console.error('Error:', error));
         });
     </script>
     <!-- END LỜI CHÚC -->
