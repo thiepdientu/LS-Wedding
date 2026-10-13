@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\WeddingCard;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class AdminWeddingCardTest extends TestCase
@@ -274,5 +276,27 @@ class AdminWeddingCardTest extends TestCase
         $this->assertCount(2, $savedAlbum);
         $this->assertEquals('https://img.test/original.jpg', $savedAlbum[0]);
         $this->assertStringContainsString('weddings/' . $card->id, $savedAlbum[1]);
+    }
+
+    public function test_public_wedding_invite_route_renders_card_by_slug_and_id(): void
+    {
+        $card = WeddingCard::first();
+        if (!$card) {
+            $this->markTestSkipped('No wedding cards found.');
+        }
+
+        // Test with slug (identifyWedding)
+        $slugResponse = $this->get('/weddingInvite/' . $card->identifyWedding);
+        $slugResponse->assertStatus(200);
+
+        // Test with numeric id fallback
+        $idResponse = $this->get('/weddingInvite/' . $card->id);
+        $idResponse->assertStatus(200);
+    }
+
+    public function test_public_wedding_invite_returns_404_for_invalid_card(): void
+    {
+        $response = $this->get('/weddingInvite/slug-khong-ton-tai-999999');
+        $response->assertStatus(404);
     }
 }

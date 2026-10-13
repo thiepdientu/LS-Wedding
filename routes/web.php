@@ -87,8 +87,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/update/{id}', [WeddingCardController::class, 'update'])->name('wedding.update');
     Route::post('/wedding-cards/store', [WeddingCardController::class, 'store'])->name('wedding.store');
 });
-// Route điều hướng user đến template thiệp
-Route::get('/template/{key}', [WeddingCardController::class, 'showTemplate']);
+// ==========================================
+// Tuyến đường xem Thiệp Cưới Công Khai (Public Wedding Invite)
+// ==========================================
+Route::get('/weddingInvite/{key}', [WeddingCardController::class, 'showWeddingCardByName'])->name('wedding.invite');
+Route::get('/wedding-cards/{id}', [WeddingCardController::class, 'showWeddingCardByName']);
+
+// Route điều hướng user đến template thiệp mẫu
+Route::get('/template/{key}', [WeddingCardController::class, 'showTemplate'])->name('wedding.template');
 
 // ==========================================
 // API Lời chúc & Sổ lưu bút Công khai (Public Guest Wishes)

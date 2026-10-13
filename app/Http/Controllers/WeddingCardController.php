@@ -34,11 +34,15 @@ class WeddingCardController extends Controller
 
     public function showWeddingCardByName($key)
     {
-        // Tìm thiệp cưới theo name
+        // Tìm thiệp cưới theo slug (identifyWedding) hoặc fallback theo ID
         $weddingCard = WeddingCard::where('identifyWedding', $key)->first();
 
+        if (!$weddingCard && is_numeric($key)) {
+            $weddingCard = WeddingCard::where('id', $key)->first();
+        }
+
         if (!$weddingCard) {
-            abort(404, 'Thiep cuoi khong ton tai');
+            abort(404, 'Thiệp cưới không tồn tại hoặc đã bị xóa.');
         }
 
         switch ($weddingCard->template) {
