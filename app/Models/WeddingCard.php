@@ -54,6 +54,29 @@ class WeddingCard extends Model
         'bride_qr',             // Mã QR cô dâu
         'groom_map',            // Bản đồ nhà chú rể
         'bride_map',            // Bản đồ nhà cô dâu
+        // Các trường mới cho template hiện đại (2026+)
+        'groom_father_name',    // Bố chú rể
+        'groom_mother_name',    // Mẹ chú rể
+        'groom_rank',           // Thứ bậc chú rể (Trưởng nam, Thứ nam, Út nam...)
+        'bride_father_name',    // Bố cô dâu
+        'bride_mother_name',    // Mẹ cô dâu
+        'bride_rank',           // Thứ bậc cô dâu (Trưởng nữ, Thứ nữ, Út nữ...)
+        'dresscode_note',       // Lời dặn trang phục
+        'dresscode_colors',     // Bảng màu trang phục (JSON)
+        'wedding_timeline',     // Lịch trình ngày cưới (JSON)
+        'wedding_date_al',      // Ngày âm lịch lễ thành hôn chính
+        'groom_bank_name',      // Ngân hàng chú rể
+        'groom_bank_account',   // Số tài khoản chú rể
+        'groom_bank_owner',     // Chủ tài khoản chú rể
+        'bride_bank_name',      // Ngân hàng cô dâu
+        'bride_bank_account',   // Số tài khoản cô dâu
+        'bride_bank_owner',     // Chủ tài khoản cô dâu
+        'music_url',            // Nhạc nền tùy chỉnh
+    ];
+
+    protected $attributes = [
+        'status' => 'active',
+        'album' => '[]',
     ];
 
     protected $casts = [
@@ -62,6 +85,8 @@ class WeddingCard extends Model
         'bride_birthday' => 'date',
         'groom_eating_date' => 'date',
         'bride_eating_date' => 'date',
+        'dresscode_colors' => 'array',
+        'wedding_timeline' => 'array',
         'expires_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -133,6 +158,20 @@ class WeddingCard extends Model
         '19' => 'Quý phái 19 (Noble)',
         '20' => 'Đương đại 20 (Contemporary)',
         '21' => 'Đơn giản 21 (Simple)',
+        '22' => 'Minimal Đỏ Đậm',
+        '23' => 'Minimal Nâu Đậm',
+        '24' => 'Hoa Mộc Xanh Classic',
+        '25' => 'Hoa Mộc Xanh New',
+        '26' => 'Minimalism Xanh Olive',
+        '27' => 'Song Hỷ Đỏ Truyền Thống',
+        '28' => 'Song Hỷ Xanh Ngọc',
+        '29' => 'Song Long Xanh Đậm',
+        '30' => 'Tơ Duyên Xanh Sage',
+        '31' => 'Tơ Duyên Hồng Phấn',
+        '32' => 'Cẩm Thạch Vàng Classic',
+        '33' => 'Cẩm Thạch Vàng New',
+        '34' => 'Anh Đào Hồng Sakura',
+        '35' => 'Anh Đào Hồng New',
     ];
 
     /**
@@ -151,6 +190,66 @@ class WeddingCard extends Model
     public function getTemplateNameAttribute(): string
     {
         return self::TEMPLATES[$this->template] ?? ('Mẫu ' . ($this->template ?: '01'));
+    }
+
+    /**
+     * Danh sách lịch trình ngày cưới (kèm fallback mặc định nếu chưa nhập)
+     */
+    public function getTimelineListAttribute(): array
+    {
+        if (!empty($this->wedding_timeline) && is_array($this->wedding_timeline)) {
+            return $this->wedding_timeline;
+        }
+
+        // Lịch trình ngày cưới mẫu mặc định
+        return [
+            ['time' => '07:30', 'title' => 'Lễ Rước Dâu', 'desc' => 'Nghi thức khởi hành và rước dâu về tư gia'],
+            ['time' => '09:00', 'title' => 'Lễ Gia Tiên', 'desc' => 'Dâng hương và ra mắt hai bên gia đình'],
+            ['time' => '11:00', 'title' => 'Đón Khách', 'desc' => 'Đón tiếp quan khách & chụp hình lưu niệm'],
+            ['time' => '11:30', 'title' => 'Hôn Lễ Chính Thức', 'desc' => 'Nghi thức cắt bánh, rót rượu mừng'],
+            ['time' => '12:00', 'title' => 'Khai Tiệc', 'desc' => 'Mời quý khách cùng nâng ly chung vui'],
+        ];
+    }
+
+    /**
+     * Danh sách mã màu trang phục (kèm fallback mặc định)
+     */
+    public function getDresscodeColorsListAttribute(): array
+    {
+        if (!empty($this->dresscode_colors) && is_array($this->dresscode_colors)) {
+            return $this->dresscode_colors;
+        }
+
+        return [
+            ['name' => 'Trắng Kem', 'hex' => '#F5F2EB'],
+            ['name' => 'Hồng Pastel', 'hex' => '#F4C2D1'],
+            ['name' => 'Be Champagne', 'hex' => '#E8D8C8'],
+        ];
+    }
+
+    /**
+     * Dữ liệu ma trận lịch tháng cưới tự động theo wedding_date
+     */
+    public function getCalendarMatrixAttribute(): array
+    {
+        $date = $this->wedding_date ? \Carbon\Carbon::parse($this->wedding_date) : \Carbon\Carbon::now();
+        $startOfMonth = $date->copy()->startOfMonth();
+
+        $month = $date->month;
+        $year = $date->year;
+        $activeDay = $date->day;
+        $daysInMonth = $date->daysInMonth;
+        $startDayOfWeek = $startOfMonth->dayOfWeek; // 0 = CN, 1 = T2, ..., 6 = T7
+
+        return [
+            'month' => $month,
+            'year' => $year,
+            'active_day' => $activeDay,
+            'total_days' => $daysInMonth,
+            'start_day_of_week' => $startDayOfWeek,
+            'month_title' => "Tháng " . str_pad($month, 2, '0', STR_PAD_LEFT) . " / " . $year,
+            'days' => range(1, $daysInMonth),
+        ];
     }
 
     /**

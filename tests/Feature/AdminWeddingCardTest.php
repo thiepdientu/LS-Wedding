@@ -299,4 +299,81 @@ class AdminWeddingCardTest extends TestCase
         $response = $this->get('/weddingInvite/slug-khong-ton-tai-999999');
         $response->assertStatus(404);
     }
+
+    public function test_wedding_card_store_creates_card_successfully_without_album_input(): void
+    {
+        $uniqueSlug = 'test-slug-' . uniqid();
+        $payload = [
+            'identifyWedding' => $uniqueSlug,
+            'template' => '22',
+            'wedding_time' => '11:00',
+            'banner_preview' => 'https://example.com/banner_preview.jpg',
+            'bride_name' => 'Ngọc Linh',
+            'groom_name' => 'Sơn Tít',
+            'banner_top' => 'https://example.com/banner_top.jpg',
+            'wedding_date' => '2026-11-20',
+            'wedding_message' => 'Lễ Thành Hôn',
+            'address_wedding' => 'Xóm 8 Lưu Xá - Hòa Phú - Hà Nội',
+            'name_place_wedding' => 'Trường mầm non thôn Lưu Xá',
+            'address_wedding_map' => 'https://maps.app.goo.gl/tugKmQ3zF13oSvD78',
+            'bride_birthday' => '2026-11-26',
+            'groom_birthday' => '2026-11-20',
+            'bride_avatar' => 'https://example.com/bride.jpg',
+            'groom_avatar' => 'https://example.com/groom.jpg',
+            'des_bride' => 'Cô dâu thích cười',
+            'des_groom' => 'Chú rể hướng ngoại',
+            'banner_love_story' => 'https://example.com/story.jpg',
+            'love_story' => '20/9/2023: Hẹn Hò',
+            'banner_coundown' => 'https://example.com/countdown.jpg',
+            'date_coundown' => '2026-11-20 14:00:00',
+            'address_groom' => 'Xóm 8 Lưu Xá - Hòa Phú - Hà Nội',
+            'address_bride' => 'Xóm 8 Lưu Xá - Hòa Phú - Hà Nội',
+            'groom_eating_title' => 'Tiệc Nhà Trai',
+            'bride_eating_title' => 'Tiệc Nhà Gái',
+            'groom_eating_date' => '2026-11-20',
+            'bride_eating_date' => '2026-11-20',
+            'time_groom' => '11:00',
+            'time_groom_al' => 'Tức ngày 2 tháng 11 năm Ất Tỵ',
+            'time_bride' => '11:00',
+            'time_bride_al' => 'Tức ngày 10 tháng 10 năm Ất Tỵ',
+            'bride_phone' => '0984352391',
+            'groom_phone' => '0984352391',
+            'message_invite' => 'Trân trọng kính mời',
+            'message_gift' => 'Gửi quà chúc phúc',
+            'banner_thanks' => 'https://example.com/thanks.jpg',
+            'message_thanks' => 'Sự hiện diện của quý khách là niềm vui',
+            'groom_qr' => 'https://example.com/groom_qr.jpg',
+            'bride_qr' => 'https://example.com/bride_qr.jpg',
+            'groom_map' => 'https://maps.app.goo.gl/tugKmQ3zF13oSvD78',
+            'bride_map' => 'https://maps.app.goo.gl/D8u9HRVRwYBo6oHk7',
+            'groom_father_name' => 'Trần Văn Vinh',
+            'groom_mother_name' => 'Hồ Thị Xuyến',
+            'groom_rank' => 'Trưởng Nam',
+            'bride_father_name' => 'Nguyễn Bá Thu',
+            'bride_mother_name' => 'Nguyễn Thị Núp',
+            'bride_rank' => 'Út Nữ',
+            'dresscode_note' => 'Xin quý khách vui lòng chọn trang phục theo tông màu gợi ý.',
+            'wedding_date_al' => 'Ngày 10 tháng 11 năm Bính Ngọ',
+            'groom_bank_name' => 'Vietcombank',
+            'groom_bank_account' => '999999999',
+            'groom_bank_owner' => 'TRAN VAN SON',
+            'bride_bank_name' => 'BIDV',
+            'bride_bank_account' => '8888888888',
+            'bride_bank_owner' => 'NGUYEN THI NGOC LINH',
+            'music_url' => 'https://example.com/music.mp3',
+        ];
+
+        $response = $this->post(route('wedding.store'), $payload);
+        $response->assertRedirect(route('wedding.create'));
+        $response->assertSessionHas('success');
+
+        $created = WeddingCard::where('identifyWedding', $uniqueSlug)->first();
+        $this->assertNotNull($created);
+        $this->assertEquals('Ngọc Linh', $created->bride_name);
+        $this->assertEquals('Sơn Tít', $created->groom_name);
+        $this->assertNotNull($created->album);
+
+        // Clean up test card
+        $created->delete();
+    }
 }

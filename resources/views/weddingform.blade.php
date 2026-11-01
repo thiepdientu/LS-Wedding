@@ -88,13 +88,22 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Ngày tổ chức lễ thành hôn <span class="text-rose-500">*</span></label>
                         <input type="date" 
                                name="wedding_date" 
                                value="{{ old('wedding_date', isset($weddingCard) ? ($weddingCard->wedding_date ? $weddingCard->wedding_date->format('Y-m-d') : '') : '') }}" 
                                required 
+                               class="w-full px-3.5 py-2 text-sm text-slate-800 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Ngày Âm lịch lễ cưới chính</label>
+                        <input type="text" 
+                               name="wedding_date_al" 
+                               value="{{ old('wedding_date_al', $weddingCard->wedding_date_al ?? '') }}" 
+                               placeholder="Ví dụ: Ngày 15 tháng 10 năm Bính Ngọ" 
                                class="w-full px-3.5 py-2 text-sm text-slate-800 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 transition-all">
                     </div>
 
@@ -218,6 +227,25 @@
                             </div>
                         </div>
 
+                        <!-- Phụ mẫu Nhà Trai & Thứ bậc -->
+                        <div class="p-3 bg-white/80 rounded-xl border border-slate-200 space-y-2">
+                            <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Phụ mẫu Nhà Trai (Mẫu mới)</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Bố Chú Rể (Ông)</label>
+                                    <input type="text" name="groom_father_name" value="{{ old('groom_father_name', $weddingCard->groom_father_name ?? '') }}" placeholder="Họ tên Bố..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Mẹ Chú Rể (Bà)</label>
+                                    <input type="text" name="groom_mother_name" value="{{ old('groom_mother_name', $weddingCard->groom_mother_name ?? '') }}" placeholder="Họ tên Mẹ..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Thứ bậc Chú Rể</label>
+                                <input type="text" name="groom_rank" value="{{ old('groom_rank', $weddingCard->groom_rank ?? 'Trưởng Nam') }}" placeholder="Ví dụ: Trưởng Nam, Thứ Nam, Út Nam..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                            </div>
+                        </div>
+
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Giới thiệu ngắn Chú Rể</label>
                             <input type="text" 
@@ -250,6 +278,25 @@
                                            placeholder="URL ảnh QR..." 
                                            class="w-full px-2 py-0.5 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Chi tiết tài khoản Chú Rể (nút Copy STK) -->
+                        <div class="p-3 bg-white/80 rounded-xl border border-slate-200 space-y-2">
+                            <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Chi tiết tài khoản (Copy STK)</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Ngân hàng</label>
+                                    <input type="text" name="groom_bank_name" value="{{ old('groom_bank_name', $weddingCard->groom_bank_name ?? 'Vietcombank') }}" placeholder="VD: Vietcombank, MB Bank..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Số tài khoản</label>
+                                    <input type="text" name="groom_bank_account" value="{{ old('groom_bank_account', $weddingCard->groom_bank_account ?? '') }}" placeholder="0123456789..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Tên chủ tài khoản</label>
+                                <input type="text" name="groom_bank_owner" value="{{ old('groom_bank_owner', $weddingCard->groom_bank_owner ?? '') }}" placeholder="NGUYEN VAN A (Viết hoa)" class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
                             </div>
                         </div>
 
@@ -321,6 +368,25 @@
                             </div>
                         </div>
 
+                        <!-- Phụ mẫu Nhà Gái & Thứ bậc -->
+                        <div class="p-3 bg-white/80 rounded-xl border border-slate-200 space-y-2">
+                            <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Phụ mẫu Nhà Gái (Mẫu mới)</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Bố Cô Dâu (Ông)</label>
+                                    <input type="text" name="bride_father_name" value="{{ old('bride_father_name', $weddingCard->bride_father_name ?? '') }}" placeholder="Họ tên Bố..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Mẹ Cô Dâu (Bà)</label>
+                                    <input type="text" name="bride_mother_name" value="{{ old('bride_mother_name', $weddingCard->bride_mother_name ?? '') }}" placeholder="Họ tên Mẹ..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Thứ bậc Cô Dâu</label>
+                                <input type="text" name="bride_rank" value="{{ old('bride_rank', $weddingCard->bride_rank ?? 'Út Nữ') }}" placeholder="Ví dụ: Trưởng Nữ, Thứ Nữ, Út Nữ..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                            </div>
+                        </div>
+
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Giới thiệu ngắn Cô Dâu</label>
                             <input type="text" 
@@ -353,6 +419,25 @@
                                            placeholder="URL ảnh QR..." 
                                            class="w-full px-2 py-0.5 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Chi tiết tài khoản Cô Dâu (nút Copy STK) -->
+                        <div class="p-3 bg-white/80 rounded-xl border border-slate-200 space-y-2">
+                            <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Chi tiết tài khoản (Copy STK)</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Ngân hàng</label>
+                                    <input type="text" name="bride_bank_name" value="{{ old('bride_bank_name', $weddingCard->bride_bank_name ?? 'BIDV') }}" placeholder="VD: BIDV, Techcombank..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Số tài khoản</label>
+                                    <input type="text" name="bride_bank_account" value="{{ old('bride_bank_account', $weddingCard->bride_bank_account ?? '') }}" placeholder="9876543210..." class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-medium text-slate-600 mb-0.5">Tên chủ tài khoản</label>
+                                <input type="text" name="bride_bank_owner" value="{{ old('bride_bank_owner', $weddingCard->bride_bank_owner ?? '') }}" placeholder="TRAN THI B (Viết hoa)" class="w-full px-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg">
                             </div>
                         </div>
 
@@ -445,11 +530,119 @@
                 </div>
             </div>
 
-            <!-- Card 4: Câu chuyện tình yêu, Lời cảm ơn & Mừng cưới -->
+            <!-- Card 4: Lịch trình sự kiện, Trang phục & Nhạc nền (Dành cho Mẫu Thiệp Mới) -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs space-y-5">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center font-bold text-sm">
+                            4
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="font-bold text-slate-900 text-base">Lịch Trình Chi Tiết, Dress Code & Nhạc Nền</h2>
+                                <span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-700 text-[10px] font-semibold uppercase tracking-wider">Mẫu Mới 2026+</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Thiết lập các mốc giờ ngày cưới, quy định màu sắc trang phục và nhạc nền.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. Lịch trình ngày cưới (Timeline) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-slate-700">
+                        Lịch trình các mốc sự kiện ngày cưới
+                        <span class="text-slate-400 font-normal ml-1">(Mỗi dòng một mốc. Định dạng: Giờ: Sự kiện. Ví dụ: 07:30: Lễ Rước Dâu)</span>
+                    </label>
+                    @php
+                        $timelineVal = '';
+                        if (isset($weddingCard)) {
+                            if (is_array($weddingCard->wedding_timeline)) {
+                                $lines = [];
+                                foreach ($weddingCard->wedding_timeline as $item) {
+                                    $time = $item['time'] ?? '';
+                                    $title = $item['title'] ?? '';
+                                    if ($time || $title) {
+                                        $lines[] = trim($time . ': ' . $title);
+                                    }
+                                }
+                                $timelineVal = implode("\n", $lines);
+                            } elseif (is_string($weddingCard->wedding_timeline)) {
+                                $timelineVal = $weddingCard->wedding_timeline;
+                            }
+                        }
+                        if (empty($timelineVal)) {
+                            $timelineVal = "07:30: Lễ Rước Dâu\n09:00: Lễ Gia Tiên\n11:00: Đón Khách\n11:30: Hôn Lễ Chính Thức\n12:00: Khai Tiệc";
+                        }
+                    @endphp
+                    <textarea name="wedding_timeline_text" 
+                              rows="4" 
+                              placeholder="07:30: Lễ Rước Dâu&#10;09:00: Lễ Gia Tiên&#10;11:00: Đón Khách&#10;11:30: Hôn Lễ Chính Thức&#10;12:00: Khai Tiệc"
+                              class="w-full px-3.5 py-2 text-xs font-mono text-slate-800 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-100 focus:border-teal-500 transition-all">{{ old('wedding_timeline_text', $timelineVal) }}</textarea>
+                </div>
+
+                <!-- 2. Quy định trang phục (Dress Code) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Lời dặn / Gợi ý trang phục (Dress Code)</label>
+                        <textarea name="dresscode_note" 
+                                  rows="2" 
+                                  placeholder="Trang phục lịch sự, thanh lịch. Khuyến khích quý khách diện trang phục theo bảng màu gợi ý..."
+                                  class="w-full px-3.5 py-2 text-xs text-slate-800 bg-white border border-slate-200 rounded-xl">{{ old('dresscode_note', $weddingCard->dresscode_note ?? 'Trang phục lịch sự, thanh nhã. Xin quý khách vui lòng chọn trang phục theo tông màu gợi ý.') }}</textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">
+                            Bảng màu trang phục gợi ý
+                            <span class="text-slate-400 font-normal">(Tên màu: Mã hex. Ngăn cách bởi dấu phẩy)</span>
+                        </label>
+                        @php
+                            $colorsVal = '';
+                            if (isset($weddingCard)) {
+                                if (is_array($weddingCard->dresscode_colors)) {
+                                    $clines = [];
+                                    foreach ($weddingCard->dresscode_colors as $citem) {
+                                        $cname = $citem['name'] ?? '';
+                                        $chex = $citem['hex'] ?? '';
+                                        if ($cname || $chex) {
+                                            $clines[] = trim($cname . ': ' . $chex);
+                                        }
+                                    }
+                                    $colorsVal = implode(", ", $clines);
+                                } elseif (is_string($weddingCard->dresscode_colors)) {
+                                    $colorsVal = $weddingCard->dresscode_colors;
+                                }
+                            }
+                            if (empty($colorsVal)) {
+                                $colorsVal = "Trắng Kem: #F5F2EB, Hồng Pastel: #F4C2D1, Be Champagne: #E8D8C8";
+                            }
+                        @endphp
+                        <input type="text" 
+                               name="dresscode_colors_text" 
+                               value="{{ old('dresscode_colors_text', $colorsVal) }}" 
+                               placeholder="Trắng Kem: #F5F2EB, Hồng Pastel: #F4C2D1, Be Champagne: #E8D8C8" 
+                               class="w-full px-3.5 py-2 text-xs font-mono text-slate-800 bg-white border border-slate-200 rounded-xl">
+                    </div>
+                </div>
+
+                <!-- 3. Nhạc nền cưới tùy chỉnh -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">
+                        Link bài hát MP3 nhạc nền thiệp
+                        <span class="text-slate-400 font-normal ml-1">(Tùy chọn. Nếu để trống sẽ dùng giai điệu lãng mạn mặc định của template)</span>
+                    </label>
+                    <input type="text" 
+                           name="music_url" 
+                           value="{{ old('music_url', $weddingCard->music_url ?? '') }}" 
+                           placeholder="https://example.com/audio/beautiful-in-white.mp3" 
+                           class="w-full px-3.5 py-2 text-sm text-slate-800 bg-white border border-slate-200 rounded-xl">
+                </div>
+            </div>
+
+            <!-- Card 5: Câu chuyện tình yêu, Lời cảm ơn & Mừng cưới -->
             <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs space-y-4">
                 <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
                     <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
-                        4
+                        5
                     </div>
                     <div>
                         <h2 class="font-bold text-slate-900 text-base">Câu Chuyện Tình Yêu & Lời Tri Ân</h2>
@@ -486,11 +679,11 @@
                 </div>
             </div>
 
-            <!-- Card 5: Banner & Bìa Thiệp Cưới -->
+            <!-- Card 6: Banner & Bìa Thiệp Cưới -->
             <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs space-y-6">
                 <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
                     <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
-                        5
+                        6
                     </div>
                     <div>
                         <h2 class="font-bold text-slate-900 text-base">Banner & Bìa Thiệp Cưới</h2>
@@ -625,12 +818,12 @@
                 </div>
             </div>
 
-            <!-- Card 6: Album Ảnh Cưới (Kéo - Thả, Thêm, Sửa, Xóa) -->
+            <!-- Card 7: Album Ảnh Cưới (Kéo - Thả, Thêm, Sửa, Xóa) -->
             <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs space-y-4" id="album-manager-card">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-100">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm">
-                            6
+                            7
                         </div>
                         <div>
                             <div class="flex items-center gap-2">

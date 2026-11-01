@@ -92,6 +92,9 @@ class WeddingCardController extends Controller
                 return view('template21', compact('weddingCard'));
 
             default:
+                if (view()->exists("template{$weddingCard->template}")) {
+                    return view("template{$weddingCard->template}", compact('weddingCard'));
+                }
                 return view('welcome');
         }
     }
@@ -99,59 +102,67 @@ class WeddingCardController extends Controller
     public function showTemplate($key)
     {
         // Tìm thiệp cưới theo name
-        $weddingCard  = WeddingCard::where('identifyWedding', 'test')->first();
+        $weddingCard = WeddingCard::where('identifyWedding', 'test')->first() ?? WeddingCard::first();
         if (!$weddingCard) {
             return response()->json([
                 'message' => 'Chua co data test. Them thiep voi id la test nhe <3'
             ]);
         }
-        switch ($key) {
+
+        // Tạo previewCard có template được gán tạm thời theo $key đang xem demo
+        $previewCard = clone $weddingCard;
+        $previewCard->template = (string) $key;
+
+        switch ((string) $key) {
             case "1":
-                return view('template01', compact('weddingCard'));
+                return view('template01', ['weddingCard' => $previewCard]);
             case "1n":
-                    return view('template01new', compact('weddingCard'));
+                return view('template01new', ['weddingCard' => $previewCard]);
             case "2":
-                return view('template02', compact('weddingCard'));
+                return view('template02', ['weddingCard' => $previewCard]);
             case "3":
-                return view('template04', compact('weddingCard'));
+                return view('template04', ['weddingCard' => $previewCard]);
             case "4":
-                return view('template05', compact('weddingCard'));
+                return view('template05', ['weddingCard' => $previewCard]);
             case "5":
-                return view('template06', compact('weddingCard'));
+                return view('template06', ['weddingCard' => $previewCard]);
             case "6":
-                return view('template07', compact('weddingCard'));
+                return view('template07', ['weddingCard' => $previewCard]);
             case "7":
-                return view('template18', compact('weddingCard'));
+                return view('template18', ['weddingCard' => $previewCard]);
             case "8":
-                return view('template08', compact('weddingCard'));
+                return view('template08', ['weddingCard' => $previewCard]);
             case "9":
-                return view('template09', compact('weddingCard'));
+                return view('template09', ['weddingCard' => $previewCard]);
             case "10":
-                return view('template10', compact('weddingCard'));
+                return view('template10', ['weddingCard' => $previewCard]);
             case "11":
-                return view('template11', compact('weddingCard'));
+                return view('template11', ['weddingCard' => $previewCard]);
             case "12":
-                 return view('template9n', compact('weddingCard'));
-             case "13":
-                 return view('template13', compact('weddingCard'));
+                return view('template9n', ['weddingCard' => $previewCard]);
+            case "13":
+                return view('template13', ['weddingCard' => $previewCard]);
             case "14":
-                return view('template14', compact('weddingCard'));
-           case "15":
-                return view('template15', compact('weddingCard'));
+                return view('template14', ['weddingCard' => $previewCard]);
+            case "15":
+                return view('template15', ['weddingCard' => $previewCard]);
             case "16":
-               return view('template16', compact('weddingCard'));
+                return view('template16', ['weddingCard' => $previewCard]);
             case "17":
-                return view('template17', compact('weddingCard'));
+                return view('template17', ['weddingCard' => $previewCard]);
             case "18":
-                return view('template18', compact('weddingCard'));
+                return view('template18', ['weddingCard' => $previewCard]);
             case "19":
-                return view('template19', compact('weddingCard'));
+                return view('template19', ['weddingCard' => $previewCard]);
             case "20":
-                return view('template20', compact('weddingCard'));
+                return view('template20', ['weddingCard' => $previewCard]);
             case "21":
-                return view('template21', compact('weddingCard'));
+                return view('template21', ['weddingCard' => $previewCard]);
 
             default:
+                if (view()->exists("template{$key}")) {
+                    return view("template{$key}", ['weddingCard' => $previewCard]);
+                }
                 return view('welcome');
         }
     }
@@ -221,8 +232,48 @@ class WeddingCardController extends Controller
             'bride_qr' => 'required|string|max:500',
             'groom_map' => 'required|string|max:500',
             'bride_map' => 'required|string|max:500',
+            // Các trường bổ sung cho template mới (đều nullable)
+            'groom_father_name' => 'nullable|string|max:100',
+            'groom_mother_name' => 'nullable|string|max:100',
+            'groom_rank' => 'nullable|string|max:50',
+            'bride_father_name' => 'nullable|string|max:100',
+            'bride_mother_name' => 'nullable|string|max:100',
+            'bride_rank' => 'nullable|string|max:50',
+            'dresscode_note' => 'nullable|string|max:2000',
+            'dresscode_colors' => 'nullable',
+            'wedding_timeline' => 'nullable',
+            'wedding_date_al' => 'nullable|string|max:100',
+            'groom_bank_name' => 'nullable|string|max:100',
+            'groom_bank_account' => 'nullable|string|max:50',
+            'groom_bank_owner' => 'nullable|string|max:100',
+            'bride_bank_name' => 'nullable|string|max:100',
+            'bride_bank_account' => 'nullable|string|max:50',
+            'bride_bank_owner' => 'nullable|string|max:100',
+            'music_url' => 'nullable|string|max:500',
+            'wedding_timeline_text' => 'nullable|string|max:5000',
+            'dresscode_colors_text' => 'nullable|string|max:1000',
         ]);
 
+        if ($request->filled('wedding_timeline_text')) {
+            $validated['wedding_timeline'] = $this->parseTimelineText($request->input('wedding_timeline_text'));
+        }
+        if ($request->filled('dresscode_colors_text')) {
+            $validated['dresscode_colors'] = $this->parseDresscodeText($request->input('dresscode_colors_text'));
+        }
+
+        foreach (['wedding_timeline', 'dresscode_colors'] as $jsonField) {
+            if (isset($validated[$jsonField]) && is_string($validated[$jsonField])) {
+                $decoded = json_decode($validated[$jsonField], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $validated[$jsonField] = $decoded;
+                }
+            }
+        }
+
+        // Đảm bảo trường album luôn có giá trị mặc định là mảng JSON rỗng nếu chưa có
+        if (empty($validated['album'])) {
+            $validated['album'] = '[]';
+        }
 
         // 2️⃣ Tạo thiệp cưới trước để lấy ID
         $weddingCard = WeddingCard::create($validated);
@@ -383,7 +434,43 @@ class WeddingCardController extends Controller
             'groom_qr' => 'nullable|string|max:2000',
             'bride_qr' => 'nullable|string|max:2000',
             'album' => 'nullable|string|max:50000',
+            // Các trường bổ sung cho template mới (đều nullable)
+            'groom_father_name' => 'nullable|string|max:100',
+            'groom_mother_name' => 'nullable|string|max:100',
+            'groom_rank' => 'nullable|string|max:50',
+            'bride_father_name' => 'nullable|string|max:100',
+            'bride_mother_name' => 'nullable|string|max:100',
+            'bride_rank' => 'nullable|string|max:50',
+            'dresscode_note' => 'nullable|string|max:2000',
+            'dresscode_colors' => 'nullable',
+            'wedding_timeline' => 'nullable',
+            'wedding_date_al' => 'nullable|string|max:100',
+            'groom_bank_name' => 'nullable|string|max:100',
+            'groom_bank_account' => 'nullable|string|max:50',
+            'groom_bank_owner' => 'nullable|string|max:100',
+            'bride_bank_name' => 'nullable|string|max:100',
+            'bride_bank_account' => 'nullable|string|max:50',
+            'bride_bank_owner' => 'nullable|string|max:100',
+            'music_url' => 'nullable|string|max:500',
+            'wedding_timeline_text' => 'nullable|string|max:5000',
+            'dresscode_colors_text' => 'nullable|string|max:1000',
         ]);
+
+        if ($request->filled('wedding_timeline_text')) {
+            $data['wedding_timeline'] = $this->parseTimelineText($request->input('wedding_timeline_text'));
+        }
+        if ($request->filled('dresscode_colors_text')) {
+            $data['dresscode_colors'] = $this->parseDresscodeText($request->input('dresscode_colors_text'));
+        }
+
+        foreach (['wedding_timeline', 'dresscode_colors'] as $jsonField) {
+            if (isset($data[$jsonField]) && is_string($data[$jsonField])) {
+                $decoded = json_decode($data[$jsonField], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $data[$jsonField] = $decoded;
+                }
+            }
+        }
 
         $weddingCard->update($data);
 
@@ -535,5 +622,57 @@ class WeddingCardController extends Controller
     public function destroy(WeddingCard $weddingCard)
     {
         //
+    }
+
+    /**
+     * Chuyển đổi chuỗi văn bản lịch trình thành mảng danh sách mốc thời gian
+     */
+    private function parseTimelineText(?string $text): array
+    {
+        if (empty($text)) return [];
+        $lines = preg_split('/[\r\n]+/', trim($text));
+        $items = [];
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (empty($line)) continue;
+            if (preg_match('/^(\d{1,2}[:h]\d{2})\s*[:\-–]\s*(.+)$/u', $line, $m)) {
+                $items[] = [
+                    'time' => trim($m[1]),
+                    'title' => trim($m[2]),
+                ];
+            } else {
+                $items[] = [
+                    'time' => '',
+                    'title' => $line,
+                ];
+            }
+        }
+        return $items;
+    }
+
+    /**
+     * Chuyển đổi chuỗi văn bản dresscode thành mảng mã màu
+     */
+    private function parseDresscodeText(?string $text): array
+    {
+        if (empty($text)) return [];
+        $parts = explode(',', $text);
+        $colors = [];
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if (empty($part)) continue;
+            if (preg_match('/^([^:]+)\s*:\s*(#[a-fA-F0-9]{3,8}|[a-zA-Z]+)$/u', $part, $m)) {
+                $colors[] = [
+                    'name' => trim($m[1]),
+                    'hex' => trim($m[2]),
+                ];
+            } else {
+                $colors[] = [
+                    'name' => $part,
+                    'hex' => '#F4C2D1',
+                ];
+            }
+        }
+        return $colors;
     }
 }

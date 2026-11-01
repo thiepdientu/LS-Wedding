@@ -47,6 +47,20 @@ class TemplateController extends Controller
             '19' => ['style' => 'Quý tộc & Quyền lực', 'badge' => 'Đang phát hành', 'badge_class' => 'bg-indigo-50 text-indigo-700 ring-indigo-200', 'gradient' => 'from-indigo-600 to-violet-700'],
             '20' => ['style' => 'Thời thượng & Phá cách', 'badge' => 'Đang phát hành', 'badge_class' => 'bg-rose-50 text-rose-700 ring-rose-200', 'gradient' => 'from-rose-500 to-red-600'],
             '21' => ['style' => 'Tối giản & Trọng tâm', 'badge' => 'Đang phát hành', 'badge_class' => 'bg-slate-50 text-slate-700 ring-slate-200', 'gradient' => 'from-slate-500 to-slate-700'],
+            '22' => ['style' => 'Bì thư 3D Đỏ Đậm', 'badge' => 'Mới 2026', 'badge_class' => 'bg-red-50 text-red-700 ring-red-200', 'gradient' => 'from-red-700 to-rose-900'],
+            '23' => ['style' => 'Bì thư 3D Nâu Đậm', 'badge' => 'Mới 2026', 'badge_class' => 'bg-amber-50 text-amber-800 ring-amber-200', 'gradient' => 'from-stone-700 to-amber-900'],
+            '24' => ['style' => 'Hoa Mộc Xanh Classic', 'badge' => 'Hot', 'badge_class' => 'bg-emerald-50 text-emerald-700 ring-emerald-200', 'gradient' => 'from-emerald-600 to-teal-700'],
+            '25' => ['style' => 'Hoa Mộc Xanh New 3D', 'badge' => 'Mới 2026', 'badge_class' => 'bg-emerald-50 text-emerald-800 ring-emerald-200', 'gradient' => 'from-teal-600 to-emerald-800'],
+            '26' => ['style' => 'Minimalism Cửa Đôi Olive', 'badge' => 'Đặc sắc', 'badge_class' => 'bg-lime-50 text-lime-800 ring-lime-200', 'gradient' => 'from-lime-600 to-emerald-700'],
+            '27' => ['style' => 'Song Hỷ Đỏ Hoàng Gia', 'badge' => 'VIP', 'badge_class' => 'bg-red-50 text-red-700 ring-red-200', 'gradient' => 'from-red-600 to-rose-800'],
+            '28' => ['style' => 'Song Hỷ Xanh Ngọc', 'badge' => 'Mới 2026', 'badge_class' => 'bg-teal-50 text-teal-800 ring-teal-200', 'gradient' => 'from-teal-600 to-cyan-700'],
+            '29' => ['style' => 'Song Long Xanh Navy Song Ngữ', 'badge' => 'Quý phái', 'badge_class' => 'bg-blue-50 text-blue-800 ring-blue-200', 'gradient' => 'from-blue-700 to-indigo-900'],
+            '30' => ['style' => 'Tơ Duyên Xanh Sage Thư Tình', 'badge' => 'Mới 2026', 'badge_class' => 'bg-emerald-50 text-emerald-700 ring-emerald-200', 'gradient' => 'from-emerald-700 to-teal-800'],
+            '31' => ['style' => 'Tơ Duyên Hồng Phấn Hoa Sen', 'badge' => 'Ngọt ngào', 'badge_class' => 'bg-pink-50 text-pink-700 ring-pink-200', 'gradient' => 'from-pink-500 to-rose-600'],
+            '32' => ['style' => 'Cẩm Thạch Vàng Marble', 'badge' => 'VIP', 'badge_class' => 'bg-amber-50 text-amber-700 ring-amber-200', 'gradient' => 'from-amber-500 to-yellow-600'],
+            '33' => ['style' => 'Cẩm Thạch Vàng Bụi Vàng 2027', 'badge' => 'Mới 2027', 'badge_class' => 'bg-yellow-50 text-yellow-800 ring-yellow-200', 'gradient' => 'from-yellow-600 to-amber-700'],
+            '34' => ['style' => 'Anh Đào Hồng Sakura', 'badge' => 'Thơ mộng', 'badge_class' => 'bg-rose-50 text-rose-700 ring-rose-200', 'gradient' => 'from-rose-400 to-pink-600'],
+            '35' => ['style' => 'Anh Đào Hồng New Tone.js', 'badge' => 'Mới 2026', 'badge_class' => 'bg-pink-50 text-pink-800 ring-pink-200', 'gradient' => 'from-pink-500 to-rose-700'],
         ];
 
         $templates = [];

@@ -41,6 +41,20 @@ class HomeController extends Controller
             '19' => ['style' => 'Quý phái Noble', 'badge' => 'Thời thượng', 'badge_class' => 'bg-indigo-50 text-indigo-700 border-indigo-200', 'color' => '#4338ca'],
             '20' => ['style' => 'Đương đại Contemporary', 'badge' => 'Phá cách', 'badge_class' => 'bg-rose-50 text-rose-700 border-rose-200', 'color' => '#e11d48'],
             '21' => ['style' => 'Đơn giản & Trọng tâm', 'badge' => 'Simple', 'badge_class' => 'bg-slate-50 text-slate-700 border-slate-200', 'color' => '#334155'],
+            '22' => ['style' => 'Bì thư 3D Đỏ Đậm', 'badge' => 'Mới', 'badge_class' => 'bg-red-50 text-red-700 border-red-200', 'color' => '#991b1b'],
+            '23' => ['style' => 'Bì thư 3D Nâu Đậm', 'badge' => 'Mới', 'badge_class' => 'bg-amber-50 text-amber-800 border-amber-200', 'color' => '#78350f'],
+            '24' => ['style' => 'Hoa Mộc Xanh Classic', 'badge' => 'Hot', 'badge_class' => 'bg-emerald-50 text-emerald-700 border-emerald-200', 'color' => '#059669'],
+            '25' => ['style' => 'Hoa Mộc Xanh New 3D', 'badge' => 'Mới 2026', 'badge_class' => 'bg-emerald-50 text-emerald-800 border-emerald-200', 'color' => '#047857'],
+            '26' => ['style' => 'Minimalism Cửa Đôi Olive', 'badge' => 'Đặc sắc', 'badge_class' => 'bg-lime-50 text-lime-800 border-lime-200', 'color' => '#65a30d'],
+            '27' => ['style' => 'Song Hỷ Đỏ Hoàng Gia', 'badge' => 'VIP', 'badge_class' => 'bg-red-50 text-red-700 border-red-200', 'color' => '#b91c1c'],
+            '28' => ['style' => 'Song Hỷ Xanh Ngọc', 'badge' => 'Mới 2026', 'badge_class' => 'bg-teal-50 text-teal-800 border-teal-200', 'color' => '#0f766e'],
+            '29' => ['style' => 'Song Long Xanh Navy Song Ngữ', 'badge' => 'Quý phái', 'badge_class' => 'bg-blue-50 text-blue-800 border-blue-200', 'color' => '#1e3a8a'],
+            '30' => ['style' => 'Tơ Duyên Xanh Sage Thư Tình', 'badge' => 'Mới 2026', 'badge_class' => 'bg-emerald-50 text-emerald-700 border-emerald-200', 'color' => '#065f46'],
+            '31' => ['style' => 'Tơ Duyên Hồng Phấn Hoa Sen', 'badge' => 'Ngọt ngào', 'badge_class' => 'bg-pink-50 text-pink-700 border-pink-200', 'color' => '#db2777'],
+            '32' => ['style' => 'Cẩm Thạch Vàng Marble', 'badge' => 'VIP', 'badge_class' => 'bg-amber-50 text-amber-700 border-amber-200', 'color' => '#d97706'],
+            '33' => ['style' => 'Cẩm Thạch Vàng Bụi Vàng 2027', 'badge' => 'Mới 2027', 'badge_class' => 'bg-yellow-50 text-yellow-800 border-yellow-200', 'color' => '#ca8a04'],
+            '34' => ['style' => 'Anh Đào Hồng Sakura', 'badge' => 'Thơ mộng', 'badge_class' => 'bg-rose-50 text-rose-700 border-rose-200', 'color' => '#f43f5e'],
+            '35' => ['style' => 'Anh Đào Hồng New Tone.js', 'badge' => 'Mới 2026', 'badge_class' => 'bg-pink-50 text-pink-800 border-pink-200', 'color' => '#e11d48'],
         ];
 
         $templates = [];
