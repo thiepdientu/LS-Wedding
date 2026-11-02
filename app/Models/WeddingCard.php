@@ -275,4 +275,156 @@ class WeddingCard extends Model
             ],
         };
     }
+
+    // ==========================================
+    // CÁC ACCESSOR BẢO VỆ TƯƠNG THÍCH CHO TOÀN BỘ TEMPLATE (22 - 35)
+    // ==========================================
+
+    public function getGroomBankNumberAttribute(): ?string
+    {
+        return $this->attributes['groom_bank_account'] ?? null;
+    }
+
+    public function getBrideBankNumberAttribute(): ?string
+    {
+        return $this->attributes['bride_bank_account'] ?? null;
+    }
+
+    public function getGroomFatherAttribute(): ?string
+    {
+        return $this->attributes['groom_father_name'] ?? null;
+    }
+
+    public function getGroomMotherAttribute(): ?string
+    {
+        return $this->attributes['groom_mother_name'] ?? null;
+    }
+
+    public function getBrideFatherAttribute(): ?string
+    {
+        return $this->attributes['bride_father_name'] ?? null;
+    }
+
+    public function getBrideMotherAttribute(): ?string
+    {
+        return $this->attributes['bride_mother_name'] ?? null;
+    }
+
+    public function getGroomAddressAttribute(): ?string
+    {
+        return $this->attributes['address_groom'] ?? null;
+    }
+
+    public function getBrideAddressAttribute(): ?string
+    {
+        return $this->attributes['address_bride'] ?? null;
+    }
+
+    public function getWeddingLocationAttribute(): ?string
+    {
+        return $this->attributes['name_place_wedding'] ?? null;
+    }
+
+    public function getWeddingAddressAttribute(): ?string
+    {
+        return $this->attributes['address_wedding'] ?? null;
+    }
+
+    public function getGoogleMapUrlAttribute(): ?string
+    {
+        return $this->attributes['address_wedding_map'] ?? null;
+    }
+
+    public function getCeremonyLocationAttribute(): ?string
+    {
+        return $this->attributes['name_place_wedding'] ?? null;
+    }
+
+    public function getEventTypeAttribute(): ?string
+    {
+        return $this->attributes['wedding_message'] ?? null;
+    }
+
+    public function getWeddingDateLunarAttribute(): ?string
+    {
+        return $this->attributes['wedding_date_al'] ?? null;
+    }
+
+    public function getBrideImageAttribute(): ?string
+    {
+        return $this->attributes['bride_avatar'] ?? null;
+    }
+
+    public function getGroomImageAttribute(): ?string
+    {
+        return $this->attributes['groom_avatar'] ?? null;
+    }
+
+    public function getGroomQrImageAttribute(): ?string
+    {
+        return $this->attributes['groom_qr'] ?? null;
+    }
+
+    public function getBrideQrImageAttribute(): ?string
+    {
+        return $this->attributes['bride_qr'] ?? null;
+    }
+
+    public function getCoverImageAttribute(): ?string
+    {
+        return ($this->attributes['banner_preview'] ?? null) ?: ($this->attributes['banner_top'] ?? null);
+    }
+
+    public function getLunarDateAttribute(): ?string
+    {
+        return $this->attributes['wedding_date_al'] ?? null;
+    }
+
+    public function getDressCodeAttribute($value = null): array
+    {
+        return $this->dresscode_colors_list;
+    }
+
+    public function getDressCodeNoteAttribute($value = null): ?string
+    {
+        return $value ?? ($this->attributes['dresscode_note'] ?? null);
+    }
+
+    public function getTimelineAttribute($value = null): array
+    {
+        return $this->timeline_list;
+    }
+
+    public function getCeremonyTimeAttribute(): ?string
+    {
+        return $this->attributes['wedding_time'] ?? null;
+    }
+
+    public function getGroomQrUrlAttribute(): string
+    {
+        $qr = $this->attributes['groom_qr'] ?? null;
+        if (!empty($qr)) {
+            return str_starts_with($qr, 'http://') || str_starts_with($qr, 'https://')
+                ? $qr
+                : asset('storage/' . $qr);
+        }
+        $bank = ($this->attributes['groom_bank_name'] ?? null) ?: 'Vietcombank';
+        $acc = ($this->attributes['groom_bank_account'] ?? null) ?: '0000000000';
+        $name = ($this->attributes['groom_bank_owner'] ?? null) ?: (($this->attributes['groom_name'] ?? null) ?: 'Chú Rể');
+        return 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode("{$bank} {$acc} {$name}");
+    }
+
+    public function getBrideQrUrlAttribute(): string
+    {
+        $qr = $this->attributes['bride_qr'] ?? null;
+        if (!empty($qr)) {
+            return str_starts_with($qr, 'http://') || str_starts_with($qr, 'https://')
+                ? $qr
+                : asset('storage/' . $qr);
+        }
+        $bank = ($this->attributes['bride_bank_name'] ?? null) ?: 'BIDV';
+        $acc = ($this->attributes['bride_bank_account'] ?? null) ?: '0000000000';
+        $name = ($this->attributes['bride_bank_owner'] ?? null) ?: (($this->attributes['bride_name'] ?? null) ?: 'Cô Dâu');
+        return 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' . urlencode("{$bank} {$acc} {$name}");
+    }
 }

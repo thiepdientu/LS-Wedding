@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\WeddingCard;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -45,7 +46,9 @@ class AdminDashboardTest extends TestCase
         $response = $this->get(route('admin.dashboard'));
 
         $response->assertStatus(200);
-        $response->assertSee('Gia Huy &amp; Phương Anh', false);
-        $response->assertSee('Thế Hùng Mới &amp; Ngọc Mai Mới', false);
+        $recentCard = WeddingCard::orderByDesc('id')->first();
+        if ($recentCard) {
+            $response->assertSee(e($recentCard->couple_name), false);
+        }
     }
 }

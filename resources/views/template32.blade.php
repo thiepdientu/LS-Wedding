@@ -378,15 +378,15 @@
         }, $albumData)) : []);
 
         $leadEmpty = ($cal['start_day_of_week'] == 0) ? 6 : ($cal['start_day_of_week'] - 1);
-        $groomStk = $weddingCard->groom_bank_number ?: $weddingCard->bride_bank_account ?: '0000000000';
-        $brideStk = $weddingCard->bride_bank_number ?: '0000000000';
+        $groomStk = $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '0000000000');
+        $brideStk = $weddingCard->bride_bank_account ?: ($weddingCard->bride_bank_number ?: '0000000000');
         $groomBankName = $weddingCard->groom_bank_name ?: 'Vietcombank';
         $brideBankName = $weddingCard->bride_bank_name ?: 'Techcombank';
         $groomOwner = $weddingCard->groom_bank_owner ?: $weddingCard->groom_name;
         $brideOwner = $weddingCard->bride_bank_owner ?: $weddingCard->bride_name;
 
-        $groomQrUrl = $weddingCard->groom_qr_image ? asset('storage/' . $weddingCard->groom_qr_image) : 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . urlencode($groomBankName . '-' . $groomStk . '-' . $groomOwner);
-        $brideQrUrl = $weddingCard->bride_qr_image ? asset('storage/' . $weddingCard->bride_qr_image) : 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . urlencode($brideBankName . '-' . $brideStk . '-' . $brideOwner);
+        $groomQrUrl = $weddingCard->groom_qr_url;
+        $brideQrUrl = $weddingCard->bride_qr_url;
     @endphp
 
     <!-- Golden Dust Sparkles Canvas -->
@@ -621,32 +621,32 @@
                     <!-- Nhà Trai -->
                     <div class="pr-2">
                         <p class="text-[11px] uppercase tracking-widest text-gold-700 font-bold mb-1">
-                            Ông Bà
+                            Nhà Trai
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-bronze-900 leading-snug">
-                            Vũ Văn Hoàng
+                            {{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Vũ Văn Hoàng') }}
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-bronze-900 leading-snug">
-                            Vũ Kim Phượng
+                            {{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Vũ Kim Phượng') }}
                         </p>
                         <p class="text-[11px] text-bronze-700 mt-2 leading-relaxed">
-                            Số 27 Phố Bạch Đằng, phường Minh Khai, TP. Hưng Yên
+                            {{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: 'Số 27 Phố Bạch Đằng, Minh Khai, Hưng Yên') }}
                         </p>
                     </div>
 
                     <!-- Nhà Gái -->
                     <div class="pl-2">
                         <p class="text-[11px] uppercase tracking-widest text-gold-700 font-bold mb-1">
-                            Ông Bà
+                            Nhà Gái
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-bronze-900 leading-snug">
-                            Lê Quốc Bảo
+                            {{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Lê Quốc Bảo') }}
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-bronze-900 leading-snug">
-                            Lê Thảo Vy
+                            {{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Lê Thảo Vy') }}
                         </p>
                         <p class="text-[11px] text-bronze-700 mt-2 leading-relaxed">
-                            Thôn Đại Từ, xã Đại Đồng, huyện Văn Lâm, Hưng Yên
+                            {{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: 'Thôn Đại Từ, Văn Lâm, Hưng Yên') }}
                         </p>
                     </div>
                 </div>
@@ -1091,7 +1091,7 @@
             </div>
             <h2 class="font-pattaya text-3xl sm:text-4xl text-gold-foil py-0.5">{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</h2>
             <p class="font-serif italic text-sm sm:text-base text-bronze-800 mt-3 max-w-xs mx-auto leading-relaxed">
-                Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!
+                {{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}
             </p>
             <div class="mt-5">
                 <a href="https://chungdoi.com" target="_blank" rel="noopener noreferrer" class="inline-block text-xs text-gold-700 hover:text-bronze-950 font-semibold tracking-wider">
@@ -1199,7 +1199,7 @@
                     </button>
                 </div>
 
-                @if(!empty($weddingCard->bride_bank_number) || !empty($weddingCard->bride_qr_image))
+                @if(!empty($weddingCard->bride_bank_account) || !empty($weddingCard->bride_bank_number) || !empty($weddingCard->bride_qr))
                 <!-- Cô Dâu -->
                 <div class="bg-white rounded-2xl p-4 border border-gold-300 text-center shadow-sm">
                     <span class="text-[11px] uppercase tracking-wider font-bold px-3 py-1 rounded-full bg-gold-100 text-gold-800">
@@ -1420,50 +1420,18 @@
         }
 
         /* ---------------------------------------------------------------
-         * D. SỔ LƯU BÚT (EXACT 8 PRE-LOADED WISHES FROM DEMO)
+         * D. SỔ LƯU BÚT (DỮ LIỆU TỪ DATABASE)
          * --------------------------------------------------------------- */
-        const wishesList = [
-            {
-                name: 'Bạn cùng phòng ký túc',
-                time: '9:00:00 26/1/2027',
-                message: 'Chúc hai bạn ngàn năm hạnh phúc 🥂'
-            },
-            {
-                name: 'Tập thể lớp 12A2',
-                time: '10:00:00 25/1/2027',
-                message: 'Chúc mừng bạn thân của tui đã lên xe hoa!'
-            },
-            {
-                name: 'Bảo Ngọc',
-                time: '11:00:00 24/1/2027',
-                message: 'Chúc anh chị luôn nắm tay nhau thật chặt.'
-            },
-            {
-                name: 'Chú Tư',
-                time: '12:00:00 23/1/2027',
-                message: 'Chúc hai cháu mạnh khỏe, làm ăn suôn sẻ, nhà cửa ấm êm.'
-            },
-            {
-                name: 'Bà ngoại',
-                time: '13:00:00 22/1/2027',
-                message: 'Chúc mừng hai con, cả nhà thương các con nhiều.'
-            },
-            {
-                name: 'Anh Quân',
-                time: '14:00:00 21/1/2027',
-                message: 'Chúc vợ chồng em luôn thuận hòa.'
-            },
-            {
-                name: 'Nguyễn Minh Tuấn',
-                time: '15:00:00 20/1/2027',
-                message: 'Ôi cuối cùng cũng tới ngày này rồi! Hạnh phúc nha.'
-            },
-            {
-                name: 'Võ Hoàng Long',
-                time: '16:00:00 19/1/2027',
-                message: 'Chúc hai bạn mãi là điểm tựa của nhau.'
-            }
-        ];
+        @php
+            $cardWishes32 = $weddingCard->wishes()->approved()->latest()->take(10)->get()->map(function($w) {
+                return [
+                    'name' => $w->sender_name,
+                    'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
+                    'message' => $w->message,
+                ];
+            });
+        @endphp
+        const wishesList = @json($cardWishes32);
 
         function escapeHtml(str) {
             return String(str).replace(/[&<>"']/g, s => ({
@@ -1473,6 +1441,14 @@
 
         function renderWishes() {
             const container = document.getElementById('wishes-container');
+            if (!wishesList || wishesList.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-xs text-bronze-700 italic">
+                        Hãy là người đầu tiên gửi lời chúc mừng hạnh phúc đến cô dâu &amp; chú rể! ✨
+                    </div>
+                `;
+                return;
+            }
             container.innerHTML = wishesList.map(item => `
                 <div class="bg-marble-100/90 rounded-2xl p-3.5 border border-gold-300/70 shadow-sm text-left">
                     <div class="flex items-center justify-between gap-2">

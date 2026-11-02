@@ -333,8 +333,8 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
       <p class="eyebrow reveal">Thông tin lễ cưới</p>
       <div class="rule reveal" aria-hidden="true">❦</div>
       <div class="families reveal">
-        <div class="fam"><small>Nhà trai</small><b>{{ $weddingCard->groom_father_name ?: 'Ông Lê Văn Đức' }}<br>{{ $weddingCard->groom_mother_name ?: 'Bà Phạm Thị Lan' }}</b><p>21 Trần Phú, Hải Châu, Đà Nẵng</p></div>
-        <div class="fam"><small>Nhà gái</small><b>{{ $weddingCard->bride_father_name ?: 'Ông Đỗ Quang Huy' }}<br>{{ $weddingCard->bride_mother_name ?: 'Bà Vũ Thị Mai' }}</b><p>88 Lê Duẩn, Hải Châu, Đà Nẵng</p></div>
+        <div class="fam"><small>Nhà trai</small><b>{{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Ông Lê Văn Đức') }}<br>{{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Bà Phạm Thị Lan') }}</b><p>{{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: '21 Trần Phú, Hải Châu, Đà Nẵng') }}</p></div>
+        <div class="fam"><small>Nhà gái</small><b>{{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Ông Đỗ Quang Huy') }}<br>{{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Bà Vũ Thị Mai') }}</b><p>{{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: '88 Lê Duẩn, Hải Châu, Đà Nẵng') }}</p></div>
       </div>
       <div class="announce reveal">
         <p class="lead">Trân trọng báo tin<br>lễ thành hôn của con chúng tôi</p>
@@ -343,10 +343,13 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
           <span class="amp" aria-hidden="true">&amp;</span>
           <h3>{{ $weddingCard->bride_name }}</h3><small>Con gái</small>
         </div>
-        <p class="where">Lễ thành hôn được cử hành tại<strong>Tư gia</strong>vào lúc 09:00</p>
-        <div class="datebox"><div class="dow">Chủ nhật</div><div class="day">20</div><div class="mon">Tháng 12</div></div>
-        <p class="year">2026</p>
-        <p class="lunar">(Tức ngày 11 tháng 11 năm Bính Ngọ)</p>
+        <p class="where">Lễ thành hôn được cử hành tại<strong>{{ $weddingCard->name_place_wedding ?: 'Tư gia' }}</strong>vào lúc {{ $weddingCard->wedding_time ?: '09:00' }}</p>
+        @php
+          $wDate28 = $weddingCard->wedding_date ? \Carbon\Carbon::parse($weddingCard->wedding_date) : \Carbon\Carbon::now();
+        @endphp
+        <div class="datebox"><div class="dow">{{ $wDate28->isoFormat('dddd') }}</div><div class="day">{{ $wDate28->format('d') }}</div><div class="mon">Tháng {{ $wDate28->format('m') }}</div></div>
+        <p class="year">{{ $wDate28->format('Y') }}</p>
+        <p class="lunar">(Tức {{ $weddingCard->wedding_date_al ?: 'Ngày tốt hoàng đạo' }})</p>
       </div>
     </div>
   </section>
@@ -501,8 +504,8 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
   <footer>
     <div class="wrap reveal">
       <span class="han" aria-hidden="true">囍</span>
-      <p>Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!</p>
-      <small>{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }} · 20.12.2026</small>
+      <p>{{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}</p>
+      <small>{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }} · {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d.m.Y') : '20.12.2026' }}</small>
     </div>
   </footer>
 </main>
@@ -526,7 +529,7 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
     <div class="qr" id="qrBox"></div>
     <div class="acct"><span id="bank"></span><b id="acctNo"></b><span id="acctName"></span></div>
     <div class="row-btns"><button class="btn" id="copyAcct" type="button">Sao chép số tài khoản</button></div>
-    <p class="acct" style="font-size:12px">Thông tin ngân hàng ở đây là dữ liệu mẫu, hãy thay bằng thông tin thật.</p>
+    <p class="acct" style="font-size:12px">{{ $weddingCard->message_gift ?: 'Quét mã QR hoặc chuyển khoản mừng cưới' }}</p>
   </div>
 </div>
 
@@ -708,15 +711,19 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
 
   /* ---- gift box ---- */
   var accts=[
-    {bank:'{{ $weddingCard->groom_bank_name ?: 'Vietcombank' }}',no:'{{ $weddingCard->groom_bank_number ?: '0123456789' }}',name:'{{ $weddingCard->groom_bank_owner ?: 'LE MINH KHOI' }}',tab:'tab0'},
-    {bank:'{{ $weddingCard->bride_bank_name ?: 'BIDV' }}',no:'{{ $weddingCard->bride_bank_number ?: '9876543210' }}',name:'{{ $weddingCard->bride_bank_owner ?: 'DO THANH HA' }}',tab:'tab1'}
+    {bank:'{{ $weddingCard->groom_bank_name ?: 'Vietcombank' }}',no:'{{ $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '0123456789') }}',name:'{{ $weddingCard->groom_bank_owner ?: $weddingCard->groom_name }}',qr:'{{ $weddingCard->groom_qr_url }}',tab:'tab0'},
+    {bank:'{{ $weddingCard->bride_bank_name ?: 'BIDV' }}',no:'{{ $weddingCard->bride_bank_account ?: ($weddingCard->bride_bank_number ?: '9876543210') }}',name:'{{ $weddingCard->bride_bank_owner ?: $weddingCard->bride_name }}',qr:'{{ $weddingCard->bride_qr_url }}',tab:'tab1'}
   ],cg=0,gm=$('#giftModal');
   function showAcct(i){cg=i;var a=accts[i];
     $('#tab0').setAttribute('aria-selected',i===0);$('#tab1').setAttribute('aria-selected',i===1);
     $('#bank').textContent=a.bank;$('#acctNo').textContent=a.no;$('#acctName').textContent=a.name;
     var box=$('#qrBox');
-    try{var q=qrcode(0,'M');q.addData('Mung cuoi | '+a.bank+' | '+a.no+' | '+a.name);q.make();box.innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true})}
-    catch(e){box.textContent='QR'}
+    if(a.qr){
+      box.innerHTML='<img src="'+a.qr+'" alt="QR" style="width:100%;height:100%;object-fit:contain;border-radius:4px;">';
+    }else{
+      try{var q=qrcode(0,'M');q.addData('Mung cuoi | '+a.bank+' | '+a.no+' | '+a.name);q.make();box.innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true})}
+      catch(e){box.textContent='QR'}
+    }
   }
   function openGift(){gm.classList.add('open');showAcct(0);$('#giftClose').focus()}
   function closeGift(){gm.classList.remove('open')}

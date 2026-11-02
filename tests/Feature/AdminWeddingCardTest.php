@@ -80,6 +80,32 @@ class AdminWeddingCardTest extends TestCase
 
     public function test_admin_wedding_date_range_filter(): void
     {
+        $baseCard = WeddingCard::first();
+        if (!$baseCard) {
+            $this->markTestSkipped('No wedding cards found.');
+        }
+
+        // Đảm bảo có dữ liệu thiệp cưới tháng 10 và tháng 11
+        $cardOct = WeddingCard::updateOrCreate(
+            ['identifyWedding' => 'test-oct-filter'],
+            array_merge($baseCard->toArray(), [
+                'identifyWedding' => 'test-oct-filter',
+                'groom_name' => 'Gia Huy',
+                'bride_name' => 'Phương Anh',
+                'wedding_date' => '2026-10-17',
+            ])
+        );
+
+        $cardNov = WeddingCard::updateOrCreate(
+            ['identifyWedding' => 'test-nov-filter'],
+            array_merge($baseCard->toArray(), [
+                'identifyWedding' => 'test-nov-filter',
+                'groom_name' => 'Thế Hùng Mới',
+                'bride_name' => 'Ngọc Mai Mới',
+                'wedding_date' => '2026-11-20',
+            ])
+        );
+
         // Lọc tháng 10/2026: chỉ có thiệp cưới ngày 17/10/2026
         $response = $this->get(route('admin.wedding-cards.index', [
             'date_range' => '01/10/2026 - 31/10/2026'
@@ -97,6 +123,10 @@ class AdminWeddingCardTest extends TestCase
         $responseVietnamese->assertStatus(200);
         $responseVietnamese->assertSee('Thế Hùng Mới & Ngọc Mai Mới');
         $responseVietnamese->assertDontSee('Gia Huy & Phương Anh');
+
+        // Clean up test cards
+        $cardOct->delete();
+        $cardNov->delete();
     }
 
     public function test_admin_toggle_status_endpoint(): void
@@ -184,6 +214,11 @@ class AdminWeddingCardTest extends TestCase
             $this->markTestSkipped('No wedding cards found.');
         }
 
+        $origBride = $card->bride_name;
+        $origGroom = $card->groom_name;
+        $origDate = $card->wedding_date?->format('Y-m-d');
+        $origEmail = $card->customer_email;
+
         $response = $this->post(route('wedding.update', $card->id), [
             'identifyWedding' => $card->identifyWedding,
             'template' => $card->template,
@@ -201,6 +236,14 @@ class AdminWeddingCardTest extends TestCase
         $card->refresh();
         $this->assertEquals('Ngọc Mai Mới', $card->bride_name);
         $this->assertEquals('hungmai.updated@email.com', $card->customer_email);
+
+        // Revert to original state to preserve database consistency across tests
+        $card->update([
+            'bride_name' => $origBride,
+            'groom_name' => $origGroom,
+            'wedding_date' => $origDate,
+            'customer_email' => $origEmail,
+        ]);
     }
 
     public function test_album_manifest_reorders_and_deletes_images(): void

@@ -1623,15 +1623,15 @@
       <div class="family-two-cols">
         <div class="family-col">
           <div class="role-label">Nhà Trai</div>
-          <div class="parent-name">{{ $weddingCard->groom_father ?: 'Trần Văn Hùng' }}</div>
-          <div class="parent-name">{{ $weddingCard->groom_mother ?: 'Phạm Thị Lan' }}</div>
-          <div class="parent-addr">{{ $weddingCard->groom_address ?: 'Đống Đa, Hà Nội' }}</div>
+          <div class="parent-name">{{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Trần Văn Hùng') }}</div>
+          <div class="parent-name">{{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Phạm Thị Lan') }}</div>
+          <div class="parent-addr">{{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: 'Đống Đa, Hà Nội') }}</div>
         </div>
         <div class="family-col">
           <div class="role-label">Nhà Gái</div>
-          <div class="parent-name">{{ $weddingCard->bride_father ?: 'Nguyễn Văn Nam' }}</div>
-          <div class="parent-name">{{ $weddingCard->bride_mother ?: 'Lê Thị Hương' }}</div>
-          <div class="parent-addr">{{ $weddingCard->bride_address ?: 'Cầu Giấy, Hà Nội' }}</div>
+          <div class="parent-name">{{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Nguyễn Văn Nam') }}</div>
+          <div class="parent-name">{{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Lê Thị Hương') }}</div>
+          <div class="parent-addr">{{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: 'Cầu Giấy, Hà Nội') }}</div>
         </div>
       </div>
 
@@ -1822,22 +1822,24 @@
       </form>
 
       <div class="wishes-feed" id="wishesFeed">
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Bạn Hoàng dev</span><span class="wish-time">Vừa xong</span></div>
-          <p class="wish-content">Chúc {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }} trăm năm hạnh phúc, mãi yêu nhau đầu bạc răng long!</p>
-        </div>
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Hoài Nam</span><span class="wish-time">Hôm nay</span></div>
-          <p class="wish-content">Chúc hai bạn luôn nắm tay nhau qua mọi chặng đường, sớm có tin vui nhé!!!</p>
-        </div>
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Bạn Linh</span><span class="wish-time">Hôm nay</span></div>
-          <p class="wish-content">Mừng ngày trọng đại! Chúc hai bạn cười nhiều hơn cãi, yêu nhiều hơn giận nhen!</p>
-        </div>
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Chị Huyền</span><span class="wish-time">Hôm qua</span></div>
-          <p class="wish-content">Chúc hai em trăm năm hạnh phúc, vợ chồng đồng lòng &lt;3</p>
-        </div>
+        @php
+          $dbWishes = $weddingCard->wishes()->approved()->latest()->take(10)->get();
+        @endphp
+        @forelse ($dbWishes as $wish)
+          <div class="wish-item">
+            <div class="wish-header">
+              <span class="wish-author">{{ $wish->sender_name }}</span>
+              <span class="wish-time">{{ $wish->created_at ? $wish->created_at->diffForHumans() : 'Vừa xong' }}</span>
+            </div>
+            <p class="wish-content">{{ $wish->message }}</p>
+          </div>
+        @empty
+          <div class="wish-item">
+            <p class="wish-content" style="text-align: center; color: var(--text-muted); font-style: italic;">
+              Hãy là người đầu tiên gửi lời chúc phúc đến cô dâu &amp; chú rể!
+            </p>
+          </div>
+        @endforelse
       </div>
     </section>
 
@@ -1856,7 +1858,7 @@
     </section>
 
     <footer class="card-footer">
-      <p>Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!</p>
+      <p>{{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}</p>
       <a class="brand-link" href="#top" onclick="reopenCoverGate(event)">↺ Xem lại hiệu ứng mở thiệp</a>
     </footer>
   </div>
@@ -1885,17 +1887,19 @@
       <div class="qr-grid">
         <div class="qr-box">
           <h4>Chú Rể - {{ $weddingCard->groom_name }}</h4>
-          <img src="{{ !empty($weddingCard->groom_qr_image) ? asset('storage/' . $weddingCard->groom_qr_image) : ('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' . urlencode(($weddingCard->groom_bank_name ?: 'Vietcombank') . ' ' . ($weddingCard->groom_bank_number ?: '0000000000') . ' ' . ($weddingCard->groom_bank_owner ?: 'TRAN XUAN TRUONG'))) }}" alt="QR Chú Rể">
+          <img src="{{ $weddingCard->groom_qr_url }}" alt="QR Chú Rể">
           <p><strong>{{ $weddingCard->groom_bank_name ?: 'Vietcombank' }}</strong></p>
-          <p>STK: <strong>{{ $weddingCard->groom_bank_number ?: '0000000000' }}</strong></p>
-          <p>CTK: {{ $weddingCard->groom_bank_owner ?: 'TRAN XUAN TRUONG' }}</p>
+          <p>STK: <strong>{{ $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '0000000000') }}</strong></p>
+          <p>CTK: {{ $weddingCard->groom_bank_owner ?: $weddingCard->groom_name }}</p>
+          <button type="button" onclick="navigator.clipboard.writeText('{{ $weddingCard->groom_bank_account ?: $weddingCard->groom_bank_number }}'); alert('Đã sao chép STK Chú Rể!');" style="margin-top:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border-radius:6px;border:1px solid #7c4d36;background:#f5eee8;color:#4a2b1c;">📋 Sao chép STK</button>
         </div>
         <div class="qr-box">
           <h4>Cô Dâu - {{ $weddingCard->bride_name }}</h4>
-          <img src="{{ !empty($weddingCard->bride_qr_image) ? asset('storage/' . $weddingCard->bride_qr_image) : ('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' . urlencode(($weddingCard->bride_bank_name ?: 'BIDV') . ' ' . ($weddingCard->bride_bank_number ?: '6665558888') . ' ' . ($weddingCard->bride_bank_owner ?: 'NGUYEN DIEU LINH'))) }}" alt="QR Cô Dâu">
+          <img src="{{ $weddingCard->bride_qr_url }}" alt="QR Cô Dâu">
           <p><strong>{{ $weddingCard->bride_bank_name ?: 'BIDV' }}</strong></p>
-          <p>STK: <strong>{{ $weddingCard->bride_bank_number ?: '6665558888' }}</strong></p>
-          <p>CTK: {{ $weddingCard->bride_bank_owner ?: 'NGUYEN DIEU LINH' }}</p>
+          <p>STK: <strong>{{ $weddingCard->bride_bank_account ?: ($weddingCard->bride_bank_number ?: '6665558888') }}</strong></p>
+          <p>CTK: {{ $weddingCard->bride_bank_owner ?: $weddingCard->bride_name }}</p>
+          <button type="button" onclick="navigator.clipboard.writeText('{{ $weddingCard->bride_bank_account ?: $weddingCard->bride_bank_number }}'); alert('Đã sao chép STK Cô Dâu!');" style="margin-top:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border-radius:6px;border:1px solid #7c4d36;background:#f5eee8;color:#4a2b1c;">📋 Sao chép STK</button>
         </div>
       </div>
     </div>

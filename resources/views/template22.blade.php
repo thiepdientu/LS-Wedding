@@ -1583,12 +1583,22 @@
 
         <!-- Bride Polaroid (Left Tilted) -->
         <div class="polaroid-card bride-card" onclick="openLightbox(0)">
-          <img src="{{ !empty($weddingCard->bride_image) ? asset('storage/' . $weddingCard->bride_image) : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp' }}" alt="Cô Dâu {{ $weddingCard->bride_name }}">
+          @php
+            $brideAvatarSrc = !empty($weddingCard->bride_avatar)
+              ? (str_starts_with($weddingCard->bride_avatar, 'http') ? $weddingCard->bride_avatar : asset('storage/' . $weddingCard->bride_avatar))
+              : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp';
+          @endphp
+          <img src="{{ $brideAvatarSrc }}" alt="Cô Dâu {{ $weddingCard->bride_name }}">
         </div>
 
         <!-- Groom Polaroid (Right Tilted) -->
         <div class="polaroid-card groom-card" onclick="openLightbox(1)">
-          <img src="{{ !empty($weddingCard->groom_image) ? asset('storage/' . $weddingCard->groom_image) : 'https://assets.chungdoi.com/photo-library/design/1f83fb78c75b96a05661eca4cbc50dd771fc37411920623d6d9729eea1daa7c8.webp' }}" alt="Chú Rể {{ $weddingCard->groom_name }}">
+          @php
+            $groomAvatarSrc = !empty($weddingCard->groom_avatar)
+              ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar))
+              : 'https://assets.chungdoi.com/photo-library/design/1f83fb78c75b96a05661eca4cbc50dd771fc37411920623d6d9729eea1daa7c8.webp';
+          @endphp
+          <img src="{{ $groomAvatarSrc }}" alt="Chú Rể {{ $weddingCard->groom_name }}">
         </div>
 
         <!-- Envelope Front Flaps -->
@@ -1623,15 +1633,15 @@
       <div class="family-two-cols">
         <div class="family-col">
           <div class="role-label">Nhà Trai</div>
-          <div class="parent-name">{{ $weddingCard->groom_father ?: 'Trần Văn Hùng' }}</div>
-          <div class="parent-name">{{ $weddingCard->groom_mother ?: 'Phạm Thị Lan' }}</div>
-          <div class="parent-addr">{{ $weddingCard->groom_address ?: 'Đống Đa, Hà Nội' }}</div>
+          <div class="parent-name">{{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Trần Văn Hùng') }}</div>
+          <div class="parent-name">{{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Phạm Thị Lan') }}</div>
+          <div class="parent-addr">{{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: 'Đống Đa, Hà Nội') }}</div>
         </div>
         <div class="family-col">
           <div class="role-label">Nhà Gái</div>
-          <div class="parent-name">{{ $weddingCard->bride_father ?: 'Nguyễn Văn Nam' }}</div>
-          <div class="parent-name">{{ $weddingCard->bride_mother ?: 'Lê Thị Hương' }}</div>
-          <div class="parent-addr">{{ $weddingCard->bride_address ?: 'Cầu Giấy, Hà Nội' }}</div>
+          <div class="parent-name">{{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Nguyễn Văn Nam') }}</div>
+          <div class="parent-name">{{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Lê Thị Hương') }}</div>
+          <div class="parent-addr">{{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: 'Cầu Giấy, Hà Nội') }}</div>
         </div>
       </div>
 
@@ -1648,16 +1658,16 @@
       </div>
 
       <div class="ceremony-highlight-box">
-        <div class="headline">{{ $weddingCard->event_type ?: 'LỄ THÀNH HÔN ĐƯỢC CỬ HÀNH TẠI' }}<br>{{ $weddingCard->ceremony_location ?: 'TƯ GIA' }}</div>
+        <div class="headline">{{ $weddingCard->wedding_message ?: 'LỄ THÀNH HÔN ĐƯỢC CỬ HÀNH TẠI' }}<br>{{ $weddingCard->name_place_wedding ?: 'TƯ GIA' }}</div>
         <div class="sub">VÀO LÚC</div>
-        <div class="ceremony-time-big">{{ $weddingCard->ceremony_time ?: ($weddingCard->wedding_time ?: '09:00') }}</div>
+        <div class="ceremony-time-big">{{ $weddingCard->wedding_time ?: '09:00' }}</div>
         <div class="ceremony-date-row">
           <span class="part">{{ $weddingCard->wedding_date ? mb_strtoupper($weddingCard->wedding_date->locale('vi')->isoFormat('dddd')) : 'THỨ BẢY' }}</span>
           <span class="day-num">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d') : '03' }}</span>
           <span class="part">THÁNG {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('m') : '01' }}</span>
         </div>
         <div class="ceremony-year">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('Y') : '2026' }}</div>
-        <div class="ceremony-lunar">(Tức ngày {{ $weddingCard->wedding_date_lunar ?: '15 tháng 11 năm Ất Tỵ' }})</div>
+        <div class="ceremony-lunar">(Tức {{ $weddingCard->wedding_date_al ?: 'ngày 15 tháng 11 năm Ất Tỵ' }})</div>
       </div>
     </section>
 
@@ -1670,7 +1680,13 @@
       <div class="album-carousel-card">
         <div class="album-main-viewport">
           <button class="album-nav-btn prev" onclick="stepAlbum(-1)" aria-label="Ảnh trước">❮</button>
-          <img id="albumActiveImg" src="{{ !empty($weddingCard->cover_image) ? asset('storage/' . $weddingCard->cover_image) : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp' }}" alt="Ảnh cưới {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" onclick="openLightbox(currentAlbumIndex)">
+          @php
+            $initialAlbumData = !empty($weddingCard->album) ? (is_string($weddingCard->album) ? json_decode($weddingCard->album, true) : $weddingCard->album) : [];
+            $albumFirstCover = (!empty($initialAlbumData) && is_array($initialAlbumData) && count($initialAlbumData) > 0)
+              ? (str_starts_with($initialAlbumData[0], 'http') ? $initialAlbumData[0] : asset('storage/' . $initialAlbumData[0]))
+              : (!empty($weddingCard->banner_preview) ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview)) : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp');
+          @endphp
+          <img id="albumActiveImg" src="{{ $albumFirstCover }}" alt="Ảnh cưới {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" onclick="openLightbox(currentAlbumIndex)">
           <button class="album-nav-btn next" onclick="stepAlbum(1)" aria-label="Ảnh tiếp">❯</button>
         </div>
         <div class="album-counter-pill" id="albumCounter">1 / 8</div>
@@ -1691,12 +1707,12 @@
           <span class="part" style="border-color: rgba(107,20,26,0.25);">THÁNG {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('m') : '01' }}</span>
         </div>
         <div class="ceremony-year" style="color: var(--wine-900);">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('Y') : '2026' }}</div>
-        <div class="ceremony-lunar" style="color: var(--text-muted);">(Tức ngày {{ $weddingCard->wedding_date_lunar ?: '15 tháng 11 năm Ất Tỵ' }})</div>
+        <div class="ceremony-lunar" style="color: var(--text-muted);">(Tức {{ $weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: 'ngày 15 tháng 11 năm Ất Tỵ') }})</div>
 
         <div class="reception-slots">
           <div class="slot-pill">
             <span>Đón khách</span>
-            <span>{{ $weddingCard->guest_welcome_time ?: '17:30' }}</span>
+            <span>{{ $weddingCard->timeline_list[0]['time'] ?? ($weddingCard->guest_welcome_time ?: '17:30') }}</span>
           </div>
           <div class="slot-pill">
             <span>Khai tiệc</span>
@@ -1736,7 +1752,7 @@
           $calSummary = urlencode('Đám cưới ' . $weddingCard->couple_name);
           $calDate = $weddingCard->wedding_date ? $weddingCard->wedding_date->format('Ymd') : '20260103';
           $calTime = !empty($weddingCard->wedding_time) && preg_match('/^\d{1,2}:\d{2}$/', trim($weddingCard->wedding_time)) ? str_replace(':', '', trim($weddingCard->wedding_time)) . '00' : '110000';
-          $calLocation = urlencode(($weddingCard->wedding_location ?: '') . ', ' . ($weddingCard->wedding_address ?: ''));
+          $calLocation = urlencode(($weddingCard->name_place_wedding ?: $weddingCard->wedding_location ?: '') . ', ' . ($weddingCard->address_wedding ?: $weddingCard->wedding_address ?: ''));
         @endphp
         <a class="btn-solid-wine" target="_blank" rel="noopener noreferrer"
            href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ $calSummary }}&dates={{ $calDate }}T{{ $calTime }}/{{ $calDate }}T{{ $calTime }}&details={{ $calSummary }}&location={{ $calLocation }}">
@@ -1747,10 +1763,17 @@
       <!-- Venue Location -->
       <div class="venue-box">
         <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Tiệc cưới sẽ tổ chức tại</div>
-        <div class="venue-name">{{ $weddingCard->wedding_location ?: 'Trung Tâm Tiệc Cưới Hoàng Gia' }}</div>
-        <div class="venue-address">{{ $weddingCard->wedding_address ?: 'Ngõ 74 P. Nguyễn Thị Định, Nhân Chính, Thanh Xuân, Hà Nội' }}</div>
+        <div class="venue-name">{{ $weddingCard->name_place_wedding ?: ($weddingCard->wedding_location ?: 'Trung Tâm Tiệc Cưới Hoàng Gia') }}</div>
+        <div class="venue-address">{{ $weddingCard->address_wedding ?: ($weddingCard->wedding_address ?: 'Ngõ 74 P. Nguyễn Thị Định, Nhân Chính, Thanh Xuân, Hà Nội') }}</div>
+        @php
+          $targetMapUrl = !empty($weddingCard->address_wedding_map)
+            ? $weddingCard->address_wedding_map
+            : (!empty($weddingCard->google_map_url)
+                ? $weddingCard->google_map_url
+                : ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->name_place_wedding ?: '') . ' ' . ($weddingCard->address_wedding ?: ''))));
+        @endphp
         <a class="btn-outline-wine" target="_blank" rel="noopener noreferrer"
-           href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location ?: '') . ' ' . ($weddingCard->wedding_address ?: ''))) }}">
+           href="{{ $targetMapUrl }}">
           <span>📍 Chỉ đường Google Maps</span>
         </a>
       </div>
@@ -1822,22 +1845,23 @@
       </form>
 
       <div class="wishes-feed" id="wishesFeed">
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Bạn Hoàng dev</span><span class="wish-time">Vừa xong</span></div>
-          <p class="wish-content">Chúc {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }} trăm năm hạnh phúc, mãi yêu nhau đầu bạc răng long!</p>
-        </div>
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Hoài Nam</span><span class="wish-time">Hôm nay</span></div>
-          <p class="wish-content">Chúc hai bạn luôn nắm tay nhau qua mọi chặng đường, sớm có thiên thần nhỏ nhé!!!</p>
-        </div>
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Bạn Linh</span><span class="wish-time">Hôm nay</span></div>
-          <p class="wish-content">Mừng ngày trọng đại! Chúc hai bạn cười nhiều hơn cãi, yêu nhiều hơn giận nhen!</p>
-        </div>
-        <div class="wish-item">
-          <div class="wish-header"><span class="wish-author">Chị Huyền</span><span class="wish-time">Hôm qua</span></div>
-          <p class="wish-content">Chúc hai em trăm năm hạnh phúc, vợ chồng đồng lòng &lt;3</p>
-        </div>
+        @php
+          $dbWishes = $weddingCard->wishes()->approved()->latest()->take(10)->get();
+        @endphp
+        @forelse ($dbWishes as $wish)
+          <div class="wish-item">
+            <div class="wish-header">
+              <span class="wish-author">{{ $wish->sender_name }}</span>
+              <span class="wish-time">{{ $wish->created_at ? $wish->created_at->diffForHumans() : 'Vừa xong' }}</span>
+            </div>
+            <p class="wish-content">{{ $wish->message }}</p>
+          </div>
+        @empty
+          <div class="wish-item">
+            <div class="wish-header"><span class="wish-author">LS Wedding</span><span class="wish-time">Gợi ý</span></div>
+            <p class="wish-content">Chúc {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }} trăm năm hạnh phúc, mãi yêu nhau đầu bạc răng long!</p>
+          </div>
+        @endforelse
       </div>
     </section>
 
@@ -1856,8 +1880,8 @@
     </section>
 
     <footer class="card-footer">
-      <p>Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!</p>
-      <a class="brand-link" href="# top" onclick="reopenCoverGate(event)">↺ Xem lại hiệu ứng mở thiệp</a>
+      <p>{{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh to lớn của gia đình chúng tôi!' }}</p>
+      <a class="brand-link" href="#top" onclick="reopenCoverGate(event)">↺ Xem lại hiệu ứng mở thiệp</a>
     </footer>
   </div>
 
@@ -1885,17 +1909,37 @@
       <div class="qr-grid">
         <div class="qr-box">
           <h4>Chú Rể - {{ $weddingCard->groom_name }}</h4>
-          <img src="{{ !empty($weddingCard->groom_qr_image) ? asset('storage/' . $weddingCard->groom_qr_image) : ('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' . urlencode(($weddingCard->groom_bank_name ?: 'Vietcombank') . ' ' . ($weddingCard->groom_bank_number ?: '0000000000') . ' ' . ($weddingCard->groom_bank_owner ?: 'TRAN HOANG LONG'))) }}" alt="QR Chú Rể">
+          @php
+            $groomQrSrc = !empty($weddingCard->groom_qr)
+              ? (str_starts_with($weddingCard->groom_qr, 'http') ? $weddingCard->groom_qr : asset('storage/' . $weddingCard->groom_qr))
+              : ('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' . urlencode(($weddingCard->groom_bank_name ?: 'Vietcombank') . ' ' . ($weddingCard->groom_bank_account ?: '0000000000') . ' ' . ($weddingCard->groom_bank_owner ?: $weddingCard->groom_name)));
+          @endphp
+          <img src="{{ $groomQrSrc }}" alt="QR Chú Rể">
           <p><strong>{{ $weddingCard->groom_bank_name ?: 'Vietcombank' }}</strong></p>
-          <p>STK: <strong>{{ $weddingCard->groom_bank_number ?: '0000000000' }}</strong></p>
+          <p>STK: <strong>{{ $weddingCard->groom_bank_account ?: '0000000000' }}</strong></p>
           <p>CTK: {{ $weddingCard->groom_bank_owner ?: 'TRAN HOANG LONG' }}</p>
+          @if(!empty($weddingCard->groom_bank_account))
+            <button type="button" class="btn-copy-stk" onclick="copyStkText('{{ $weddingCard->groom_bank_account }}', 'STK Chú Rể')" style="margin-top: 8px; width: 100%; padding: 6px 12px; font-size: 0.78rem; border-radius: 9999px; background: var(--wine-800); color: #fff; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+              📋 Sao chép STK
+            </button>
+          @endif
         </div>
         <div class="qr-box">
           <h4>Cô Dâu - {{ $weddingCard->bride_name }}</h4>
-          <img src="{{ !empty($weddingCard->bride_qr_image) ? asset('storage/' . $weddingCard->bride_qr_image) : ('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' . urlencode(($weddingCard->bride_bank_name ?: 'BIDV') . ' ' . ($weddingCard->bride_bank_number ?: '6665558888') . ' ' . ($weddingCard->bride_bank_owner ?: 'NGUYEN BAO NGOC'))) }}" alt="QR Cô Dâu">
+          @php
+            $brideQrSrc = !empty($weddingCard->bride_qr)
+              ? (str_starts_with($weddingCard->bride_qr, 'http') ? $weddingCard->bride_qr : asset('storage/' . $weddingCard->bride_qr))
+              : ('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' . urlencode(($weddingCard->bride_bank_name ?: 'BIDV') . ' ' . ($weddingCard->bride_bank_account ?: '6665558888') . ' ' . ($weddingCard->bride_bank_owner ?: $weddingCard->bride_name)));
+          @endphp
+          <img src="{{ $brideQrSrc }}" alt="QR Cô Dâu">
           <p><strong>{{ $weddingCard->bride_bank_name ?: 'BIDV' }}</strong></p>
-          <p>STK: <strong>{{ $weddingCard->bride_bank_number ?: '6665558888' }}</strong></p>
+          <p>STK: <strong>{{ $weddingCard->bride_bank_account ?: '6665558888' }}</strong></p>
           <p>CTK: {{ $weddingCard->bride_bank_owner ?: 'NGUYEN BAO NGOC' }}</p>
+          @if(!empty($weddingCard->bride_bank_account))
+            <button type="button" class="btn-copy-stk" onclick="copyStkText('{{ $weddingCard->bride_bank_account }}', 'STK Cô Dâu')" style="margin-top: 8px; width: 100%; padding: 6px 12px; font-size: 0.78rem; border-radius: 9999px; background: var(--wine-800); color: #fff; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+              📋 Sao chép STK
+            </button>
+          @endif
         </div>
       </div>
     </div>
@@ -2026,6 +2070,19 @@
     // Gift Modal
     function toggleGiftModal(show) {
       document.getElementById('giftModal').classList.toggle('active', show);
+    }
+
+    // Copy STK
+    function copyStkText(stk, label) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(stk).then(() => {
+          alert(`Đã sao chép ${label}: ${stk}`);
+        }).catch(() => {
+          prompt('Sao chép STK:', stk);
+        });
+      } else {
+        prompt('Sao chép STK:', stk);
+      }
     }
 
     // Guestbook Wish Submission

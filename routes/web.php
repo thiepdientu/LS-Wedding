@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\WishController as AdminWishController;
 use App\Http\Controllers\WeddingWishController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Api\WeddingCardApiController;
 
 use App\Http\Controllers\Admin\AuthController;
 
@@ -101,3 +102,9 @@ Route::get('/template/{key}', [WeddingCardController::class, 'showTemplate'])->n
 // ==========================================
 Route::post('/wedding-cards/{id}/wishes', [WeddingWishController::class, 'store'])->name('wishes.store');
 Route::get('/wedding-cards/{id}/wishes', [WeddingWishController::class, 'index'])->name('wishes.index');
+
+// ==========================================
+// API Thiệp Cưới Công Khai (Public Wedding Cards API)
+// ==========================================
+Route::get('/api/wedding-cards', [WeddingCardApiController::class, 'index'])->name('api.wedding-cards.index');
+Route::get('/api/wedding-cards/{id}', [WeddingCardApiController::class, 'show'])->name('api.wedding-cards.show');

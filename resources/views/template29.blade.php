@@ -430,15 +430,15 @@
         }, $albumData)) : []);
 
         $leadEmpty = ($cal['start_day_of_week'] == 0) ? 6 : ($cal['start_day_of_week'] - 1);
-        $groomStk = $weddingCard->groom_bank_number ?: $weddingCard->bride_bank_account ?: '0000000000';
-        $brideStk = $weddingCard->bride_bank_number ?: '6665558888';
+        $groomStk = $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '0000000000');
+        $brideStk = $weddingCard->bride_bank_account ?: ($weddingCard->bride_bank_number ?: '6665558888');
         $groomBankName = $weddingCard->groom_bank_name ?: 'Vietcombank';
         $brideBankName = $weddingCard->bride_bank_name ?: 'BIDV';
-        $groomOwner = $weddingCard->groom_bank_owner ?: 'TRẦN VĂN NAM';
-        $brideOwner = $weddingCard->bride_bank_owner ?: 'NGUYỄN NGỌC NHI';
+        $groomOwner = $weddingCard->groom_bank_owner ?: $weddingCard->groom_name;
+        $brideOwner = $weddingCard->bride_bank_owner ?: $weddingCard->bride_name;
 
-        $groomQrUrl = $weddingCard->groom_qr_image ? asset('storage/' . $weddingCard->groom_qr_image) : 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' . urlencode($groomBankName . '-' . $groomStk . '-' . $groomOwner);
-        $brideQrUrl = $weddingCard->bride_qr_image ? asset('storage/' . $weddingCard->bride_qr_image) : 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' . urlencode($brideBankName . '-' . $brideStk . '-' . $brideOwner);
+        $groomQrUrl = $weddingCard->groom_qr_url;
+        $brideQrUrl = $weddingCard->bride_qr_url;
     @endphp
 
     <!-- Golden Shimmer Sparkles Canvas -->
@@ -752,15 +752,15 @@
                         <span class="inline-block px-2.5 py-0.5 rounded-full bg-imperial-900 text-gold-200 text-[10px] uppercase tracking-wider font-semibold mb-1.5">
                             <span lang="vi">Nhà Trai</span> <span lang="ko">• 신랑측</span>
                         </span>
-                        <p class="text-[11px] uppercase tracking-wider text-imperial-600 font-semibold" lang="vi">Ông Bà</p>
+                        <p class="text-[11px] uppercase tracking-wider text-imperial-600 font-semibold" lang="vi">Nhà Trai</p>
                         <p class="font-serif text-base sm:text-lg font-bold text-imperial-950 leading-snug mt-0.5">
-                            Trần Văn Hùng
+                            {{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Trần Văn Hùng') }}
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-imperial-950 leading-snug">
-                            Phạm Thị Lan
+                            {{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Phạm Thị Lan') }}
                         </p>
                         <p class="text-[11px] text-imperial-700/80 mt-2 leading-relaxed">
-                            25 Ngõ 12 Đặng Văn Ngữ, Đống Đa, Hà Nội
+                            {{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: 'Đống Đa, Hà Nội') }}
                         </p>
                     </div>
 
@@ -769,15 +769,15 @@
                         <span class="inline-block px-2.5 py-0.5 rounded-full bg-imperial-900 text-gold-200 text-[10px] uppercase tracking-wider font-semibold mb-1.5">
                             <span lang="vi">Nhà Gái</span> <span lang="ko">• 신부측</span>
                         </span>
-                        <p class="text-[11px] uppercase tracking-wider text-imperial-600 font-semibold" lang="vi">Ông Bà</p>
+                        <p class="text-[11px] uppercase tracking-wider text-imperial-600 font-semibold" lang="vi">Nhà Gái</p>
                         <p class="font-serif text-base sm:text-lg font-bold text-imperial-950 leading-snug mt-0.5">
-                            Nguyễn Văn Bình
+                            {{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Nguyễn Văn Bình') }}
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-imperial-950 leading-snug">
-                            Lê Thị Hương
+                            {{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Lê Thị Hương') }}
                         </p>
                         <p class="text-[11px] text-imperial-700/80 mt-2 leading-relaxed">
-                            18 Ngõ 86 Chùa Hà, Cầu Giấy, Hà Nội
+                            {{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: 'Cầu Giấy, Hà Nội') }}
                         </p>
                     </div>
                 </div>
@@ -1254,7 +1254,7 @@
             <img src="https://chungdoi.com/images/themes/songlong-red/chinese_happiness.webp" alt="囍" class="w-14 h-14 object-contain mx-auto mb-3">
             <h2 class="font-pattaya text-3xl sm:text-4xl text-gold-metallic">{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</h2>
             <p class="font-serif italic text-sm sm:text-base text-gold-200/90 mt-3 max-w-xs mx-auto leading-relaxed" lang="vi">
-                Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!
+                {{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}
             </p>
             <p class="font-kr text-xs text-gold-300/80 mt-1" lang="ko">
                 함께해 주셔서 진심으로 감사드립니다.
@@ -1632,40 +1632,18 @@
         }
 
         /* ---------------------------------------------------------------
-         * E. SỔ LƯU BÚT / 방명록 (BILINGUAL + VIETNAMESE WISHES)
+         * E. SỔ LƯU BÚT / 방명록 (DỮ LIỆU TỪ DATABASE)
          * --------------------------------------------------------------- */
-        const wishesList = [
-            {
-                name: 'Bạn Hoàng dev',
-                time: '18/04/2026',
-                message: 'Chúc {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }} mãi yêu nhau, đầu bạc răng long! 결혼을 진심으로 축하합니다!'
-            },
-            {
-                name: '김민수 (Kim Min-soo)',
-                time: '18/04/2026',
-                message: '반남 & 응옥니 두 분의 결혼을 진심으로 축하드립니다! 늘 행복하고 사랑이 가득한 가정을 이루시길 바랍니다 ♥'
-            },
-            {
-                name: 'Hoài Nam',
-                time: '17/04/2026',
-                message: 'Chúc hai bạn luôn nắm tay nhau qua mọi chặng đường!!!'
-            },
-            {
-                name: 'Bạn Linh',
-                time: '17/04/2026',
-                message: 'Mừng ngày trọng đại! Chúc hai bạn cười nhiều hơn cãi, yêu nhiều hơn giận nhen!'
-            },
-            {
-                name: 'Chị Huyền',
-                time: '16/04/2026',
-                message: 'Chúc hai em trăm năm hạnh phúc, vợ chồng đồng lòng <3'
-            },
-            {
-                name: 'Cô My',
-                time: '16/04/2026',
-                message: 'Chúc vợ chồng son mãi yêu thương, sớm có tin vui :D'
-            }
-        ];
+        @php
+            $cardWishes29 = $weddingCard->wishes()->approved()->latest()->take(10)->get()->map(function($w) {
+                return [
+                    'name' => $w->sender_name,
+                    'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
+                    'message' => $w->message,
+                ];
+            });
+        @endphp
+        const wishesList = @json($cardWishes29);
 
         function escapeHtml(str) {
             return String(str).replace(/[&<>"']/g, s => ({

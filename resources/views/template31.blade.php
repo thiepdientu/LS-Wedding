@@ -318,15 +318,15 @@
         }, $albumData, array_keys($albumData))) : []);
 
         $leadEmpty = ($cal['start_day_of_week'] == 0) ? 6 : ($cal['start_day_of_week'] - 1);
-        $groomStk = $weddingCard->groom_bank_number ?: $weddingCard->bride_bank_account ?: '998820022027';
-        $brideStk = $weddingCard->bride_bank_number ?: '190320022027';
+        $groomStk = $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '998820022027');
+        $brideStk = $weddingCard->bride_bank_account ?: ($weddingCard->bride_bank_number ?: '190320022027');
         $groomBankName = $weddingCard->groom_bank_name ?: 'Vietcombank';
         $brideBankName = $weddingCard->bride_bank_name ?: 'Techcombank';
         $groomOwner = $weddingCard->groom_bank_owner ?: $weddingCard->groom_name;
         $brideOwner = $weddingCard->bride_bank_owner ?: $weddingCard->bride_name;
 
-        $groomQrUrl = $weddingCard->groom_qr_image ? asset('storage/' . $weddingCard->groom_qr_image) : 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . urlencode($groomBankName . '-' . $groomStk . '-' . $groomOwner);
-        $brideQrUrl = $weddingCard->bride_qr_image ? asset('storage/' . $weddingCard->bride_qr_image) : 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . urlencode($brideBankName . '-' . $brideStk . '-' . $brideOwner);
+        $groomQrUrl = $weddingCard->groom_qr_url;
+        $brideQrUrl = $weddingCard->bride_qr_url;
     @endphp
 
     <!-- ===================================================================
@@ -786,13 +786,13 @@
                         Nhà Trai
                     </span>
                     <p class="text-xs text-lotus-800 font-medium leading-relaxed">
-                        Ông: <strong class="text-lotus-900">Trần Minh Đức</strong>
+                        Ông: <strong class="text-lotus-900">{{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Trần Minh Đức') }}</strong>
                     </p>
                     <p class="text-xs text-lotus-800 font-medium leading-relaxed mt-0.5">
-                        Bà: <strong class="text-lotus-900">Lê Thị Thu Hà</strong>
+                        Bà: <strong class="text-lotus-900">{{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Lê Thị Thu Hà') }}</strong>
                     </p>
                     <p class="text-[11px] text-lotus-800/85 mt-1.5 leading-snug">
-                        📍 Quận 3, TP. Hồ Chí Minh
+                        📍 {{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: 'Quận 3, TP. Hồ Chí Minh') }}
                     </p>
                 </div>
 
@@ -802,13 +802,13 @@
                         Nhà Gái
                     </span>
                     <p class="text-xs text-lotus-800 font-medium leading-relaxed">
-                        Ông: <strong class="text-lotus-900">Nguyễn Hoàng Nam</strong>
+                        Ông: <strong class="text-lotus-900">{{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Nguyễn Hoàng Nam') }}</strong>
                     </p>
                     <p class="text-xs text-lotus-800 font-medium leading-relaxed mt-0.5">
-                        Bà: <strong class="text-lotus-900">Phạm Ngọc Lan</strong>
+                        Bà: <strong class="text-lotus-900">{{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Phạm Ngọc Lan') }}</strong>
                     </p>
                     <p class="text-[11px] text-lotus-800/85 mt-1.5 leading-snug">
-                        📍 Quận Phú Nhuận, TP. Hồ Chí Minh
+                        📍 {{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: 'Quận Phú Nhuận, TP. Hồ Chí Minh') }}
                     </p>
                 </div>
             </div>
@@ -1371,10 +1371,10 @@
             <div class="reveal-item mt-12 pt-6 border-t border-lotus-200/80">
                 <h4 class="font-vibes text-4xl text-lotus-500">Thank You!</h4>
                 <p class="font-serif italic text-sm text-lotus-800 mt-1">
-                    Sự hiện diện và lời chúc phúc của Quý khách là món quà quý giá nhất đối với {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}.
+                    {{ $weddingCard->message_thanks ?: ('Sự hiện diện và lời chúc phúc của Quý khách là món quà quý giá nhất đối với ' . $weddingCard->groom_name . ' & ' . $weddingCard->bride_name . '.') }}
                 </p>
                 <p class="text-[10px] uppercase tracking-[0.25em] text-lotus-400 mt-4">
-                    Tơ Duyên Hồng • {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d.m.Y') : '20.02.2027' }}
+                    {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d.m.Y') : '20.02.2027' }} • {{ $weddingCard->template_name }}
                 </p>
             </div>
         </section>
@@ -1734,26 +1734,27 @@
         /* -----------------------------------------------------------
            4. GUESTBOOK (SỔ LƯU BÚT) & RSVP HANDLERS
         ----------------------------------------------------------- */
-        const initialWishes = [
-            {
-                author: 'Gia đình bác Hoàng (Quận 3)',
-                time: 'Vừa xong',
-                message: 'Chúc hai cháu {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }} trăm năm hạnh phúc, thuận vợ thuận chồng, sớm đón thiên thần nhỏ nhé!'
-            },
-            {
-                author: 'Hội bạn thân Đại học Kinh Tế TP.HCM',
-                time: '12 phút trước',
-                message: 'Thiệp Tơ Duyên Hồng hoa sen đẹp dịu dàng quá! Chúc cô dâu {{ $weddingCard->bride_name }} và chú rể {{ $weddingCard->groom_name }} mãi ngọt ngào như ngày đầu tiên 💗'
-            },
-            {
-                author: 'Ngọc Trâm & Minh Khôi',
-                time: '45 phút trước',
-                message: 'Chúc mừng hạnh phúc hai anh chị! Ngày 20/02 vợ chồng em chắc chắn diện đúng Dress Code hồng phấn tới chung vui!'
-            }
-        ];
+        @php
+            $cardWishes31 = $weddingCard->wishes()->approved()->latest()->take(10)->get()->map(function($w) {
+                return [
+                    'author' => $w->sender_name,
+                    'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
+                    'message' => $w->message,
+                ];
+            });
+        @endphp
+        const initialWishes = @json($cardWishes31);
 
         function renderWishes() {
             const container = document.getElementById('wishes-list');
+            if (!initialWishes || initialWishes.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-xs text-lotus-800/70 italic">
+                        Hãy là người đầu tiên gửi lời chúc mừng hạnh phúc đến cô dâu &amp; chú rể! 🌸
+                    </div>
+                `;
+                return;
+            }
             container.innerHTML = initialWishes.map(w => `
                 <div class="bg-white border border-lotus-200/90 rounded-2xl p-3 text-left shadow-sm">
                     <div class="flex items-center justify-between">

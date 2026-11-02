@@ -512,32 +512,32 @@
                     <!-- Nhà Trai -->
                     <div class="pr-2">
                         <p class="text-[11px] uppercase tracking-widest text-boho-600 font-semibold mb-1">
-                            Ông Bà
+                            Nhà Trai
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-boho-900 leading-snug">
-                            Trần Văn Hùng
+                            {{ $weddingCard->groom_father_name ?: ($weddingCard->groom_father ?: 'Trần Văn Hùng') }}
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-boho-900 leading-snug">
-                            Hạm Thị Lan
+                            {{ $weddingCard->groom_mother_name ?: ($weddingCard->groom_mother ?: 'Hạm Thị Lan') }}
                         </p>
                         <p class="text-[11px] text-boho-600 mt-2 leading-relaxed">
-                            25 Ngõ 12 Đặng Văn Ngữ, Đống Đa, Hà Nội
+                            {{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: 'Đống Đa, Hà Nội') }}
                         </p>
                     </div>
 
                     <!-- Nhà Gái -->
                     <div class="pl-2">
                         <p class="text-[11px] uppercase tracking-widest text-boho-600 font-semibold mb-1">
-                            Ông Bà
+                            Nhà Gái
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-boho-900 leading-snug">
-                            Nguyễn Văn Bình
+                            {{ $weddingCard->bride_father_name ?: ($weddingCard->bride_father ?: 'Nguyễn Văn Bình') }}
                         </p>
                         <p class="font-serif text-base sm:text-lg font-bold text-boho-900 leading-snug">
-                            Phan Thị Hương
+                            {{ $weddingCard->bride_mother_name ?: ($weddingCard->bride_mother ?: 'Phan Thị Hương') }}
                         </p>
                         <p class="text-[11px] text-boho-600 mt-2 leading-relaxed">
-                            18 Ngõ 86 Chùa Hà, Cầu Giấy, Hà Nội
+                            {{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: 'Cầu Giấy, Hà Nội') }}
                         </p>
                     </div>
                 </div>
@@ -1019,7 +1019,7 @@
             >
             <h2 class="font-pattaya text-3xl sm:text-4xl text-boho-800">{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</h2>
             <p class="font-serif italic text-sm sm:text-base text-boho-700 mt-3 max-w-xs mx-auto leading-relaxed">
-                Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!
+                {{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}
             </p>
             <div class="mt-5">
                 <a href="https://chungdoi.com" target="_blank" rel="noopener noreferrer" class="inline-block text-xs text-boho-600 hover:text-boho-900 font-medium tracking-wider">
@@ -1115,14 +1115,14 @@
                         Chú Rể - {{ $weddingCard->groom_name }}
                     </span>
                     <img 
-                        src="{{ !empty($weddingCard->groom_qr_image) ? asset('storage/' . $weddingCard->groom_qr_image) : ('https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' . urlencode(($weddingCard->groom_bank_name ?: 'Vietcombank') . '-' . ($weddingCard->groom_bank_number ?: '0000000000') . '-' . ($weddingCard->groom_bank_owner ?: 'TRAN HOANG LONG'))) }}" 
+                        src="{{ $weddingCard->groom_qr_url }}" 
                         alt="QR Chú Rể" 
                         class="w-32 h-32 mx-auto my-2.5 rounded-xl border border-boho-200 p-1 object-contain"
                     >
                     <p class="text-xs font-bold text-boho-900">Ngân hàng: {{ $weddingCard->groom_bank_name ?: 'Vietcombank' }}</p>
-                    <p class="text-xs text-boho-700 font-medium mt-0.5">Tên TK: {{ $weddingCard->groom_bank_owner ?: 'TRAN HOANG LONG' }}</p>
-                    <p class="text-xs font-mono font-semibold text-boho-900 my-1">STK: {{ $weddingCard->groom_bank_number ?: '0000000000' }}</p>
-                    <button onclick="copyText('{{ $weddingCard->groom_bank_number ?: '0000000000' }}', 'Đã sao chép STK Chú Rể ({{ $weddingCard->groom_bank_number ?: '0000000000' }})!')" class="mt-1 w-full py-1.5 rounded-lg bg-boho-800 hover:bg-boho-700 text-white text-[11px] font-medium cursor-pointer">
+                    <p class="text-xs text-boho-700 font-medium mt-0.5">Tên TK: {{ $weddingCard->groom_bank_owner ?: $weddingCard->groom_name }}</p>
+                    <p class="text-xs font-mono font-semibold text-boho-900 my-1">STK: {{ $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '0000000000') }}</p>
+                    <button onclick="copyText('{{ $weddingCard->groom_bank_account ?: $weddingCard->groom_bank_number }}', 'Đã sao chép STK Chú Rể ({{ $weddingCard->groom_bank_account ?: $weddingCard->groom_bank_number }})!')" class="mt-1 w-full py-1.5 rounded-lg bg-boho-800 hover:bg-boho-700 text-white text-[11px] font-medium cursor-pointer">
                         <i class="fa-regular fa-copy mr-1"></i> Sao chép STK
                     </button>
                 </div>
@@ -1133,14 +1133,14 @@
                         Cô Dâu - {{ $weddingCard->bride_name }}
                     </span>
                     <img 
-                        src="{{ !empty($weddingCard->bride_qr_image) ? asset('storage/' . $weddingCard->bride_qr_image) : ('https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' . urlencode(($weddingCard->bride_bank_name ?: 'BIDV') . '-' . ($weddingCard->bride_bank_number ?: '6665558888') . '-' . ($weddingCard->bride_bank_owner ?: 'NGUYEN BAO NGOC'))) }}" 
+                        src="{{ $weddingCard->bride_qr_url }}" 
                         alt="QR Cô Dâu" 
                         class="w-32 h-32 mx-auto my-2.5 rounded-xl border border-boho-200 p-1 object-contain"
                     >
                     <p class="text-xs font-bold text-boho-900">Ngân hàng: {{ $weddingCard->bride_bank_name ?: 'BIDV' }}</p>
-                    <p class="text-xs text-boho-700 font-medium mt-0.5">Tên TK: {{ $weddingCard->bride_bank_owner ?: 'NGUYEN BAO NGOC' }}</p>
-                    <p class="text-xs font-mono font-semibold text-boho-900 my-1">STK: {{ $weddingCard->bride_bank_number ?: '6665558888' }}</p>
-                    <button onclick="copyText('{{ $weddingCard->bride_bank_number ?: '6665558888' }}', 'Đã sao chép STK Cô Dâu ({{ $weddingCard->bride_bank_number ?: '6665558888' }})!')" class="mt-1 w-full py-1.5 rounded-lg bg-boho-800 hover:bg-boho-700 text-white text-[11px] font-medium cursor-pointer">
+                    <p class="text-xs text-boho-700 font-medium mt-0.5">Tên TK: {{ $weddingCard->bride_bank_owner ?: $weddingCard->bride_name }}</p>
+                    <p class="text-xs font-mono font-semibold text-boho-900 my-1">STK: {{ $weddingCard->bride_bank_account ?: ($weddingCard->bride_bank_number ?: '6665558888') }}</p>
+                    <button onclick="copyText('{{ $weddingCard->bride_bank_account ?: $weddingCard->bride_bank_number }}', 'Đã sao chép STK Cô Dâu ({{ $weddingCard->bride_bank_account ?: $weddingCard->bride_bank_number }})!')" class="mt-1 w-full py-1.5 rounded-lg bg-boho-800 hover:bg-boho-700 text-white text-[11px] font-medium cursor-pointer">
                         <i class="fa-regular fa-copy mr-1"></i> Sao chép STK
                     </button>
                 </div>
@@ -1385,40 +1385,18 @@
         }
 
         /* ---------------------------------------------------------------
-         * D. SỔ LƯU BÚT (EXACT 6 PRE-LOADED WISHES FROM DEMO)
+         * D. SỔ LƯU BÚT (DỮ LIỆU TỪ DATABASE)
          * --------------------------------------------------------------- */
-        const wishesList = [
-            {
-                name: 'Bạn Hoàng dev',
-                time: '6:44:27 7/4/2026',
-                message: 'Chúc 2 bạn mãi yêu nhau, đầu bạc răng long'
-            },
-            {
-                name: 'Hoài Nam',
-                time: '6:43:31 7/4/2026',
-                message: 'Chúc hai bạn luôn nắm tay nhau qua mọi chặng đường!!!'
-            },
-            {
-                name: 'Bạn Linh',
-                time: '6:42:43 7/4/2026',
-                message: 'Mừng ngày trọng đại! Chúc hai bạn cười nhiều hơn cãi, yêu nhiều hơn giận nhen!'
-            },
-            {
-                name: 'Chị Huyền',
-                time: '6:42:15 7/4/2026',
-                message: 'Chúc hai em trăm năm hạnh phúc, vợ chồng đồng lòng <3'
-            },
-            {
-                name: 'Cô My',
-                time: '6:41:50 7/4/2026',
-                message: 'Chúc vợ chồng son mãi yêu thương, sớm có tin vui :D'
-            },
-            {
-                name: 'Chị Thanh',
-                time: '6:41:09 7/4/2026',
-                message: 'Mừng ngày vu quy, chúc đôi uyên ương hạnh phúc bền lâu <3'
-            }
-        ];
+        @php
+            $cardWishes24 = $weddingCard->wishes()->approved()->latest()->take(10)->get()->map(function($w) {
+                return [
+                    'name' => $w->sender_name,
+                    'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
+                    'message' => $w->message,
+                ];
+            });
+        @endphp
+        const wishesList = @json($cardWishes24);
 
         function escapeHtml(str) {
             return String(str).replace(/[&<>"']/g, s => ({
@@ -1428,6 +1406,14 @@
 
         function renderWishes() {
             const container = document.getElementById('wishes-container');
+            if (!wishesList || wishesList.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-xs text-boho-600 italic">
+                        Hãy là người đầu tiên gửi lời chúc mừng hạnh phúc đến cô dâu &amp; chú rể!
+                    </div>
+                `;
+                return;
+            }
             container.innerHTML = wishesList.map(item => `
                 <div class="bg-boho-50/75 rounded-2xl p-3.5 border border-boho-200 shadow-sm">
                     <div class="flex items-center justify-between gap-2">
