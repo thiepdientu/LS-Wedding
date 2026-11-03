@@ -952,6 +952,98 @@
       object-fit: cover;
     }
 
+    /* Party Cards for Nhà Trai & Nhà Gái */
+    .parties-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .party-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 24px 18px;
+      box-shadow: 0 12px 32px rgba(40, 22, 17, 0.08);
+      border: 1px solid rgba(78, 47, 36, 0.14);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .party-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brown-700), var(--gold-accent), var(--brown-700));
+    }
+
+    .party-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .party-badge.groom {
+      background: linear-gradient(135deg, rgba(78, 47, 36, 0.08), rgba(78, 47, 36, 0.18));
+      color: var(--brown-800);
+      border: 1px solid rgba(78, 47, 36, 0.22);
+    }
+
+    .party-badge.bride {
+      background: linear-gradient(135deg, rgba(197, 155, 95, 0.15), rgba(197, 155, 95, 0.28));
+      color: #7d5210;
+      border: 1px solid rgba(197, 155, 95, 0.35);
+    }
+
+    .party-venue {
+      background: var(--cream-bg);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 14px 0 16px;
+      border: 1px dashed rgba(78, 47, 36, 0.2);
+      text-align: center;
+    }
+
+    .party-venue-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .party-venue-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--brown-900);
+      line-height: 1.45;
+    }
+
+    .party-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .party-action-btn {
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+    }
+
     /* Reception & Calendar Card */
     .reception-card {
       background: #ffffff;
@@ -1581,14 +1673,27 @@
         <div class="env-back-flap"></div>
         <div class="env-inner-pocket"></div>
 
+        @php
+          $brideAvatarSrc = !empty($weddingCard->bride_avatar)
+              ? (str_starts_with($weddingCard->bride_avatar, 'http') ? $weddingCard->bride_avatar : asset('storage/' . $weddingCard->bride_avatar))
+              : (!empty($weddingCard->bride_image)
+                  ? (str_starts_with($weddingCard->bride_image, 'http') ? $weddingCard->bride_image : asset('storage/' . $weddingCard->bride_image))
+                  : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp');
+
+          $groomAvatarSrc = !empty($weddingCard->groom_avatar)
+              ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar))
+              : (!empty($weddingCard->groom_image)
+                  ? (str_starts_with($weddingCard->groom_image, 'http') ? $weddingCard->groom_image : asset('storage/' . $weddingCard->groom_image))
+                  : 'https://assets.chungdoi.com/photo-library/design/1f83fb78c75b96a05661eca4cbc50dd771fc37411920623d6d9729eea1daa7c8.webp');
+        @endphp
         <!-- Bride Polaroid (Left Tilted) -->
         <div class="polaroid-card bride-card" onclick="openLightbox(0)">
-          <img src="{{ !empty($weddingCard->bride_image) ? asset('storage/' . $weddingCard->bride_image) : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp' }}" alt="Cô Dâu {{ $weddingCard->bride_name }}">
+          <img src="{{ $brideAvatarSrc }}" alt="Cô Dâu {{ $weddingCard->bride_name }}">
         </div>
 
         <!-- Groom Polaroid (Right Tilted) -->
         <div class="polaroid-card groom-card" onclick="openLightbox(1)">
-          <img src="{{ !empty($weddingCard->groom_image) ? asset('storage/' . $weddingCard->groom_image) : 'https://assets.chungdoi.com/photo-library/design/1f83fb78c75b96a05661eca4cbc50dd771fc37411920623d6d9729eea1daa7c8.webp' }}" alt="Chú Rể {{ $weddingCard->groom_name }}">
+          <img src="{{ $groomAvatarSrc }}" alt="Chú Rể {{ $weddingCard->groom_name }}">
         </div>
 
         <!-- Envelope Front Flaps -->
@@ -1667,10 +1772,17 @@
       <h2 class="section-heading">Album Ảnh</h2>
       <p class="section-subtext">Khoảnh khắc hạnh phúc của {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</p>
 
+      @php
+        $albumCoverSrc = !empty($weddingCard->cover_image)
+            ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image))
+            : (!empty($weddingCard->banner_preview)
+                ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
+                : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp');
+      @endphp
       <div class="album-carousel-card">
         <div class="album-main-viewport">
           <button class="album-nav-btn prev" onclick="stepAlbum(-1)" aria-label="Ảnh trước">❮</button>
-          <img id="albumActiveImg" src="{{ !empty($weddingCard->cover_image) ? asset('storage/' . $weddingCard->cover_image) : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp' }}" alt="Ảnh cưới {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" onclick="openLightbox(currentAlbumIndex)">
+          <img id="albumActiveImg" src="{{ $albumCoverSrc }}" alt="Ảnh cưới {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" onclick="openLightbox(currentAlbumIndex)">
           <button class="album-nav-btn next" onclick="stepAlbum(1)" aria-label="Ảnh tiếp">❯</button>
         </div>
         <div class="album-counter-pill" id="albumCounter">1 / 8</div>
@@ -1678,32 +1790,114 @@
       </div>
     </section>
 
-    <!-- 4. THÔNG TIN TIỆC CƯỚI & LỊCH -->
+    <!-- 4. THÔNG TIN TIỆC CƯỚI (2 KHỐI RIÊNG BIỆT: NHÀ TRAI & NHÀ GÁI) & LỊCH TRÌNH -->
     <section class="content-section reveal">
       <h2 class="section-heading">THÔNG TIN TIỆC CƯỚI</h2>
-      <p class="section-subtext">Tiệc cưới sẽ diễn ra vào lúc:</p>
+      <p class="section-subtext">Trân trọng kính mời quý khách đến chung vui cùng gia đình chúng tôi</p>
 
+      @php
+        // 1. Dữ liệu Tiệc Cưới Nhà Trai
+        $groomPartyDate = $weddingCard->groom_eating_date ?: $weddingCard->wedding_date;
+        $groomPartyTime = $weddingCard->time_groom ?: ($weddingCard->wedding_time ?: '11:00');
+        $groomPartyDayOfWeek = $groomPartyDate ? mb_strtoupper($groomPartyDate->locale('vi')->isoFormat('dddd')) : 'THỨ TƯ';
+        $groomPartyDay = $groomPartyDate ? $groomPartyDate->format('d') : '17';
+        $groomPartyMonth = $groomPartyDate ? $groomPartyDate->format('m') : '11';
+        $groomPartyYear = $groomPartyDate ? $groomPartyDate->format('Y') : '2027';
+        $groomPartyLunar = $weddingCard->time_groom_al ?: ($weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: 'ngày 20 tháng 10 năm Đinh Mùi'));
+        $groomVenueAddress = $weddingCard->address_groom ?: ($weddingCard->address_wedding ?: 'Tư gia Nhà Trai');
+        $groomMapUrl = !empty($weddingCard->groom_map)
+            ? $weddingCard->groom_map
+            : (!empty($weddingCard->address_wedding_map)
+                ? $weddingCard->address_wedding_map
+                : ('https://www.google.com/maps/search/?api=1&query=' . urlencode($groomVenueAddress)));
+
+        // 2. Dữ liệu Tiệc Cưới Nhà Gái
+        $bridePartyDate = $weddingCard->bride_eating_date ?: $weddingCard->wedding_date;
+        $bridePartyTime = $weddingCard->time_bride ?: ($weddingCard->wedding_time ?: '11:00');
+        $bridePartyDayOfWeek = $bridePartyDate ? mb_strtoupper($bridePartyDate->locale('vi')->isoFormat('dddd')) : 'THỨ TƯ';
+        $bridePartyDay = $bridePartyDate ? $bridePartyDate->format('d') : '17';
+        $bridePartyMonth = $bridePartyDate ? $bridePartyDate->format('m') : '11';
+        $bridePartyYear = $bridePartyDate ? $bridePartyDate->format('Y') : '2027';
+        $bridePartyLunar = $weddingCard->time_bride_al ?: ($weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: 'ngày 20 tháng 10 năm Đinh Mùi'));
+        $brideVenueAddress = $weddingCard->address_bride ?: ($weddingCard->address_wedding ?: 'Tư gia Nhà Gái');
+        $brideMapUrl = !empty($weddingCard->bride_map)
+            ? $weddingCard->bride_map
+            : (!empty($weddingCard->address_wedding_map)
+                ? $weddingCard->address_wedding_map
+                : ('https://www.google.com/maps/search/?api=1&query=' . urlencode($brideVenueAddress)));
+      @endphp
+
+      <!-- Hai Khối Tiệc Cưới Riêng Biệt Cho Nhà Trai & Nhà Gái -->
+      <div class="parties-wrapper">
+        <!-- Khối 1: Tiệc Cưới Nhà Trai -->
+        <div class="party-card">
+          <div class="party-badge groom">
+            <span>🤵</span>
+            <span>{{ $weddingCard->groom_eating_title ?: 'Tiệc Cưới Nhà Trai' }}</span>
+          </div>
+
+          <div class="ceremony-time-big" style="color: var(--brown-800);">{{ $groomPartyTime }}</div>
+          <div class="ceremony-date-row" style="color: var(--brown-800);">
+            <span class="part" style="border-color: rgba(78,47,36,0.25);">{{ $groomPartyDayOfWeek }}</span>
+            <span class="day-num" style="color: var(--brown-800);">{{ $groomPartyDay }}</span>
+            <span class="part" style="border-color: rgba(78,47,36,0.25);">THÁNG {{ $groomPartyMonth }}</span>
+          </div>
+          <div class="ceremony-year" style="color: var(--brown-900);">{{ $groomPartyYear }}</div>
+          <div class="ceremony-lunar" style="color: var(--text-muted);">(Tức {{ $groomPartyLunar }})</div>
+
+          <div class="party-venue">
+            <div class="party-venue-label">ĐỊA ĐIỂM TỔ CHỨC</div>
+            <div class="party-venue-name">{{ $groomVenueAddress }}</div>
+          </div>
+
+          <div class="party-actions">
+            <a href="{{ $groomMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn-outline-brown party-action-btn">
+              <span>📍 Chỉ đường Google Maps</span>
+            </a>
+            @if(!empty($weddingCard->groom_phone))
+              <a href="tel:{{ $weddingCard->groom_phone }}" class="btn-solid-brown party-action-btn">
+                <span>📞 Liên hệ Chú Rể: {{ $weddingCard->groom_phone }}</span>
+              </a>
+            @endif
+          </div>
+        </div>
+
+        <!-- Khối 2: Tiệc Cưới Nhà Gái -->
+        <div class="party-card">
+          <div class="party-badge bride">
+            <span>👰</span>
+            <span>{{ $weddingCard->bride_eating_title ?: 'Tiệc Cưới Nhà Gái' }}</span>
+          </div>
+
+          <div class="ceremony-time-big" style="color: var(--brown-800);">{{ $bridePartyTime }}</div>
+          <div class="ceremony-date-row" style="color: var(--brown-800);">
+            <span class="part" style="border-color: rgba(78,47,36,0.25);">{{ $bridePartyDayOfWeek }}</span>
+            <span class="day-num" style="color: var(--brown-800);">{{ $bridePartyDay }}</span>
+            <span class="part" style="border-color: rgba(78,47,36,0.25);">THÁNG {{ $bridePartyMonth }}</span>
+          </div>
+          <div class="ceremony-year" style="color: var(--brown-900);">{{ $bridePartyYear }}</div>
+          <div class="ceremony-lunar" style="color: var(--text-muted);">(Tức {{ $bridePartyLunar }})</div>
+
+          <div class="party-venue">
+            <div class="party-venue-label">ĐỊA ĐIỂM TỔ CHỨC</div>
+            <div class="party-venue-name">{{ $brideVenueAddress }}</div>
+          </div>
+
+          <div class="party-actions">
+            <a href="{{ $brideMapUrl }}" target="_blank" rel="noopener noreferrer" class="btn-outline-brown party-action-btn">
+              <span>📍 Chỉ đường Google Maps</span>
+            </a>
+            @if(!empty($weddingCard->bride_phone))
+              <a href="tel:{{ $weddingCard->bride_phone }}" class="btn-solid-brown party-action-btn">
+                <span>📞 Liên hệ Cô Dâu: {{ $weddingCard->bride_phone }}</span>
+              </a>
+            @endif
+          </div>
+        </div>
+      </div>
+
+      <!-- Khối Tiện ích Chung: Đếm ngược, Lịch tháng, Thêm vào lịch -->
       <div class="reception-card">
-        <div class="ceremony-time-big" style="color: var(--brown-800);">{{ $weddingCard->wedding_time ?: '18:00' }}</div>
-        <div class="ceremony-date-row" style="color: var(--brown-800);">
-          <span class="part" style="border-color: rgba(78,47,36,0.25);">{{ $weddingCard->wedding_date ? mb_strtoupper($weddingCard->wedding_date->locale('vi')->isoFormat('dddd')) : 'THỨ TƯ' }}</span>
-          <span class="day-num" style="color: var(--brown-800);">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d') : '17' }}</span>
-          <span class="part" style="border-color: rgba(78,47,36,0.25);">THÁNG {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('m') : '11' }}</span>
-        </div>
-        <div class="ceremony-year" style="color: var(--brown-900);">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('Y') : '2027' }}</div>
-        <div class="ceremony-lunar" style="color: var(--text-muted);">(Tức ngày {{ $weddingCard->wedding_date_lunar ?: '20 tháng 10 năm Đinh Mùi' }})</div>
-
-        <div class="reception-slots">
-          <div class="slot-pill">
-            <span>Đón khách</span>
-            <span>{{ $weddingCard->guest_welcome_time ?: '17:30' }}</span>
-          </div>
-          <div class="slot-pill">
-            <span>Khai tiệc</span>
-            <span>{{ $weddingCard->wedding_time ?: '18:00' }}</span>
-          </div>
-        </div>
-
         <h3 class="section-heading" style="font-size: 1.35rem; margin-bottom: 6px;">Cùng đếm ngược</h3>
         <div class="countdown-grid" id="countdownGrid">
           <div class="cd-box"><div class="num" id="cdDays">00</div><div class="lbl">Ngày</div></div>
@@ -1741,17 +1935,6 @@
         <a class="btn-solid-brown" target="_blank" rel="noopener noreferrer"
            href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ $calSummary }}&dates={{ $calDate }}T{{ $calTime }}/{{ $calDate }}T{{ $calTime }}&details={{ $calSummary }}&location={{ $calLocation }}">
           <span>📅 Thêm vào lịch</span>
-        </a>
-      </div>
-
-      <!-- Venue Location -->
-      <div class="venue-box">
-        <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Tiệc cưới sẽ tổ chức tại</div>
-        <div class="venue-name">{{ $weddingCard->wedding_location ?: 'Trung Tâm Tiệc Cưới Hoàng Gia' }}</div>
-        <div class="venue-address">{{ $weddingCard->wedding_address ?: 'Ngõ 74 P. Nguyễn Thị Định, Nhân Chính, Thanh Xuân, Hà Nội' }}</div>
-        <a class="btn-outline-brown" target="_blank" rel="noopener noreferrer"
-           href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location ?: '') . ' ' . ($weddingCard->wedding_address ?: ''))) }}">
-          <span>📍 Chỉ đường Google Maps</span>
         </a>
       </div>
     </section>
