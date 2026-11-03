@@ -192,10 +192,10 @@ class WeddingCardController extends Controller
             'identifyWedding' => 'required|string|max:255',
             'template' => 'required|string|max:255',
             'wedding_time' => 'required|string|max:255',
-            'banner_preview' => 'required|string|max:1000',
+            'banner_preview' => 'nullable|string|max:1000',
             'bride_name' => 'required|string|max:255',
             'groom_name' => 'required|string|max:255',
-            'banner_top' => 'required|string|max:1000',
+            'banner_top' => 'nullable|string|max:1000',
             'wedding_date' => 'required|date',
             'wedding_message' => 'required|string|max:1000',
             'address_wedding' => 'required|string|max:1000',
@@ -203,13 +203,13 @@ class WeddingCardController extends Controller
             'address_wedding_map' => 'required|string|max:1000',
             'bride_birthday' => 'required|date',
             'groom_birthday' => 'required|date',
-            'bride_avatar' => 'required|string|max:5000',
-            'groom_avatar' => 'required|string|max:5000',
+            'bride_avatar' => 'nullable|string|max:5000',
+            'groom_avatar' => 'nullable|string|max:5000',
             'des_bride' => 'required|string|max:5000',
             'des_groom' => 'required|string|max:5000',
-            'banner_love_story' => 'required|string|max:5000',
+            'banner_love_story' => 'nullable|string|max:5000',
             'love_story' => 'required|string|max:5000',
-            'banner_coundown' => 'required|string|max:5000',
+            'banner_coundown' => 'nullable|string|max:5000',
             'album' => 'nullable|string|max:50000',
             'date_coundown' => 'required|string|max:500',
             'address_groom' => 'required|string|max:500',
@@ -226,12 +226,22 @@ class WeddingCardController extends Controller
             'groom_phone' => 'required|string|max:15',
             'message_invite' => 'required|string|max:1000',
             'message_gift' => 'required|string|max:1000',
-            'banner_thanks' => 'required|string|max:1000',
+            'banner_thanks' => 'nullable|string|max:1000',
             'message_thanks' => 'required|string|max:1000',
-            'groom_qr' => 'required|string|max:500',
-            'bride_qr' => 'required|string|max:500',
+            'groom_qr' => 'nullable|string|max:500',
+            'bride_qr' => 'nullable|string|max:500',
             'groom_map' => 'required|string|max:500',
             'bride_map' => 'required|string|max:500',
+            // File ảnh tải lên trực tiếp
+            'avatar_groom' => 'nullable|file|image|max:10240',
+            'avatar_bride' => 'nullable|file|image|max:10240',
+            'groom_qr_image' => 'nullable|file|image|max:10240',
+            'bride_qr_image' => 'nullable|file|image|max:10240',
+            'banner_preview_image' => 'nullable|file|image|max:10240',
+            'banner_top_image' => 'nullable|file|image|max:10240',
+            'banner_coundown_image' => 'nullable|file|image|max:10240',
+            'banner_story_image' => 'nullable|file|image|max:10240',
+            'banner_thanks_image' => 'nullable|file|image|max:10240',
             // Các trường bổ sung cho template mới (đều nullable)
             'groom_father_name' => 'nullable|string|max:100',
             'groom_mother_name' => 'nullable|string|max:100',
@@ -275,6 +285,24 @@ class WeddingCardController extends Controller
             $validated['album'] = '[]';
         }
 
+        $defaultImages = [
+            'banner_preview' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80',
+            'banner_top' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+            'banner_coundown' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+            'banner_love_story' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+            'banner_thanks' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+            'groom_avatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+            'bride_avatar' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+            'groom_qr' => '',
+            'bride_qr' => '',
+        ];
+
+        foreach ($defaultImages as $field => $defaultValue) {
+            if (empty($validated[$field])) {
+                $validated[$field] = $defaultValue;
+            }
+        }
+
         // 2️⃣ Tạo thiệp cưới trước để lấy ID
         $weddingCard = WeddingCard::create($validated);
         $weddingId = $weddingCard->id; // Lấy ID của thiệp vừa tạo
@@ -295,8 +323,13 @@ class WeddingCardController extends Controller
 
         foreach ($imageFields as $inputName => $columnName) {
             if ($request->hasFile($inputName)) {
-                $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
-                $updateData[$columnName] = Storage::disk('s3')->url($path);
+                try {
+                    $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
+                    $updateData[$columnName] = Storage::disk('s3')->url($path);
+                } catch (\Throwable $e) {
+                    $path = $request->file($inputName)->store("weddings/$weddingId", 'public');
+                    $updateData[$columnName] = Storage::disk('public')->url($path);
+                }
             }
         }
 
@@ -423,7 +456,7 @@ class WeddingCardController extends Controller
             'love_story' => 'nullable|string|max:5000',
             'groom_map' => 'nullable|string|max:2000',
             'bride_map' => 'nullable|string|max:2000',
-            // Image URLs passed as text
+            // Image URLs passed as text (API / backward compatibility)
             'banner_preview' => 'nullable|string|max:2000',
             'banner_top' => 'nullable|string|max:2000',
             'bride_avatar' => 'nullable|string|max:5000',
@@ -434,6 +467,16 @@ class WeddingCardController extends Controller
             'groom_qr' => 'nullable|string|max:2000',
             'bride_qr' => 'nullable|string|max:2000',
             'album' => 'nullable|string|max:50000',
+            // File ảnh tải lên trực tiếp
+            'avatar_groom' => 'nullable|file|image|max:10240',
+            'avatar_bride' => 'nullable|file|image|max:10240',
+            'groom_qr_image' => 'nullable|file|image|max:10240',
+            'bride_qr_image' => 'nullable|file|image|max:10240',
+            'banner_preview_image' => 'nullable|file|image|max:10240',
+            'banner_top_image' => 'nullable|file|image|max:10240',
+            'banner_coundown_image' => 'nullable|file|image|max:10240',
+            'banner_story_image' => 'nullable|file|image|max:10240',
+            'banner_thanks_image' => 'nullable|file|image|max:10240',
             // Các trường bổ sung cho template mới (đều nullable)
             'groom_father_name' => 'nullable|string|max:100',
             'groom_mother_name' => 'nullable|string|max:100',
@@ -472,10 +515,6 @@ class WeddingCardController extends Controller
             }
         }
 
-        $weddingCard->update($data);
-
-        $updateData = [];
-
         $imageFields = [
             'banner_top_image' => 'banner_top',
             'banner_preview_image' => 'banner_preview',
@@ -492,13 +531,20 @@ class WeddingCardController extends Controller
             if ($request->hasFile($inputName)) {
                 try {
                     $path = $request->file($inputName)->storePublicly("weddings/$weddingId", 's3');
-                    $updateData[$columnName] = Storage::disk('s3')->url($path);
+                    $data[$columnName] = Storage::disk('s3')->url($path);
                 } catch (\Throwable $e) {
                     $path = $request->file($inputName)->store("weddings/$weddingId", 'public');
-                    $updateData[$columnName] = Storage::disk('public')->url($path);
+                    $data[$columnName] = Storage::disk('public')->url($path);
                 }
+            } elseif (!$request->filled($columnName)) {
+                // Nếu không tải file mới và không truyền link mới, giữ nguyên giá trị ảnh cũ trong DB
+                unset($data[$columnName]);
             }
         }
+
+        $weddingCard->update($data);
+
+        $updateData = [];
 
         // Album ảnh (xử lý theo manifest kéo thả/thêm/sửa/xóa hoặc file truyền thống)
         if ($request->filled('album_manifest')) {

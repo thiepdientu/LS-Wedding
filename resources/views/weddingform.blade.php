@@ -185,16 +185,12 @@
                                          src="{{ $weddingCard->groom_avatar ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80' }}" 
                                          class="w-full h-full object-cover">
                                 </div>
-                                <div class="flex-1 space-y-1.5">
+                                <div class="flex-1">
                                     <input type="file" 
                                            name="avatar_groom" 
+                                           accept="image/*"
                                            onchange="previewImage(this, 'preview-avatar-groom')"
-                                           class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors">
-                                    <input type="text" 
-                                           name="groom_avatar" 
-                                           value="{{ old('groom_avatar', $weddingCard->groom_avatar ?? '') }}" 
-                                           placeholder="Hoặc dán URL ảnh chú rể..." 
-                                           class="w-full px-2.5 py-1 text-xs text-slate-600 bg-white border border-slate-200 rounded-lg">
+                                           class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors cursor-pointer">
                                 </div>
                             </div>
                         </div>
@@ -267,16 +263,12 @@
                                         <span class="text-[10px] text-slate-400">QR</span>
                                     @endif
                                 </div>
-                                <div class="flex-1 space-y-1">
+                                <div class="flex-1">
                                     <input type="file" 
                                            name="groom_qr_image" 
+                                           accept="image/*"
                                            onchange="previewImage(this, 'preview-groom-qr')"
-                                           class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-slate-200">
-                                    <input type="text" 
-                                           name="groom_qr" 
-                                           value="{{ old('groom_qr', $weddingCard->groom_qr ?? '') }}" 
-                                           placeholder="URL ảnh QR..." 
-                                           class="w-full px-2 py-0.5 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
+                                           class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-slate-200 cursor-pointer">
                                 </div>
                             </div>
                         </div>
@@ -326,16 +318,12 @@
                                          src="{{ $weddingCard->bride_avatar ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80' }}" 
                                          class="w-full h-full object-cover">
                                 </div>
-                                <div class="flex-1 space-y-1.5">
+                                <div class="flex-1">
                                     <input type="file" 
                                            name="avatar_bride" 
+                                           accept="image/*"
                                            onchange="previewImage(this, 'preview-avatar-bride')"
-                                           class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 transition-colors">
-                                    <input type="text" 
-                                           name="bride_avatar" 
-                                           value="{{ old('bride_avatar', $weddingCard->bride_avatar ?? '') }}" 
-                                           placeholder="Hoặc dán URL ảnh cô dâu..." 
-                                           class="w-full px-2.5 py-1 text-xs text-slate-600 bg-white border border-slate-200 rounded-lg">
+                                           class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 transition-colors cursor-pointer">
                                 </div>
                             </div>
                         </div>
@@ -408,16 +396,12 @@
                                         <span class="text-[10px] text-slate-400">QR</span>
                                     @endif
                                 </div>
-                                <div class="flex-1 space-y-1">
+                                <div class="flex-1">
                                     <input type="file" 
                                            name="bride_qr_image" 
+                                           accept="image/*"
                                            onchange="previewImage(this, 'preview-bride-qr')"
-                                           class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-slate-200">
-                                    <input type="text" 
-                                           name="bride_qr" 
-                                           value="{{ old('bride_qr', $weddingCard->bride_qr ?? '') }}" 
-                                           placeholder="URL ảnh QR..." 
-                                           class="w-full px-2 py-0.5 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
+                                           class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-slate-200 cursor-pointer">
                                 </div>
                             </div>
                         </div>
@@ -704,16 +688,12 @@
                                  src="{{ $weddingCard->banner_preview ?? 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80' }}" 
                                  class="w-full h-full object-cover">
                         </div>
-                        <div class="space-y-2">
+                        <div>
                             <input type="file" 
                                    name="banner_preview_image" 
+                                   accept="image/*"
                                    onchange="previewImage(this, 'preview-banner-preview')"
                                    class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors cursor-pointer">
-                            <input type="text" 
-                                   name="banner_preview" 
-                                   value="{{ old('banner_preview', $weddingCard->banner_preview ?? '') }}" 
-                                   placeholder="Hoặc dán URL ảnh preview..." 
-                                   class="w-full px-3 py-1.5 text-xs text-slate-600 bg-white border border-slate-200 rounded-lg">
                         </div>
                     </div>
 
@@ -728,16 +708,12 @@
                                  src="{{ $weddingCard->banner_top ?? 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80' }}" 
                                  class="w-full h-full object-cover">
                         </div>
-                        <div class="space-y-2">
+                        <div>
                             <input type="file" 
                                    name="banner_top_image" 
+                                   accept="image/*"
                                    onchange="previewImage(this, 'preview-banner-top')"
                                    class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition-colors cursor-pointer">
-                            <input type="text" 
-                                   name="banner_top" 
-                                   value="{{ old('banner_top', $weddingCard->banner_top ?? '') }}" 
-                                   placeholder="Hoặc dán URL ảnh banner top..." 
-                                   class="w-full px-3 py-1.5 text-xs text-slate-600 bg-white border border-slate-200 rounded-lg">
                         </div>
                     </div>
                 </div>
@@ -755,16 +731,12 @@
                                 <span class="text-xs text-slate-400">Chưa có ảnh</span>
                             @endif
                         </div>
-                        <div class="space-y-1.5">
+                        <div>
                             <input type="file" 
                                    name="banner_coundown_image" 
+                                   accept="image/*"
                                    onchange="previewImage(this, 'preview-banner-countdown')"
                                    class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:bg-white file:border file:border-slate-200 cursor-pointer">
-                            <input type="text" 
-                                   name="banner_coundown" 
-                                   value="{{ old('banner_coundown', $weddingCard->banner_coundown ?? '') }}" 
-                                   placeholder="URL countdown..." 
-                                   class="w-full px-2 py-1 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
                         </div>
                     </div>
 
@@ -779,16 +751,12 @@
                                 <span class="text-xs text-slate-400">Chưa có ảnh</span>
                             @endif
                         </div>
-                        <div class="space-y-1.5">
+                        <div>
                             <input type="file" 
                                    name="banner_story_image" 
+                                   accept="image/*"
                                    onchange="previewImage(this, 'preview-banner-story')"
                                    class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:bg-white file:border file:border-slate-200 cursor-pointer">
-                            <input type="text" 
-                                   name="banner_love_story" 
-                                   value="{{ old('banner_love_story', $weddingCard->banner_love_story ?? '') }}" 
-                                   placeholder="URL story..." 
-                                   class="w-full px-2 py-1 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
                         </div>
                     </div>
 
@@ -803,16 +771,12 @@
                                 <span class="text-xs text-slate-400">Chưa có ảnh</span>
                             @endif
                         </div>
-                        <div class="space-y-1.5">
+                        <div>
                             <input type="file" 
                                    name="banner_thanks_image" 
+                                   accept="image/*"
                                    onchange="previewImage(this, 'preview-banner-thanks')"
                                    class="block w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:bg-white file:border file:border-slate-200 cursor-pointer">
-                            <input type="text" 
-                                   name="banner_thanks" 
-                                   value="{{ old('banner_thanks', $weddingCard->banner_thanks ?? '') }}" 
-                                   placeholder="URL thanks..." 
-                                   class="w-full px-2 py-1 text-xs text-slate-600 bg-white border border-slate-200 rounded-md">
                         </div>
                     </div>
                 </div>
@@ -1033,6 +997,11 @@
                 if (img) {
                     img.src = e.target.result;
                     img.classList.remove('hidden');
+                    // Hide any sibling placeholder text (ví dụ: 'Chưa có ảnh' hoặc 'QR')
+                    const placeholder = img.parentElement ? img.parentElement.querySelector('span') : null;
+                    if (placeholder) {
+                        placeholder.classList.add('hidden');
+                    }
                 }
             }
             reader.readAsDataURL(input.files[0]);
