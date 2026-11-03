@@ -294,12 +294,17 @@
             ];
         }
 
-        $dressCodes = is_array($weddingCard->dress_code) ? $weddingCard->dress_code : (is_string($weddingCard->dress_code) ? json_decode($weddingCard->dress_code, true) : null);
+        $dressCodes = !empty($weddingCard->dresscode_colors_list) 
+            ? $weddingCard->dresscode_colors_list 
+            : (!empty($weddingCard->dresscode_colors) 
+                ? (is_array($weddingCard->dresscode_colors) ? $weddingCard->dresscode_colors : (is_string($weddingCard->dresscode_colors) ? json_decode($weddingCard->dresscode_colors, true) : null))
+                : null);
+
         if (empty($dressCodes)) {
             $dressCodes = [
-                ['color' => '#556B45', 'label' => 'Xanh Olive', 'desc' => 'Xanh Rêu Olive (#556B45) — Thanh lịch, nhẹ nhàng và hài hòa cùng không gian hoa rum trắng.'],
-                ['color' => '#F7F6F0', 'label' => 'Trắng Kem', 'desc' => 'Trắng Kem Ivory (#F7F6F0) — Tinh khôi, trang nhã và sang trọng.'],
-                ['color' => '#D8C8B0', 'label' => 'Be Champagne', 'desc' => 'Be Champagne (#D8C8B0) — Ấm áp, nhã nhặn và tôn dáng.'],
+                ['hex' => '#556B45', 'name' => 'Xanh Olive', 'desc' => 'Xanh Rêu Olive (#556B45) — Thanh lịch, nhẹ nhàng và hài hòa cùng không gian hoa rum trắng.'],
+                ['hex' => '#F7F6F0', 'name' => 'Trắng Kem', 'desc' => 'Trắng Kem Ivory (#F7F6F0) — Tinh khôi, trang nhã và sang trọng.'],
+                ['hex' => '#D8C8B0', 'name' => 'Be Champagne', 'desc' => 'Be Champagne (#D8C8B0) — Ấm áp, nhã nhặn và tôn dáng.'],
             ];
         }
 
@@ -323,6 +328,9 @@
 
         $groomQrUrl = $weddingCard->groom_qr_url;
         $brideQrUrl = $weddingCard->bride_qr_url;
+
+        $groomAvatarSrc = !empty($weddingCard->groom_avatar) ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar)) : 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=85';
+        $brideAvatarSrc = !empty($weddingCard->bride_avatar) ? (str_starts_with($weddingCard->bride_avatar, 'http') ? $weddingCard->bride_avatar : asset('storage/' . $weddingCard->bride_avatar)) : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=85';
     @endphp
 
     <!-- REUSABLE SVG DEFINITIONS (Calla Lily, Silk Ribbon, Ornaments) -->
@@ -598,10 +606,10 @@
                 <!-- Left Tilted Frame: Groom ({{ $weddingCard->groom_name }}) -->
                 <div onclick="openLightbox(0)" class="photo-frame-groom cursor-pointer relative w-[158px] h-[215px] bg-white rounded-xl p-1.5 -mr-4 z-10">
                     <div class="w-full h-full rounded-lg overflow-hidden relative bg-olive-100">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=85" 
+                        <img src="{{ $groomAvatarSrc }}" 
                              alt="Chú rể {{ $weddingCard->groom_name }}" 
                              class="w-full h-full object-cover object-center transition duration-700 hover:scale-110"
-                             onerror="this.src='https://placehold.co/400x550/DCE5D5/2E3B25?text=Hoai+Nam'">
+                             onerror="this.src='https://placehold.co/400x550/DCE5D5/2E3B25?text=Chú+Rể'">
                         <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent p-2 text-left">
                             <span class="text-[10px] text-white/90 tracking-wider uppercase block">Chú Rể</span>
                             <span class="font-pattaya text-white text-sm">{{ $weddingCard->groom_name }}</span>
@@ -612,10 +620,10 @@
                 <!-- Right Tilted Frame: Bride ({{ $weddingCard->bride_name }}) -->
                 <div onclick="openLightbox(1)" class="photo-frame-bride cursor-pointer relative w-[158px] h-[215px] bg-white rounded-xl p-1.5 -ml-3 mt-6 z-20">
                     <div class="w-full h-full rounded-lg overflow-hidden relative bg-olive-100">
-                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=85" 
+                        <img src="{{ $brideAvatarSrc }}" 
                              alt="Cô dâu {{ $weddingCard->bride_name }}" 
                              class="w-full h-full object-cover object-center transition duration-700 hover:scale-110"
-                             onerror="this.src='https://placehold.co/400x550/E8EFE3/2E3B25?text=Thanh+Truc'">
+                             onerror="this.src='https://placehold.co/400x550/E8EFE3/2E3B25?text=Cô+Dâu'">
                         <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent p-2 text-right">
                             <span class="text-[10px] text-white/90 tracking-wider uppercase block">Cô Dâu</span>
                             <span class="font-pattaya text-white text-sm">{{ $weddingCard->bride_name }}</span>
@@ -626,7 +634,7 @@
                 <!-- Small Floating Calla Lily Badge at Photo Intersection -->
                 <div class="absolute -bottom-2 z-30 bg-white/95 border border-olive-200 rounded-full px-3 py-1 shadow-md flex items-center gap-1.5">
                     <span class="text-olive-600 text-xs">❦</span>
-                    <span class="font-serif italic text-xs font-semibold text-olive-800">19 . 12 . 2026</span>
+                    <span class="font-serif italic text-xs font-semibold text-olive-800">{{ $wDate ? $wDate->format('d . m . Y') : '19 . 12 . 2026' }}</span>
                     <span class="text-olive-600 text-xs">❦</span>
                 </div>
             </div>
@@ -760,67 +768,83 @@
                 </svg>
             </div>
 
-            <!-- BLOCK A: LỄ THÀNH HÔN (ALIGNED LEFT - BỐ CỤC SO LE TRÁI) -->
+            <!-- BLOCK A: TIỆC CƯỚI NHÀ TRAI (ALIGNED LEFT - BỐ CỤC SO LE TRÁI) -->
             <div class="reveal-left mr-6 bg-gradient-to-br from-white via-olive-50/50 to-olive-100/60 border-l-4 border-olive-600 rounded-r-2xl rounded-tl-xl p-5 shadow-md relative overflow-hidden">
                 <div class="flex items-center gap-2 text-olive-600 text-[11px] uppercase tracking-[0.22em] font-semibold">
                     <span>🕊️</span>
-                    <span>Nghi Thức Lễ Thành Hôn</span>
+                    <span>Tiệc Cưới Nhà Trai</span>
                 </div>
                 <h3 class="font-pattaya text-2xl text-olive-800 mt-1">
-                    Lễ Vu Quy &amp; Thành Hôn
+                    Hôn Trường Nhà Trai
                 </h3>
 
-                <!-- Big Editorial Date Block -->
+                <!-- Big Editorial Date & Time Block -->
                 <div class="my-3 flex items-baseline gap-2 font-serif text-olive-800">
-                    <span class="text-4xl font-bold tracking-tight text-olive-700">{{ $dayNum }}</span>
+                    <span class="text-3xl font-bold tracking-tight text-olive-700">{{ $weddingCard->time_groom ?: ($timeStrShort ?: '18:00') }}</span>
                     <span class="text-xl text-olive-400">•</span>
-                    <span class="text-2xl font-semibold">Tháng {{ $monthNum }}</span>
-                    <span class="text-xl text-olive-400">•</span>
-                    <span class="text-2xl font-semibold">{{ $yearNum }}</span>
+                    <span class="text-base font-semibold">{{ $weddingCard->groom_eating_date ? \Carbon\Carbon::parse($weddingCard->groom_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($wDate ? $wDate->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Thứ Bảy, ngày 19/12/2026') }}</span>
                 </div>
 
                 <div class="space-y-1 text-xs text-olive-700 border-t border-olive-200/80 pt-2.5">
-                    <p class="font-semibold text-olive-900">
-                        🕘 Vào lúc {{ !empty($timelineEvents[0]['time']) ? $timelineEvents[0]['time'] : '09:00 Sáng' }} — {{ $dayOfWeekVi }}
-                    </p>
-                    @if(!empty($weddingCard->lunar_date))
+                    @if(!empty($weddingCard->time_groom_al) || !empty($weddingCard->wedding_date_lunar))
                     <p class="italic text-olive-600">
-                        ({{ $weddingCard->lunar_date }})
+                        (Tức ngày {{ $weddingCard->time_groom_al ?: $weddingCard->wedding_date_lunar }})
                     </p>
                     @endif
                     <p class="pt-1 leading-relaxed">
-                        📍 <strong>Tại:</strong> {{ $weddingCard->wedding_location ?: 'Tư Gia' }}{{ $weddingCard->wedding_address ? ' - ' . $weddingCard->wedding_address : '' }}
+                        📍 <strong>Tại:</strong> {{ $weddingCard->address_groom ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai') }}
                     </p>
+                </div>
+
+                <div class="mt-4 flex flex-wrap gap-2 pt-2">
+                    <a href="{{ $weddingCard->groom_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_groom ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai')))) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-olive-600 text-white text-xs font-medium shadow-sm hover:bg-olive-700 transition">
+                        <span>🗺️</span> Chỉ đường
+                    </a>
+                    @if(!empty($weddingCard->groom_phone))
+                    <a href="tel:{{ $weddingCard->groom_phone }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-olive-300 text-olive-800 text-xs font-medium shadow-sm hover:bg-olive-50 transition">
+                        <span>📞</span> Gọi Chú Rể: {{ $weddingCard->groom_phone }}
+                    </a>
+                    @endif
                 </div>
             </div>
 
-            <!-- BLOCK B: TIỆC CƯỚI NHÀ HÀNG (ALIGNED RIGHT - BỐ CỤC SO LE PHẢI) -->
+            <!-- BLOCK B: TIỆC CƯỚI NHÀ GÁI (ALIGNED RIGHT - BỐ CỤC SO LE PHẢI) -->
             <div class="reveal-right ml-6 bg-gradient-to-bl from-white via-olive-50/50 to-olive-100/60 border-r-4 border-olive-600 rounded-l-2xl rounded-tr-xl p-5 shadow-md text-right relative overflow-hidden">
                 <div class="flex items-center justify-end gap-2 text-olive-600 text-[11px] uppercase tracking-[0.22em] font-semibold">
-                    <span>Tiệc Mừng Chung Đôi</span>
+                    <span>Tiệc Cưới Nhà Gái</span>
                     <span>🥂</span>
                 </div>
                 <h3 class="font-pattaya text-2xl text-olive-800 mt-1">
-                    Tiệc Cưới Thân Mật
+                    Hôn Trường Nhà Gái
                 </h3>
 
                 <!-- Big Editorial Time & Date Block -->
                 <div class="my-3 flex items-baseline justify-end gap-2 font-serif text-olive-800">
-                    <span class="text-3xl font-bold text-olive-700">{{ $timeStrShort }}</span>
+                    <span class="text-3xl font-bold text-olive-700">{{ $weddingCard->time_bride ?: ($timeStrShort ?: '11:00') }}</span>
                     <span class="text-lg text-olive-400">|</span>
-                    <span class="text-xl font-semibold">{{ $dayOfWeekVi }}, {{ $wDate ? $wDate->format('d.m.Y') : '19.12.2026' }}</span>
+                    <span class="text-base font-semibold">{{ $weddingCard->bride_eating_date ? \Carbon\Carbon::parse($weddingCard->bride_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($wDate ? $wDate->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Thứ Bảy, ngày 19/12/2026') }}</span>
                 </div>
 
                 <div class="space-y-1 text-xs text-olive-700 border-t border-olive-200/80 pt-2.5">
-                    <p class="font-semibold text-olive-900">
-                        🏛️ {{ $weddingCard->wedding_location ?: 'Trung Tâm Tiệc Cưới Forevermark' }}
+                    @if(!empty($weddingCard->time_bride_al) || !empty($weddingCard->wedding_date_lunar))
+                    <p class="italic text-olive-600">
+                        (Tức ngày {{ $weddingCard->time_bride_al ?: $weddingCard->wedding_date_lunar }})
                     </p>
+                    @endif
                     <p class="leading-relaxed">
-                        📍 {{ $weddingCard->wedding_address ?: '614 Lạc Long Quân, Quận Tây Hồ, TP. Hà Nội' }}
+                        📍 <strong>Tại:</strong> {{ $weddingCard->address_bride ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái') }}
                     </p>
-                    <p class="italic text-olive-600 pt-1">
-                        Sự hiện diện của Quý khách là niềm vinh hạnh của gia đình chúng tôi!
-                    </p>
+                </div>
+
+                <div class="mt-4 flex flex-wrap justify-end gap-2 pt-2">
+                    <a href="{{ $weddingCard->bride_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_bride ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái')))) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-olive-600 text-white text-xs font-medium shadow-sm hover:bg-olive-700 transition">
+                        <span>🗺️</span> Chỉ đường
+                    </a>
+                    @if(!empty($weddingCard->bride_phone))
+                    <a href="tel:{{ $weddingCard->bride_phone }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-olive-300 text-olive-800 text-xs font-medium shadow-sm hover:bg-olive-50 transition">
+                        <span>📞</span> Gọi Cô Dâu: {{ $weddingCard->bride_phone }}
+                    </a>
+                    @endif
                 </div>
             </div>
 
@@ -961,8 +985,9 @@
             </div>
         </section>
 
+        @if($weddingCard->wedding_location && $weddingCard->wedding_location !== $weddingCard->address_groom && $weddingCard->wedding_location !== $weddingCard->address_bride)
         <!-- ===================================================================
-             6. GOOGLE MAPS & DIRECTIONS (BẢN ĐỒ CHỈ ĐƯỜNG - SO LE TRÁI)
+             6. GOOGLE MAPS & DIRECTIONS (BẢN ĐỒ CHỈ ĐƯỜNG TRUNG TÂM TIỆC CƯỚI)
              =================================================================== -->
         <section id="sec-map" class="relative py-6 px-6">
             <div class="reveal-left text-left mb-4 pr-8">
@@ -1038,6 +1063,7 @@
                 </svg>
             </div>
         </section>
+        @endif
 
         <!-- ===================================================================
              7. WEDDING TIMELINE & DRESS CODE (LỊCH TRÌNH & DRESS CODE)
@@ -1097,19 +1123,24 @@
                 <div class="mt-4 flex items-center justify-center gap-6 flex-wrap">
                     @foreach($dressCodes as $dc)
                         @php
-                            $cHex = is_array($dc) ? ($dc['color'] ?? '#556B45') : '#556B45';
-                            $cLabel = is_array($dc) ? ($dc['label'] ?? '') : $dc;
-                            $cDesc = is_array($dc) ? ($dc['desc'] ?? ($cLabel . ' (' . $cHex . ')')) : $cLabel;
+                            $cHex = is_array($dc) ? ($dc['hex'] ?? ($dc['color'] ?? '#556B45')) : $dc;
+                            $cLabel = is_array($dc) ? ($dc['name'] ?? ($dc['label'] ?? '')) : (is_string($dc) ? $dc : '');
+                            $cDesc = is_array($dc) ? ($dc['desc'] ?? ($cLabel ? ($cLabel . ' (' . $cHex . ')') : $cHex)) : $cLabel;
                         @endphp
-                        <button onclick="selectDressCode('{{ addslashes($cDesc) }}')" class="group flex flex-col items-center gap-1.5 focus:outline-none">
+                        <button onclick="selectDressCode('{{ addslashes($cDesc) }}')" class="group flex flex-col items-center gap-1.5 focus:outline-none cursor-pointer">
                             <span class="w-12 h-12 rounded-full border-4 border-white shadow-md group-hover:scale-110 transition" style="background-color: {{ $cHex }}"></span>
+                            @if(!empty($cLabel))
                             <span class="text-[11px] font-medium text-olive-800">{{ $cLabel }}</span>
+                            @endif
                         </button>
                     @endforeach
                 </div>
 
+                @php
+                    $dressNote = $weddingCard->dresscode_note ?: $weddingCard->dress_code_note;
+                @endphp
                 <p id="dresscode-note" class="mt-3 text-xs italic text-olive-700 bg-white/80 rounded-xl py-2 px-3 border border-olive-100">
-                    {{ $weddingCard->dress_code_note ?: '✨ Chạm vào từng ô màu để xem gợi ý phối đồ dự tiệc' }}
+                    {{ $dressNote ?: '✨ Chạm vào từng ô màu để xem gợi ý phối đồ dự tiệc' }}
                 </p>
             </div>
 

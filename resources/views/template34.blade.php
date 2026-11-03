@@ -269,6 +269,9 @@
         $timeStrShort = preg_match('/^\d{1,2}:\d{2}/', $timeStr, $m) ? $m[0] : '18:00';
 
         $timelineEvents = is_array($weddingCard->timeline) ? $weddingCard->timeline : (is_string($weddingCard->timeline) ? json_decode($weddingCard->timeline, true) : null);
+        if (empty($timelineEvents) && !empty($weddingCard->timeline_list)) {
+            $timelineEvents = $weddingCard->timeline_list;
+        }
         if (empty($timelineEvents)) {
             $timelineEvents = [
                 ['time' => '17:30', 'title' => 'Đón Khách & Chụp Ảnh Check-in', 'desc' => 'Lưu giữ khoảnh khắc kỷ niệm bên vườn hoa anh đào cùng Cô Dâu & Chú Rể.', 'icon' => '📸'],
@@ -278,12 +281,19 @@
             ];
         }
 
-        $dressCodes = is_array($weddingCard->dress_code) ? $weddingCard->dress_code : (is_string($weddingCard->dress_code) ? json_decode($weddingCard->dress_code, true) : null);
+        $dressCodes = !empty($weddingCard->dresscode_colors_list) 
+            ? $weddingCard->dresscode_colors_list 
+            : (!empty($weddingCard->dresscode_colors) 
+                ? (is_array($weddingCard->dresscode_colors) ? $weddingCard->dresscode_colors : (is_string($weddingCard->dresscode_colors) ? json_decode($weddingCard->dresscode_colors, true) : null))
+                : (!empty($weddingCard->dress_code) 
+                    ? (is_array($weddingCard->dress_code) ? $weddingCard->dress_code : (is_string($weddingCard->dress_code) ? json_decode($weddingCard->dress_code, true) : null))
+                    : null));
+
         if (empty($dressCodes)) {
             $dressCodes = [
-                ['color' => '#F4C2D1', 'label' => 'Hồng Pastel', 'desc' => 'Dịu dàng, ngọt ngào đồng điệu cùng sắc hoa anh đào.'],
-                ['color' => '#FAF6F0', 'label' => 'Trắng Kem', 'desc' => 'Tinh khôi, thanh lịch và trang nhã.'],
-                ['color' => '#E3CCA8', 'label' => 'Be Champagne', 'desc' => 'Sang trọng, ấm áp và nổi bật.'],
+                ['hex' => '#F4C2D1', 'name' => 'Hồng Pastel', 'desc' => 'Dịu dàng, ngọt ngào đồng điệu cùng sắc hoa anh đào.'],
+                ['hex' => '#FAF6F0', 'name' => 'Trắng Kem', 'desc' => 'Tinh khôi, thanh lịch và trang nhã.'],
+                ['hex' => '#E3CCA8', 'name' => 'Be Champagne', 'desc' => 'Sang trọng, ấm áp và nổi bật.'],
             ];
         }
 
@@ -571,7 +581,7 @@
                 <!-- Main Arch Portrait Frame -->
                 <div onclick="openLightbox(0)" class="cursor-pointer relative w-full h-full rounded-t-full rounded-b-[110px] p-2 bg-white border-2 border-sakura-300 shadow-xl overflow-hidden group">
                     <div class="w-full h-full rounded-t-full rounded-b-[102px] overflow-hidden relative bg-sakura-50">
-                        <img src="{{ $weddingCard->cover_image ? asset('storage/' . $weddingCard->cover_image) : ($weddingCard->groom_avatar ? asset('storage/' . $weddingCard->groom_avatar) : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85') }}" 
+                        <img src="{{ $weddingCard->cover_image ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image)) : ($weddingCard->groom_avatar ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar)) : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85') }}" 
                              alt="{{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" 
                              class="w-full h-full object-cover object-center transition duration-700 group-hover:scale-105"
                              onerror="this.src='https://placehold.co/500x680/FDF0F4/5A3E46?text={{ urlencode($weddingCard->couple_name) }}'">
@@ -753,89 +763,106 @@
                 <h3 class="font-pattaya text-3xl text-sakura-500 mt-0.5">Nghi Thức Hôn Lễ</h3>
             </div>
 
-            <!-- CARD 1: LỄ VU QUY (NHÀ GÁI) -->
+            <!-- CARD 1: LỄ VU QUY & TIỆC CƯỚI NHÀ GÁI -->
             <div class="reveal-left bg-white border border-sakura-200 rounded-3xl p-5 shadow-md relative overflow-hidden">
                 <div class="flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 bg-sakura-100 text-sakura-700 text-[11px] font-semibold px-3 py-1 rounded-full border border-sakura-200">
-                        <span>🌸</span> Lễ Vu Quy • Nhà Gái
+                        <span>🌸</span> Tiệc Cưới Nhà Gái
                     </span>
-                    <span class="text-xs font-serif italic text-sakura-600">{{ !empty($weddingCard->ceremony_time) ? $weddingCard->ceremony_time : '08:00' }} — {{ $dayOfWeekVi }}</span>
+                    <span class="text-xs font-serif italic text-sakura-600">{{ $weddingCard->time_bride ?: (!empty($weddingCard->ceremony_time) ? $weddingCard->ceremony_time : '11:00') }} — {{ $dayOfWeekVi }}</span>
                 </div>
 
-                <h4 class="font-pattaya text-2xl text-sakura-500 mt-2.5">Lễ Vu Quy</h4>
+                <h4 class="font-pattaya text-2xl text-sakura-500 mt-2.5">Hôn Trường Nhà Gái</h4>
 
                 <!-- Large Editorial Date Block -->
-                <div class="my-3 py-2.5 px-3 bg-sakura-50/90 border border-sakura-200/80 rounded-2xl flex items-center justify-center gap-3 font-serif text-sakura-900">
-                    <span class="text-3xl font-bold text-sakura-600">{{ $dayNum }}</span>
+                <div class="my-3 py-2.5 px-3 bg-sakura-50/90 border border-sakura-200/80 rounded-2xl flex items-center justify-center gap-2 font-serif text-sakura-900">
+                    <span class="text-2xl font-bold text-sakura-600">{{ $weddingCard->time_bride ?: (!empty($weddingCard->ceremony_time) ? $weddingCard->ceremony_time : '11:00') }}</span>
                     <span class="h-6 w-[1px] bg-sakura-300"></span>
-                    <span class="text-lg font-semibold uppercase tracking-wider">Tháng {{ $monthNum }}</span>
-                    <span class="h-6 w-[1px] bg-sakura-300"></span>
-                    <span class="text-2xl font-bold">{{ $yearNum }}</span>
+                    <span class="text-sm font-semibold uppercase tracking-wider">
+                        {{ $weddingCard->bride_eating_date ? \Carbon\Carbon::parse($weddingCard->bride_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($wDate ? $wDate->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Chủ Nhật, ngày 28/03/2027') }}
+                    </span>
                 </div>
 
-                @if(!empty($weddingCard->lunar_date))
+                @if(!empty($weddingCard->time_bride_al) || !empty($weddingCard->wedding_date_lunar))
                 <p class="text-xs italic text-sakura-600 text-center">
-                    ({{ $weddingCard->lunar_date }})
+                    (Tức ngày {{ $weddingCard->time_bride_al ?: $weddingCard->wedding_date_lunar }})
                 </p>
                 @endif
 
                 <div class="mt-3 pt-3 border-t border-dashed border-sakura-200 text-xs text-sakura-800 space-y-1.5">
-                    <p>📍 <strong>Tại Tư Gia Nhà Gái:</strong> {{ $weddingCard->bride_address ?: 'Số 86 Phan Đình Phùng, Quận Ba Đình, TP. Hà Nội' }}</p>
-                    <div class="pt-1.5 flex gap-2">
-                        <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($weddingCard->bride_address ?: 'Số 86 Phan Đình Phùng, Quận Ba Đình, TP. Hà Nội') }}" target="_blank" rel="noopener noreferrer"
-                           class="inline-flex items-center gap-1 bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-medium px-3 py-1.5 rounded-xl transition">
-                            <span>🗺️</span> Xem bản đồ Nhà Gái
+                    <p>📍 <strong>Tại Tư Gia Nhà Gái:</strong> {{ $weddingCard->address_bride ?: ($weddingCard->bride_address ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái')) }}</p>
+                    <div class="pt-2 flex flex-wrap gap-2">
+                        <a href="{{ $weddingCard->bride_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_bride ?: ($weddingCard->bride_address ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái'))))) }}" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-1.5 bg-sakura-500 hover:bg-sakura-600 text-white font-medium px-4 py-2 rounded-xl text-xs shadow-sm transition">
+                            <span>🗺️</span> Chỉ đường
                         </a>
+                        @if(!empty($weddingCard->bride_phone))
+                        <a href="tel:{{ $weddingCard->bride_phone }}"
+                           class="inline-flex items-center gap-1.5 bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-medium px-4 py-2 rounded-xl text-xs border border-sakura-200 transition">
+                            <span>📞</span> Gọi Cô Dâu: {{ $weddingCard->bride_phone }}
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            <!-- CARD 2: LỄ THÀNH HÔN (NHÀ TRAI) -->
+            <!-- CARD 2: LỄ THÀNH HÔN & TIỆC CƯỚI NHÀ TRAI -->
             <div class="reveal-right bg-white border border-sakura-200 rounded-3xl p-5 shadow-md relative overflow-hidden">
                 <div class="flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 bg-sakura-100 text-sakura-700 text-[11px] font-semibold px-3 py-1 rounded-full border border-sakura-200">
-                        <span>💍</span> Lễ Thành Hôn • Nhà Trai
+                        <span>💍</span> Tiệc Cưới Nhà Trai
                     </span>
-                    <span class="text-xs font-serif italic text-sakura-600">{{ !empty($weddingCard->wedding_time) ? $timeStrShort : '10:00' }} — {{ $dayOfWeekVi }}</span>
+                    <span class="text-xs font-serif italic text-sakura-600">{{ $weddingCard->time_groom ?: (!empty($weddingCard->wedding_time) ? $timeStrShort : '18:00') }} — {{ $dayOfWeekVi }}</span>
                 </div>
 
-                <h4 class="font-pattaya text-2xl text-sakura-500 mt-2.5">Lễ Thành Hôn</h4>
+                <h4 class="font-pattaya text-2xl text-sakura-500 mt-2.5">Hôn Trường Nhà Trai</h4>
 
-                <div class="my-3 py-2.5 px-3 bg-sakura-50/90 border border-sakura-200/80 rounded-2xl flex items-center justify-center gap-3 font-serif text-sakura-900">
-                    <span class="text-2xl font-bold text-sakura-600">{{ !empty($weddingCard->wedding_time) ? $timeStrShort : '10:00' }}</span>
+                <div class="my-3 py-2.5 px-3 bg-sakura-50/90 border border-sakura-200/80 rounded-2xl flex items-center justify-center gap-2 font-serif text-sakura-900">
+                    <span class="text-2xl font-bold text-sakura-600">{{ $weddingCard->time_groom ?: (!empty($weddingCard->wedding_time) ? $timeStrShort : '18:00') }}</span>
                     <span class="h-6 w-[1px] bg-sakura-300"></span>
-                    <span class="text-lg font-semibold">{{ $dayOfWeekVi }}, {{ $dayNum }}.{{ $monthNum }}.{{ $yearNum }}</span>
+                    <span class="text-sm font-semibold uppercase tracking-wider">
+                        {{ $weddingCard->groom_eating_date ? \Carbon\Carbon::parse($weddingCard->groom_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($wDate ? $wDate->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Chủ Nhật, ngày 28/03/2027') }}
+                    </span>
                 </div>
 
-                @if(!empty($weddingCard->lunar_date))
+                @if(!empty($weddingCard->time_groom_al) || !empty($weddingCard->wedding_date_lunar))
                 <p class="text-xs italic text-sakura-600 text-center">
-                    ({{ $weddingCard->lunar_date }})
+                    (Tức ngày {{ $weddingCard->time_groom_al ?: $weddingCard->wedding_date_lunar }})
                 </p>
                 @endif
 
                 <div class="mt-3 pt-3 border-t border-dashed border-sakura-200 text-xs text-sakura-800 space-y-1.5">
-                    <p>📍 <strong>Tại Tư Gia Nhà Trai:</strong> {{ $weddingCard->groom_address ?: 'Số 168 Cầu Giấy, Quận Cầu Giấy, TP. Hà Nội' }}</p>
-                    <div class="pt-1.5 flex gap-2">
-                        <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($weddingCard->groom_address ?: 'Số 168 Cầu Giấy, Quận Cầu Giấy, TP. Hà Nội') }}" target="_blank" rel="noopener noreferrer"
-                           class="inline-flex items-center gap-1 bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-medium px-3 py-1.5 rounded-xl transition">
-                            <span>🗺️</span> Xem bản đồ Nhà Trai
+                    <p>📍 <strong>Tại Tư Gia Nhà Trai:</strong> {{ $weddingCard->address_groom ?: ($weddingCard->groom_address ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai')) }}</p>
+                    <div class="pt-2 flex flex-wrap gap-2">
+                        <a href="{{ $weddingCard->groom_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_groom ?: ($weddingCard->groom_address ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai'))))) }}" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-1.5 bg-sakura-500 hover:bg-sakura-600 text-white font-medium px-4 py-2 rounded-xl text-xs shadow-sm transition">
+                            <span>🗺️</span> Chỉ đường
                         </a>
+                        @if(!empty($weddingCard->groom_phone))
+                        <a href="tel:{{ $weddingCard->groom_phone }}"
+                           class="inline-flex items-center gap-1.5 bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-medium px-4 py-2 rounded-xl text-xs border border-sakura-200 transition">
+                            <span>📞</span> Gọi Chú Rể: {{ $weddingCard->groom_phone }}
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            <!-- CARD 3: TIỆC CƯỚI NHÀ HÀNG (SAKURA GRAND PALACE + EMBEDDED MAP) -->
+            @if($weddingCard->wedding_location && $weddingCard->wedding_location !== $weddingCard->address_groom && $weddingCard->wedding_location !== $weddingCard->address_bride && $weddingCard->wedding_location !== $weddingCard->groom_address && $weddingCard->wedding_location !== $weddingCard->bride_address)
+            <!-- CARD 3: TIỆC CƯỚI TRUNG TÂM / NHÀ HÀNG (NẾU CÓ) -->
             <div class="reveal-scale bg-gradient-to-b from-[#FFF5F8] to-white border-2 border-sakura-300 rounded-3xl p-5 shadow-lg relative overflow-hidden">
                 <div class="flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 bg-sakura-500 text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
-                        <span>🥂</span> Tiệc Cưới Nhà Hàng
+                        <span>🥂</span> Tiệc Cưới Trung Tâm
                     </span>
                     <span class="text-xs font-serif font-bold text-sakura-700">{{ $timeStrShort }} — {{ $dayNum }}.{{ $monthNum }}.{{ $yearNum }}</span>
                 </div>
 
-                <h4 class="font-pattaya text-2xl text-sakura-500 mt-2.5">{{ $weddingCard->wedding_location ?: 'Sakura Grand Palace' }}</h4>
+                <h4 class="font-pattaya text-2xl text-sakura-500 mt-2.5">{{ $weddingCard->wedding_location }}</h4>
                 <p class="text-xs font-semibold text-sakura-800 mt-0.5">Sảnh Tiệc Cưới Trọng Thể</p>
-                <p class="text-xs text-sakura-800/90 mt-1">📍 {{ $weddingCard->wedding_address ?: '268 Đường Thanh Niên (Ven Hồ Tây), Quận Tây Hồ, TP. Hà Nội' }}</p>
+                @if($weddingCard->wedding_address)
+                <p class="text-xs text-sakura-800/90 mt-1">📍 {{ $weddingCard->wedding_address }}</p>
+                @endif
 
                 <div class="my-3 py-2 px-3 bg-white border border-sakura-200 rounded-xl flex items-center justify-between text-xs">
                     <span>🕕 Đón khách: <strong>{{ !empty($timelineEvents[0]['time']) ? $timelineEvents[0]['time'] : '17:30' }}</strong></span>
@@ -843,39 +870,9 @@
                     <span>🥂 Khai tiệc: <strong>{{ $timeStrShort }} {{ $dayOfWeekVi }}</strong></span>
                 </div>
 
-                <!-- Interactive Vector Map Preview of Sakura Grand Palace -->
-                <div class="relative w-full h-44 rounded-2xl overflow-hidden border border-sakura-200 bg-[#FCF2F5] my-3">
-                    <svg class="w-full h-full object-cover" viewBox="0 0 420 190" preserveAspectRatio="xMidYMid slice">
-                        <rect width="420" height="190" fill="#FDF2F6" />
-                        <!-- West Lake Water (Hồ Tây) & Trúc Bạch -->
-                        <path d="M0,0 L240,0 Q210,95 120,130 L0,110 Z" fill="#E3F0F5" />
-                        <path d="M260,120 Q340,105 420,135 L420,190 L240,190 Z" fill="#E3F0F5" />
-                        <!-- Sakura Gardens -->
-                        <circle cx="320" cy="52" r="36" fill="#F9DCE5" opacity="0.7" />
-                        <!-- Thanh Niên Road -->
-                        <path d="M40,190 Q200,95 360,0" stroke="#FFFFFF" stroke-width="12" fill="none" />
-                        <path d="M40,190 Q200,95 360,0" stroke="#F2BFD0" stroke-width="7" fill="none" />
-                        <text x="65" y="45" fill="#5A8396" font-size="10" font-style="italic" font-weight="600">Hồ Tây</text>
-                        <text x="235" y="95" fill="#9E3A57" font-size="9" font-weight="600" transform="rotate(-30 235,95)">Đ. Thanh Niên</text>
-                    </svg>
-
-                    <!-- Pulsing Pin -->
-                    <div class="absolute left-[50%] top-[48%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                        <div class="bg-white/95 px-2.5 py-0.5 rounded-full shadow border border-sakura-300 text-[10px] font-bold text-sakura-700 mb-1">
-                            🌸 {{ $weddingCard->wedding_location ?: 'Sakura Grand Palace' }}
-                        </div>
-                        <div class="relative flex items-center justify-center">
-                            <span class="w-7 h-7 rounded-full bg-sakura-500/40 animate-ping absolute"></span>
-                            <div class="w-6 h-6 rounded-full bg-sakura-500 text-white flex items-center justify-center shadow border border-white text-xs">
-                                📍
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Google Maps Action Buttons -->
                 <div class="grid grid-cols-2 gap-2.5 mt-3">
-                    <a href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location ?: 'Sakura Grand Palace') . ' ' . ($weddingCard->wedding_address ?: 'Hà Nội'))) }}" 
+                    <a href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location) . ' ' . ($weddingCard->wedding_address ?: 'Hà Nội'))) }}" 
                        target="_blank" rel="noopener noreferrer"
                        class="bg-sakura-500 hover:bg-sakura-600 text-white text-xs font-medium py-2.5 px-3 rounded-xl text-center shadow-sm flex items-center justify-center gap-1.5 transition">
                         <span>🗺️</span> Chỉ đường Google Maps
@@ -885,6 +882,7 @@
                     </button>
                 </div>
             </div>
+            @endif
 
             <!-- Ornamental Sakura Divider -->
             <div class="pt-2 -mx-6">
@@ -998,11 +996,39 @@
                         $tTime = is_array($tl) ? ($tl['time'] ?? '') : '';
                         $tTitle = is_array($tl) ? ($tl['title'] ?? '') : '';
                         $tDesc = is_array($tl) ? ($tl['desc'] ?? ($tl['subtitle'] ?? '')) : '';
-                        $tIcon = is_array($tl) && !empty($tl['icon']) ? $tl['icon'] : ($tlIcons[$tIdx % count($tlIcons)]);
+
+                        $rawIcon = is_array($tl) ? ($tl['icon'] ?? '') : '';
+                        $tIcon = '';
+                        if (!empty($rawIcon)) {
+                            $tIcon = $rawIcon;
+                        } else {
+                            $titleLower = mb_strtolower($tTitle, 'UTF-8');
+                            if (str_contains($titleLower, 'đón dâu') || str_contains($titleLower, 'rước dâu') || str_contains($titleLower, 'xe')) {
+                                $tIcon = '🚗';
+                            } elseif (str_contains($titleLower, 'gia tiên')) {
+                                $tIcon = '🌸';
+                            } elseif (str_contains($titleLower, 'đón khách') || str_contains($titleLower, 'chụp')) {
+                                $tIcon = '📸';
+                            } elseif (str_contains($titleLower, 'hôn lễ') || str_contains($titleLower, 'thành hôn') || str_contains($titleLower, 'nghi thức')) {
+                                $tIcon = '💍';
+                            } elseif (str_contains($titleLower, 'tiệc') || str_contains($titleLower, 'ăn')) {
+                                $tIcon = '🍽️';
+                            } elseif (str_contains($titleLower, 'rượu') || str_contains($titleLower, 'nâng ly') || str_contains($titleLower, 'bánh')) {
+                                $tIcon = '🥂';
+                            } elseif (str_contains($titleLower, 'nhạc') || str_contains($titleLower, 'khiêu vũ') || str_contains($titleLower, 'kết thúc')) {
+                                $tIcon = '🎶';
+                            } else {
+                                $tIcon = $tlIcons[$tIdx % count($tlIcons)];
+                            }
+                        }
                     @endphp
                     <div class="reveal-left relative flex items-center gap-3.5">
                         <div class="relative z-10 w-12 h-12 rounded-2xl bg-white border-2 border-sakura-300 shadow-sm flex items-center justify-center shrink-0 text-lg">
-                            {{ $tIcon }}
+                            @if(str_starts_with($tIcon, 'fa-'))
+                                <i class="fa-solid {{ $tIcon }} text-sakura-600 text-base"></i>
+                            @else
+                                {{ $tIcon }}
+                            @endif
                         </div>
                         <div class="flex-1 bg-white border border-sakura-200 rounded-2xl p-3.5 shadow-sm">
                             <div class="flex items-center justify-between">
@@ -1027,20 +1053,25 @@
                 <div class="mt-4 flex items-center justify-center gap-6 flex-wrap">
                     @foreach($dressCodes as $dc)
                         @php
-                            $cColor = is_array($dc) ? ($dc['color'] ?? '#F4C2D1') : '#F4C2D1';
-                            $cLabel = is_array($dc) ? ($dc['label'] ?? '') : $dc;
-                            $cDesc = is_array($dc) ? ($dc['desc'] ?? ($cLabel . ' — Gợi ý trang phục dự tiệc sang trọng.')) : '';
+                            $cColor = is_array($dc) ? ($dc['hex'] ?? ($dc['color'] ?? '#F4C2D1')) : $dc;
+                            $cLabel = is_array($dc) ? ($dc['name'] ?? ($dc['label'] ?? '')) : (is_string($dc) ? $dc : '');
+                            $cDesc = is_array($dc) ? ($dc['desc'] ?? ($cLabel ? ($cLabel . ' — Gợi ý trang phục dự tiệc sang trọng.') : '')) : '';
                         @endphp
-                        <button onclick="selectDressCode('{{ addslashes($cLabel . ' (' . $cColor . ') — ' . $cDesc) }}')" class="group flex flex-col items-center gap-1.5 cursor-pointer">
+                        <button onclick="selectDressCode('{{ addslashes($cLabel . ($cColor ? ' (' . $cColor . ')' : '') . ($cDesc ? ' — ' . $cDesc : '')) }}')" class="group flex flex-col items-center gap-1.5 cursor-pointer">
                             <span class="w-12 h-12 rounded-full border-4 border-white shadow-md group-hover:scale-110 transition" style="background-color: {{ $cColor }}"></span>
+                            @if(!empty($cLabel))
                             <span class="text-[11px] font-medium text-sakura-900">{{ $cLabel }}</span>
+                            @endif
                         </button>
                     @endforeach
                 </div>
 
-                @if(!empty($weddingCard->dress_code_note))
+                @php
+                    $dressNote = $weddingCard->dresscode_note ?: $weddingCard->dress_code_note;
+                @endphp
+                @if(!empty($dressNote))
                 <p id="dresscode-note" class="mt-3 text-xs italic text-sakura-800 bg-white/90 rounded-xl py-2 px-3 border border-sakura-200">
-                    {{ $weddingCard->dress_code_note }}
+                    {{ $dressNote }}
                 </p>
                 @else
                 <p id="dresscode-note" class="mt-3 text-xs italic text-sakura-800 bg-white/90 rounded-xl py-2 px-3 border border-sakura-200">

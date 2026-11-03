@@ -342,7 +342,7 @@
 
             <!-- Date -->
             <p class="font-serif text-xl sm:text-2xl text-gold-200 tracking-widest font-semibold mb-5">
-                14 tháng 6, 2026
+                {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->locale('vi')->isoFormat('D [tháng] M, Y') : '14 tháng 6, 2026' }}
             </p>
 
             <!-- Guest Invitation Box ("Thân Mời") -->
@@ -389,14 +389,30 @@
             </div>
             <div class="text-4xl text-gold-400 font-serif mb-5 reveal-item select-none">囍</div>
 
+            @php
+                $albumDataHero = !empty($weddingCard->album) ? (is_string($weddingCard->album) ? json_decode($weddingCard->album, true) : $weddingCard->album) : [];
+                $firstAlbumImg = (!empty($albumDataHero) && is_array($albumDataHero) && isset($albumDataHero[0]))
+                    ? (str_starts_with($albumDataHero[0], 'http') ? $albumDataHero[0] : asset('storage/' . $albumDataHero[0]))
+                    : null;
+
+                $heroCoupleImg = !empty($weddingCard->banner_top)
+                    ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top))
+                    : (!empty($weddingCard->cover_image)
+                        ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image))
+                        : (!empty($weddingCard->banner_preview)
+                            ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
+                            : ($firstAlbumImg ?: (!empty($weddingCard->groom_avatar)
+                                ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar))
+                                : 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=900&q=85'))));
+            @endphp
             <!-- Arch Couple Portrait Frame -->
-            <div class="relative mx-auto w-64 sm:w-72 aspect-[3/4] rounded-t-full rounded-b-2xl p-2 bg-gradient-to-b from-gold-300 via-gold-500 to-crimson-900 shadow-2xl reveal-item">
+            <div onclick="openSingleImage('{{ $heroCoupleImg }}')" title="Chạm để phóng to ảnh cưới" class="cursor-pointer relative mx-auto w-64 sm:w-72 aspect-[3/4] rounded-t-full rounded-b-2xl p-2 bg-gradient-to-b from-gold-300 via-gold-500 to-crimson-900 shadow-2xl reveal-item">
                 <div class="w-full h-full rounded-t-full rounded-b-xl overflow-hidden border-2 border-crimson-950 relative group">
                     <img 
-                        src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=900&q=85" 
+                        src="{{ $heroCoupleImg }}" 
                         alt="{{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" 
                         class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-700"
-                        onerror="this.src='https://placehold.co/600x800/7a1215/f3e5ab?text=Gia+Khanh+%26+Quynh+Anh'"
+                        onerror="this.src='https://placehold.co/600x800/7a1215/f3e5ab?text=Song+Hy'"
                     >
                     <div class="absolute inset-0 bg-gradient-to-t from-crimson-950/80 via-transparent to-transparent"></div>
                     <div class="absolute bottom-3 inset-x-0 text-center">
@@ -424,10 +440,11 @@
                 </div>
 
                 <p class="text-xs uppercase tracking-[0.25em] text-gold-200/80 mb-2">
-                    Chủ Nhật • 14 Tháng 6, 2026
+                    {{ $weddingCard->wedding_date ? mb_strtoupper($weddingCard->wedding_date->locale('vi')->isoFormat('dddd [•] D [Tháng] M, Y')) : 'Chủ Nhật • 14 Tháng 6, 2026' }}
                 </p>
                 <p class="font-serif text-sm italic text-gold-200/75">
-                    (Tức ngày 29 tháng 04 năm Bính Ngọ)
+                    (Tức ngày {{ $weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: '29 tháng 04 năm Bính Ngọ') }})
+                </p>
                 </p>
             </div>
         </section>
@@ -596,53 +613,43 @@
                 </div>
             </div>
 
+            @php
+                // 1. Dữ liệu Tiệc Cưới Nhà Trai
+                $groomPartyDate = $weddingCard->groom_eating_date ?: $weddingCard->wedding_date;
+                $groomPartyTime = $weddingCard->time_groom ?: ($weddingCard->wedding_time ?: '11:00');
+                $groomPartyDayOfWeek = $groomPartyDate ? mb_strtoupper($groomPartyDate->locale('vi')->isoFormat('dddd')) : 'CHỦ NHẬT';
+                $groomPartyDay = $groomPartyDate ? $groomPartyDate->format('d/m/Y') : '14/06/2026';
+                $groomPartyLunar = $weddingCard->time_groom_al ?: ($weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: '29/04 Âm lịch'));
+                $groomVenueAddress = $weddingCard->address_groom ?: ($weddingCard->address_wedding ?: 'Tư gia Nhà Trai');
+                $groomMapUrl = !empty($weddingCard->groom_map)
+                    ? $weddingCard->groom_map
+                    : (!empty($weddingCard->address_wedding_map)
+                        ? $weddingCard->address_wedding_map
+                        : ('https://www.google.com/maps/search/?api=1&query=' . urlencode($groomVenueAddress)));
+
+                // 2. Dữ liệu Tiệc Cưới Nhà Gái
+                $bridePartyDate = $weddingCard->bride_eating_date ?: $weddingCard->wedding_date;
+                $bridePartyTime = $weddingCard->time_bride ?: ($weddingCard->wedding_time ?: '11:00');
+                $bridePartyDayOfWeek = $bridePartyDate ? mb_strtoupper($bridePartyDate->locale('vi')->isoFormat('dddd')) : 'CHỦ NHẬT';
+                $bridePartyDay = $bridePartyDate ? $bridePartyDate->format('d/m/Y') : '14/06/2026';
+                $bridePartyLunar = $weddingCard->time_bride_al ?: ($weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: '29/04 Âm lịch'));
+                $brideVenueAddress = $weddingCard->address_bride ?: ($weddingCard->address_wedding ?: 'Tư gia Nhà Gái');
+                $brideMapUrl = !empty($weddingCard->bride_map)
+                    ? $weddingCard->bride_map
+                    : (!empty($weddingCard->address_wedding_map)
+                        ? $weddingCard->address_wedding_map
+                        : ('https://www.google.com/maps/search/?api=1&query=' . urlencode($brideVenueAddress)));
+            @endphp
+
             <div class="space-y-5">
-                <!-- Event 1: Tiệc Cưới Nhà Gái -->
-                <div class="bg-ivory-50 text-crimson-950 rounded-2xl p-6 border-2 border-gold-400 shadow-xl reveal-item relative overflow-hidden">
-                    <div class="flex items-start justify-between gap-3 border-b border-gold-500/30 pb-3 mb-4">
-                        <div>
-                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-crimson-800 text-gold-200 text-[10px] uppercase tracking-wider font-semibold mb-1">
-                                Nhà Gái
-                            </span>
-                            <h4 class="font-serif text-2xl font-bold text-crimson-900">Lễ Vu Quy &amp; Tiệc Cưới</h4>
-                        </div>
-                        <div class="w-11 h-11 rounded-full bg-crimson-100 border border-gold-500 flex items-center justify-center text-crimson-800 font-serif text-xl shrink-0">
-                            囍
-                        </div>
-                    </div>
-
-                    <div class="space-y-2.5 text-xs sm:text-sm text-crimson-900">
-                        <div class="flex items-center gap-2.5">
-                            <i class="fa-regular fa-clock text-crimson-700 w-4 text-center"></i>
-                            <span><strong>{{ $weddingCard->ceremony_time ?: '11:00' }}</strong> — Ngày {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d/m/Y') : '14/06/2026' }} ({{ $weddingCard->wedding_date_lunar ?: '29/04 Âm lịch' }})</span>
-                        </div>
-                        <div class="flex items-start gap-2.5">
-                            <i class="fa-solid fa-location-dot text-crimson-700 w-4 text-center mt-1"></i>
-                            <div>
-                                <p class="font-semibold">Tư Gia Nhà Gái</p>
-                                <p class="text-xs text-crimson-700/80">{{ $weddingCard->bride_address ?: 'Số 72 Trần Đăng Ninh, Dịch Vọng, Cầu Giấy, Hà Nội' }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2.5 mt-5">
-                        <button onclick="openMapModal('Nhà Gái', '{{ addslashes($weddingCard->bride_address ?: '72 Trần Đăng Ninh, Dịch Vọng, Cầu Giấy, Hà Nội') }}')" class="py-2.5 px-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-gold-200 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
-                            <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ
-                        </button>
-                        <button onclick="downloadICS('Tiệc Cưới Nhà Gái - {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}', '20260614T040000Z', '20260614T063000Z', '{{ addslashes($weddingCard->bride_address ?: '72 Trần Đăng Ninh, Cầu Giấy, Hà Nội') }}')" class="py-2.5 px-3 rounded-xl border border-crimson-800 text-crimson-900 hover:bg-crimson-50 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
-                            <i class="fa-regular fa-calendar-plus"></i> Lưu Lịch
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Event 2: Lễ Thành Hôn & Tiệc Cưới Nhà Trai -->
+                <!-- Event 1: Tiệc Cưới Nhà Trai -->
                 <div class="bg-ivory-50 text-crimson-950 rounded-2xl p-6 border-2 border-gold-400 shadow-xl reveal-item relative overflow-hidden">
                     <div class="flex items-start justify-between gap-3 border-b border-gold-500/30 pb-3 mb-4">
                         <div>
                             <span class="inline-block px-2.5 py-0.5 rounded-full bg-crimson-800 text-gold-200 text-[10px] uppercase tracking-wider font-semibold mb-1">
                                 Nhà Trai
                             </span>
-                            <h4 class="font-serif text-2xl font-bold text-crimson-900">{{ $weddingCard->wedding_location ?: 'Lễ Thành Hôn & Tiệc Cưới' }}</h4>
+                            <h4 class="font-serif text-2xl font-bold text-crimson-900">{{ $weddingCard->groom_eating_title ?: 'Tiệc Cưới Nhà Trai' }}</h4>
                         </div>
                         <div class="w-11 h-11 rounded-full bg-crimson-100 border border-gold-500 flex items-center justify-center text-crimson-800 font-serif text-xl shrink-0">
                             囍
@@ -652,26 +659,105 @@
                     <div class="space-y-2.5 text-xs sm:text-sm text-crimson-900">
                         <div class="flex items-center gap-2.5">
                             <i class="fa-regular fa-clock text-crimson-700 w-4 text-center"></i>
-                            <span><strong>{{ $weddingCard->wedding_time ?: '17:30' }}</strong> — Ngày {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d/m/Y') : '14/06/2026' }} (Đón khách: {{ $weddingCard->guest_welcome_time ?: '17:00' }})</span>
+                            <span><strong>{{ $groomPartyTime }} {{ $groomPartyDayOfWeek }}</strong> — Ngày {{ $groomPartyDay }} (Tức {{ $groomPartyLunar }})</span>
                         </div>
                         <div class="flex items-start gap-2.5">
                             <i class="fa-solid fa-location-dot text-crimson-700 w-4 text-center mt-1"></i>
                             <div>
-                                <p class="font-semibold">{{ $weddingCard->wedding_location ?: 'Khách Sạn Lotte Hotel Hanoi' }}</p>
-                                <p class="text-xs text-crimson-700/80">{{ $weddingCard->wedding_address ?: 'Số 54 Liễu Giai, Cống Vị, Ba Đình, Hà Nội' }}</p>
+                                <p class="font-semibold">Địa điểm tổ chức</p>
+                                <p class="text-xs text-crimson-700/80">{{ $groomVenueAddress }}</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2.5 mt-5">
-                        <button onclick="openMapModal('Nhà Trai - {{ addslashes($weddingCard->wedding_location ?: 'Lotte Hotel Hanoi') }}', '{{ addslashes($weddingCard->wedding_address ?: '54 Liễu Giai, Cống Vị, Ba Đình, Hà Nội') }}')" class="py-2.5 px-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-gold-200 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
+                    <div class="grid {{ !empty($weddingCard->groom_phone) ? 'grid-cols-2' : 'grid-cols-1' }} gap-2.5 mt-5">
+                        <a href="{{ $groomMapUrl }}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-gold-200 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
                             <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ
-                        </button>
-                        <button onclick="downloadICS('Lễ Thành Hôn Nhà Trai - {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}', '20260614T103000Z', '20260614T133000Z', '{{ addslashes(($weddingCard->wedding_location ?: '') . ', ' . ($weddingCard->wedding_address ?: '')) }}')" class="py-2.5 px-3 rounded-xl border border-crimson-800 text-crimson-900 hover:bg-crimson-50 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
-                            <i class="fa-regular fa-calendar-plus"></i> Lưu Lịch
-                        </button>
+                        </a>
+                        @if(!empty($weddingCard->groom_phone))
+                            <a href="tel:{{ $weddingCard->groom_phone }}" class="py-2.5 px-3 rounded-xl border border-crimson-800 text-crimson-900 hover:bg-crimson-50 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
+                                <i class="fa-solid fa-phone"></i> Liên hệ: {{ $weddingCard->groom_phone }}
+                            </a>
+                        @endif
                     </div>
                 </div>
+
+                <!-- Event 2: Tiệc Cưới Nhà Gái -->
+                <div class="bg-ivory-50 text-crimson-950 rounded-2xl p-6 border-2 border-gold-400 shadow-xl reveal-item relative overflow-hidden">
+                    <div class="flex items-start justify-between gap-3 border-b border-gold-500/30 pb-3 mb-4">
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-crimson-800 text-gold-200 text-[10px] uppercase tracking-wider font-semibold mb-1">
+                                Nhà Gái
+                            </span>
+                            <h4 class="font-serif text-2xl font-bold text-crimson-900">{{ $weddingCard->bride_eating_title ?: 'Tiệc Cưới Nhà Gái' }}</h4>
+                        </div>
+                        <div class="w-11 h-11 rounded-full bg-crimson-100 border border-gold-500 flex items-center justify-center text-crimson-800 font-serif text-xl shrink-0">
+                            囍
+                        </div>
+                    </div>
+
+                    <div class="space-y-2.5 text-xs sm:text-sm text-crimson-900">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-regular fa-clock text-crimson-700 w-4 text-center"></i>
+                            <span><strong>{{ $bridePartyTime }} {{ $bridePartyDayOfWeek }}</strong> — Ngày {{ $bridePartyDay }} (Tức {{ $bridePartyLunar }})</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-location-dot text-crimson-700 w-4 text-center mt-1"></i>
+                            <div>
+                                <p class="font-semibold">Địa điểm tổ chức</p>
+                                <p class="text-xs text-crimson-700/80">{{ $brideVenueAddress }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid {{ !empty($weddingCard->bride_phone) ? 'grid-cols-2' : 'grid-cols-1' }} gap-2.5 mt-5">
+                        <a href="{{ $brideMapUrl }}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-gold-200 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ
+                        </a>
+                        @if(!empty($weddingCard->bride_phone))
+                            <a href="tel:{{ $weddingCard->bride_phone }}" class="py-2.5 px-3 rounded-xl border border-crimson-800 text-crimson-900 hover:bg-crimson-50 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
+                                <i class="fa-solid fa-phone"></i> Liên hệ: {{ $weddingCard->bride_phone }}
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
+                @if(!empty($weddingCard->wedding_location))
+                <!-- Event 3: Tiệc Cưới Trung Tâm / Khách Sạn (Nếu có) -->
+                <div class="bg-ivory-50 text-crimson-950 rounded-2xl p-6 border-2 border-gold-400 shadow-xl reveal-item relative overflow-hidden">
+                    <div class="flex items-start justify-between gap-3 border-b border-gold-500/30 pb-3 mb-4">
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-crimson-800 text-gold-200 text-[10px] uppercase tracking-wider font-semibold mb-1">
+                                Trung Tâm Tiệc Cưới
+                            </span>
+                            <h4 class="font-serif text-2xl font-bold text-crimson-900">{{ $weddingCard->wedding_location }}</h4>
+                        </div>
+                        <div class="w-11 h-11 rounded-full bg-crimson-100 border border-gold-500 flex items-center justify-center text-crimson-800 font-serif text-xl shrink-0">
+                            囍
+                        </div>
+                    </div>
+
+                    <div class="space-y-2.5 text-xs sm:text-sm text-crimson-900">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-regular fa-clock text-crimson-700 w-4 text-center"></i>
+                            <span><strong>{{ $weddingCard->wedding_time ?: '17:30' }}</strong> — Ngày {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d/m/Y') : '14/06/2026' }}@if($weddingCard->guest_welcome_time) (Đón khách: {{ $weddingCard->guest_welcome_time }})@endif</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-location-dot text-crimson-700 w-4 text-center mt-1"></i>
+                            <div>
+                                <p class="font-semibold">{{ $weddingCard->wedding_location }}</p>
+                                <p class="text-xs text-crimson-700/80">{{ $weddingCard->wedding_address ?: '' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <a href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location ?: '') . ' ' . ($weddingCard->wedding_address ?: ''))) }}" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-gold-200 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
+                            <i class="fa-solid fa-map-location-dot"></i> Xem Bản Đồ Trung Tâm Tiệc Cưới
+                        </a>
+                    </div>
+                </div>
+                @endif
             </div>
         </section>
 
@@ -751,6 +837,18 @@
             @endif
         </section>
 
+        @php
+            $albumData = !empty($weddingCard->album) ? (is_string($weddingCard->album) ? json_decode($weddingCard->album, true) : $weddingCard->album) : [];
+            $albumList = [];
+            if (!empty($albumData) && is_array($albumData)) {
+                foreach ($albumData as $item) {
+                    if (!empty($item)) {
+                        $albumList[] = str_starts_with($item, 'http') ? $item : asset('storage/' . $item);
+                    }
+                }
+            }
+        @endphp
+
         <!-- SECTION F: ALBUM HÌNH CƯỚI (PHOTO GALLERY & LIGHTBOX) -->
         <section class="px-4 sm:px-6 py-8">
             <div class="text-center mb-6 reveal-item">
@@ -764,25 +862,36 @@
             </div>
 
             <div class="grid grid-cols-2 gap-3 reveal-item" id="gallery-grid">
-                <!-- Gallery images populated and clickable for Lightbox -->
-                <div onclick="openLightbox(0)" class="col-span-2 aspect-[16/10] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="Ảnh cưới 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                        <span class="px-3 py-1 rounded-full bg-crimson-900/80 text-gold-200 text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Phóng to</span>
+                @if(!empty($albumList) && count($albumList) > 0)
+                    @foreach($albumList as $idx => $photoUrl)
+                        <div onclick="openLightbox({{ $idx }})" class="{{ $idx === 0 ? 'col-span-2 aspect-[16/10]' : 'aspect-[3/4]' }} rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative shadow-md">
+                            <img src="{{ $photoUrl }}" alt="Ảnh cưới {{ $idx + 1 }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <span class="px-3 py-1 rounded-full bg-crimson-900/80 text-gold-200 text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Phóng to</span>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Fallback nếu chưa tải ảnh album -->
+                    <div onclick="openLightbox(0)" class="col-span-2 aspect-[16/10] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="Ảnh cưới 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="px-3 py-1 rounded-full bg-crimson-900/80 text-gold-200 text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Phóng to</span>
+                        </div>
                     </div>
-                </div>
-                <div onclick="openLightbox(1)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div onclick="openLightbox(2)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                    <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div onclick="openLightbox(3)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                    <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div onclick="openLightbox(4)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                    <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
+                    <div onclick="openLightbox(1)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div onclick="openLightbox(2)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
+                        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div onclick="openLightbox(3)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
+                        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div onclick="openLightbox(4)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
+                        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                @endif
             </div>
         </section>
 
@@ -1347,6 +1456,14 @@
             const modal = document.getElementById('lightbox-modal');
             const img = document.getElementById('lightbox-img');
             img.src = galleryUrls[currentLightboxIndex];
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function openSingleImage(src) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }

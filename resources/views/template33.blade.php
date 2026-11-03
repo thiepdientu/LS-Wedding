@@ -349,26 +349,32 @@
         $timeStrShort = preg_match('/^\d{1,2}:\d{2}/', $timeStr, $m) ? $m[0] : '18:00';
 
         $timelineEvents = is_array($weddingCard->timeline) ? $weddingCard->timeline : (is_string($weddingCard->timeline) ? json_decode($weddingCard->timeline, true) : null);
+        if (empty($timelineEvents) && !empty($weddingCard->timeline_list)) {
+            $timelineEvents = $weddingCard->timeline_list;
+        }
         if (empty($timelineEvents)) {
             $timelineEvents = [
-                ['time' => '14:00', 'title' => 'Lễ gia tiên tại nhà gái', 'icon' => 'fa-heart'],
-                ['time' => '15:30', 'title' => 'Đón dâu', 'icon' => 'fa-car-side'],
-                ['time' => '17:00', 'title' => 'Lễ gia tiên tại nhà trai', 'icon' => 'fa-house-chimney-heart'],
-                ['time' => '18:00', 'title' => 'Đón khách', 'icon' => 'medallion-candle'],
-                ['time' => '18:30', 'title' => 'Nghi thức thành hôn', 'icon' => 'medallion-alcohol'],
-                ['time' => '19:00', 'title' => 'Rót rượu giao bôi và cắt bánh', 'icon' => 'medallion-birdcage'],
-                ['time' => '19:30', 'title' => 'Khai tiệc', 'icon' => 'fa-utensils'],
-                ['time' => '20:30', 'title' => 'Cô dâu chú rể chúc mừng từng bàn', 'icon' => 'fa-champagne-glasses'],
-                ['time' => '22:00', 'title' => 'Kết thúc tiệc', 'icon' => 'fa-music'],
+                ['time' => '07:30', 'title' => 'Lễ Rước Dâu', 'icon' => 'fa-car-side'],
+                ['time' => '09:00', 'title' => 'Lễ Gia Tiên', 'icon' => 'fa-heart'],
+                ['time' => '11:00', 'title' => 'Đón Khách', 'icon' => 'fa-camera-retro'],
+                ['time' => '11:30', 'title' => 'Hôn Lễ Chính Thức', 'icon' => 'fa-ring'],
+                ['time' => '12:00', 'title' => 'Khai Tiệc', 'icon' => 'fa-utensils'],
             ];
         }
 
-        $dressCodes = is_array($weddingCard->dress_code) ? $weddingCard->dress_code : (is_string($weddingCard->dress_code) ? json_decode($weddingCard->dress_code, true) : null);
+        $dressCodes = !empty($weddingCard->dresscode_colors_list) 
+            ? $weddingCard->dresscode_colors_list 
+            : (!empty($weddingCard->dresscode_colors) 
+                ? (is_array($weddingCard->dresscode_colors) ? $weddingCard->dresscode_colors : (is_string($weddingCard->dresscode_colors) ? json_decode($weddingCard->dresscode_colors, true) : null))
+                : (!empty($weddingCard->dress_code) 
+                    ? (is_array($weddingCard->dress_code) ? $weddingCard->dress_code : (is_string($weddingCard->dress_code) ? json_decode($weddingCard->dress_code, true) : null))
+                    : null));
+
         if (empty($dressCodes)) {
             $dressCodes = [
-                ['color' => '#d4af37', 'label' => 'Vàng Gold'],
-                ['color' => '#fcfaf5', 'label' => 'Trắng Kem'],
-                ['color' => '#d8c3a5', 'label' => 'Be Champagne'],
+                ['hex' => '#d4af37', 'name' => 'Vàng Gold'],
+                ['hex' => '#fcfaf5', 'name' => 'Trắng Kem'],
+                ['hex' => '#d8c3a5', 'name' => 'Be Champagne'],
             ];
         }
 
@@ -387,6 +393,9 @@
 
         $groomQrUrl = $weddingCard->groom_qr_url;
         $brideQrUrl = $weddingCard->bride_qr_url;
+
+        $groomAvatarSrc = !empty($weddingCard->groom_avatar) ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar)) : 'https://assets.chungdoi.com/photo-library/design/53fe1ac6520c377e14384b2940cb1edca37668313fa366532c6b50c57cc5e6ba.webp';
+        $brideAvatarSrc = !empty($weddingCard->bride_avatar) ? (str_starts_with($weddingCard->bride_avatar, 'http') ? $weddingCard->bride_avatar : asset('storage/' . $weddingCard->bride_avatar)) : 'https://assets.chungdoi.com/photo-library/design/9428e6bdde0a685c2ad1fac40d343b5d50cd9c415610dfd0dec4d222f65b136c.webp';
     @endphp
 
     <!-- Golden Dust Sparkles Canvas -->
@@ -401,7 +410,7 @@
     <main id="main-invitation" class="relative z-10 max-w-[520px] mx-auto shadow-[0_0_90px_rgba(47,34,13,0.22)] marble-surface border-x border-gold-400/45 overflow-hidden">
 
         <!-- Sticky Top Bar: Template Info & Guest Name Switcher -->
-        <div class="sticky top-0 z-30 bg-marble-100/95 backdrop-blur-md border-b border-gold-300/60 px-4 py-2.5 flex items-center justify-between text-xs text-bronze-800">
+        {{-- <div class="sticky top-0 z-30 bg-marble-100/95 backdrop-blur-md border-b border-gold-300/60 px-4 py-2.5 flex items-center justify-between text-xs text-bronze-800">
             <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-gold-500"></span>
                 <span>Mẫu thiệp: <strong class="font-bold text-bronze-900">Cẩm Thạch Vàng</strong></span>
@@ -414,7 +423,7 @@
                     <i class="fa-solid fa-user-pen text-[10px]"></i> Đổi tên khách
                 </button>
             </div>
-        </div>
+        </div> --}}
 
         <!-- ============================================================= -->
         <!-- SECTION 1: HERO SAVE THE DATE & 2 POLAROID FRAMES (100% MATCH)-->
@@ -447,7 +456,7 @@
                 <div onclick="openLightbox(1)" class="absolute left-2 top-0 w-[185px] sm:w-[200px] bg-white p-2.5 pb-4 rounded-[3px] border border-gold-400/50 shadow-[0_14px_30px_rgba(47,34,13,0.2)] transform -rotate-[7deg] hover:rotate-0 hover:scale-105 transition duration-500 cursor-pointer z-20">
                     <div class="aspect-[3/4] overflow-hidden bg-stone-100">
                         <img 
-                            src="{{ $weddingCard->groom_avatar ? asset('storage/' . $weddingCard->groom_avatar) : 'https://assets.chungdoi.com/photo-library/design/53fe1ac6520c377e14384b2940cb1edca37668313fa366532c6b50c57cc5e6ba.webp' }}" 
+                            src="{{ $groomAvatarSrc }}" 
                             alt="Chú Rể {{ $weddingCard->groom_name }}" 
                             class="w-full h-full object-cover object-top"
                         >
@@ -466,7 +475,7 @@
                     </div>
                     <div class="aspect-[3/4] overflow-hidden bg-stone-100">
                         <img 
-                            src="{{ $weddingCard->bride_avatar ? asset('storage/' . $weddingCard->bride_avatar) : 'https://assets.chungdoi.com/photo-library/design/9428e6bdde0a685c2ad1fac40d343b5d50cd9c415610dfd0dec4d222f65b136c.webp' }}" 
+                            src="{{ $brideAvatarSrc }}" 
                             alt="Cô Dâu {{ $weddingCard->bride_name }}" 
                             class="w-full h-full object-cover object-top"
                         >
@@ -664,41 +673,102 @@
                     <div></div>
                 </div>
 
-                <p class="text-xs sm:text-sm text-bronze-700 font-medium mt-2">
-                    Tiệc cưới sẽ diễn ra vào lúc:
-                </p>
-                <p class="font-serif text-3xl sm:text-4xl font-bold text-gold-600 my-1.5">
-                    {{ $timeStrShort }} | {{ mb_strtoupper($dayOfWeekVi) }}
-                </p>
+                <!-- Hai Khối Tiệc Cưới: Nhà Trai & Nhà Gái -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 text-center">
+                    <!-- Nhà Trai -->
+                    <div class="marble-card-surface border border-gold-400/60 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-gold-600 text-white text-xs uppercase tracking-wider font-bold mb-2">
+                                Tiệc Cưới Nhà Trai
+                            </span>
+                            <h3 class="font-serif text-xl font-bold text-bronze-900 mt-1">
+                                Hôn Trường Nhà Trai
+                            </h3>
+                            <p class="font-serif text-3xl font-bold text-gold-600 my-2">
+                                {{ $weddingCard->time_groom ?: ($timeStrShort ?: '18:00') }}
+                            </p>
+                            <p class="text-xs sm:text-sm font-bold text-bronze-900">
+                                {{ $weddingCard->groom_eating_date ? \Carbon\Carbon::parse($weddingCard->groom_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($wDate ? $wDate->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Chủ Nhật, ngày 14/02/2027') }}
+                            </p>
+                            @if(!empty($weddingCard->time_groom_al) || !empty($weddingCard->wedding_date_lunar))
+                            <p class="text-xs text-bronze-700 italic mt-0.5">
+                                (Tức ngày {{ $weddingCard->time_groom_al ?: $weddingCard->wedding_date_lunar }})
+                            </p>
+                            @endif
+                            <div class="text-xs text-bronze-800 mt-3 pt-3 border-t border-gold-300/60">
+                                <strong class="text-bronze-900 block mb-1">Địa chỉ:</strong>
+                                {{ $weddingCard->address_groom ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai') }}
+                            </div>
+                        </div>
 
-                <!-- Date Split Row -->
-                <div class="flex items-center justify-center gap-3 sm:gap-5 my-3 text-bronze-900 font-serif">
-                    <span class="text-xs sm:text-sm uppercase tracking-widest font-bold border-y border-gold-400/70 py-1 px-2.5">
-                        {{ $dayNum }}
-                    </span>
-                    <span class="text-3xl sm:text-4xl font-bold text-gold-600 leading-none">
-                        THÁNG {{ $monthNum }}
-                    </span>
-                    <span class="text-xs sm:text-sm uppercase tracking-widest font-bold border-y border-gold-400/70 py-1 px-2.5">
-                        {{ $yearNum }}
-                    </span>
-                </div>
-
-                @if(!empty($weddingCard->lunar_date))
-                <p class="font-serif italic text-xs sm:text-sm text-bronze-700 mt-1">
-                    ({{ $weddingCard->lunar_date }})
-                </p>
-                @endif
-
-                <!-- Two Reception Time Badges -->
-                <div class="grid grid-cols-2 gap-3 my-5">
-                    <div class="bg-marble-100 border border-gold-400/50 rounded-2xl py-2.5 px-3">
-                        <span class="text-[11px] uppercase tracking-wider text-bronze-700 block">Đón khách</span>
-                        <strong class="font-serif text-xl text-gold-700">{{ !empty($timelineEvents[0]['time']) ? $timelineEvents[0]['time'] : '17:00' }}</strong>
+                        <div class="mt-4 pt-3 flex flex-wrap gap-2 justify-center">
+                            <a 
+                                href="{{ $weddingCard->groom_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_groom ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai')))) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn-marble-gold px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm"
+                            >
+                                <i class="fa-solid fa-diamond-turn-right"></i>
+                                <span>Chỉ đường</span>
+                            </a>
+                            @if(!empty($weddingCard->groom_phone))
+                            <a 
+                                href="tel:{{ $weddingCard->groom_phone }}"
+                                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gold-600 text-gold-700 hover:bg-gold-600 hover:text-white text-xs font-bold uppercase tracking-wider transition"
+                            >
+                                <i class="fa-solid fa-phone"></i>
+                                <span>Chú Rể: {{ $weddingCard->groom_phone }}</span>
+                            </a>
+                            @endif
+                        </div>
                     </div>
-                    <div class="bg-marble-100 border border-gold-400/50 rounded-2xl py-2.5 px-3">
-                        <span class="text-[11px] uppercase tracking-wider text-bronze-700 block">Khai tiệc</span>
-                        <strong class="font-serif text-xl text-gold-700">{{ $timeStrShort }}</strong>
+
+                    <!-- Nhà Gái -->
+                    <div class="marble-card-surface border border-gold-400/60 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-gold-600 text-white text-xs uppercase tracking-wider font-bold mb-2">
+                                Tiệc Cưới Nhà Gái
+                            </span>
+                            <h3 class="font-serif text-xl font-bold text-bronze-900 mt-1">
+                                Hôn Trường Nhà Gái
+                            </h3>
+                            <p class="font-serif text-3xl font-bold text-gold-600 my-2">
+                                {{ $weddingCard->time_bride ?: ($timeStrShort ?: '11:00') }}
+                            </p>
+                            <p class="text-xs sm:text-sm font-bold text-bronze-900">
+                                {{ $weddingCard->bride_eating_date ? \Carbon\Carbon::parse($weddingCard->bride_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($wDate ? $wDate->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Chủ Nhật, ngày 14/02/2027') }}
+                            </p>
+                            @if(!empty($weddingCard->time_bride_al) || !empty($weddingCard->wedding_date_lunar))
+                            <p class="text-xs text-bronze-700 italic mt-0.5">
+                                (Tức ngày {{ $weddingCard->time_bride_al ?: $weddingCard->wedding_date_lunar }})
+                            </p>
+                            @endif
+                            <div class="text-xs text-bronze-800 mt-3 pt-3 border-t border-gold-300/60">
+                                <strong class="text-bronze-900 block mb-1">Địa chỉ:</strong>
+                                {{ $weddingCard->address_bride ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái') }}
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 flex flex-wrap gap-2 justify-center">
+                            <a 
+                                href="{{ $weddingCard->bride_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_bride ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái')))) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn-marble-gold px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm"
+                            >
+                                <i class="fa-solid fa-diamond-turn-right"></i>
+                                <span>Chỉ đường</span>
+                            </a>
+                            @if(!empty($weddingCard->bride_phone))
+                            <a 
+                                href="tel:{{ $weddingCard->bride_phone }}"
+                                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gold-600 text-gold-700 hover:bg-gold-600 hover:text-white text-xs font-bold uppercase tracking-wider transition"
+                            >
+                                <i class="fa-solid fa-phone"></i>
+                                <span>Cô Dâu: {{ $weddingCard->bride_phone }}</span>
+                            </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -784,35 +854,31 @@
                     </a>
                 </div>
 
-                <!-- Venue & Directions ("Tiệc cưới sẽ tổ chức tại: Nhà hàng Queen Palace - Hưng Yên") -->
+                @if($weddingCard->wedding_location && $weddingCard->wedding_location !== $weddingCard->address_groom && $weddingCard->wedding_location !== $weddingCard->address_bride)
+                <!-- Central Venue & Directions -->
                 <div class="mt-8 pt-6 border-t border-gold-300/60 text-center">
                     <p class="text-xs uppercase tracking-[0.2em] text-gold-700 font-bold">
-                        Tiệc cưới sẽ tổ chức tại
+                        Trung tâm tiệc cưới chung
                     </p>
                     <p class="font-serif text-lg sm:text-xl font-bold text-bronze-900 mt-1.5 px-2 leading-snug">
-                        {{ $weddingCard->wedding_location ?: 'Nhà hàng Queen Palace' }}{{ $weddingCard->wedding_address ? ' - ' . $weddingCard->wedding_address : ' - Hưng Yên' }}
+                        {{ $weddingCard->wedding_location }}{{ $weddingCard->wedding_address ? ' - ' . $weddingCard->wedding_address : '' }}
                     </p>
 
-                    <!-- Embedded Map Preview -->
-                    <div class="w-full h-52 rounded-2xl overflow-hidden border border-gold-400/50 shadow-inner my-4 bg-marble-100">
-                        <iframe 
-                            class="w-full h-full border-0" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade"
-                            src="https://www.google.com/maps?q={{ urlencode(($weddingCard->wedding_location ?: 'Queen Palace') . ' ' . ($weddingCard->wedding_address ?: 'Hưng Yên')) }}&output=embed">
-                        </iframe>
+                    @if($weddingCard->google_map_url)
+                    <div class="mt-4">
+                        <a 
+                            href="{{ $weddingCard->google_map_url }}" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 px-7 py-2.5 rounded-full border-2 border-gold-600 text-gold-700 hover:bg-gold-600 hover:text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition"
+                        >
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+                            <span>Chỉ đường trung tâm</span>
+                        </a>
                     </div>
-
-                    <a 
-                        href="{{ $weddingCard->google_map_url ?: 'https://www.google.com/maps/dir/?api=1&destination=' . urlencode(($weddingCard->wedding_location ?: 'Queen Palace') . ' ' . ($weddingCard->wedding_address ?: 'Hưng Yên')) }}" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 px-7 py-2.5 rounded-full border-2 border-gold-600 text-gold-700 hover:bg-gold-600 hover:text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition"
-                    >
-                        <i class="fa-solid fa-diamond-turn-right"></i>
-                        <span>Chỉ đường</span>
-                    </a>
+                    @endif
                 </div>
+                @endif
             </div>
         </section>
 
@@ -832,14 +898,23 @@
                 <!-- Circular Color Swatches -->
                 <div class="flex items-center justify-center gap-6 my-2 flex-wrap">
                     @foreach($dressCodes as $dc)
+                        @php
+                            $cHex = is_array($dc) ? ($dc['hex'] ?? ($dc['color'] ?? '#d4af37')) : $dc;
+                            $cLabel = is_array($dc) ? ($dc['name'] ?? ($dc['label'] ?? '')) : (is_string($dc) ? $dc : '');
+                        @endphp
                         <div class="group flex flex-col items-center gap-1.5">
-                            <span class="w-11 h-11 rounded-full border-2 border-white shadow-md ring-1 ring-gold-300 transition transform group-hover:scale-110" style="background-color: {{ is_array($dc) ? ($dc['color'] ?? '#d4af37') : '#d4af37' }}"></span>
-                            <span class="text-[11px] text-bronze-800 font-medium">{{ is_array($dc) ? ($dc['label'] ?? '') : $dc }}</span>
+                            <span class="w-11 h-11 rounded-full border-2 border-white shadow-md ring-1 ring-gold-300 transition transform group-hover:scale-110" style="background-color: {{ $cHex }}"></span>
+                            @if(!empty($cLabel))
+                            <span class="text-[11px] text-bronze-800 font-medium">{{ $cLabel }}</span>
+                            @endif
                         </div>
                     @endforeach
                 </div>
-                @if(!empty($weddingCard->dress_code_note))
-                <p class="text-xs text-bronze-700 mt-3 italic">{{ $weddingCard->dress_code_note }}</p>
+                @php
+                    $dressNote = $weddingCard->dresscode_note ?: $weddingCard->dress_code_note;
+                @endphp
+                @if(!empty($dressNote))
+                <p class="text-xs text-bronze-700 mt-3 italic">{{ $dressNote }}</p>
                 @endif
             </div>
 
@@ -858,36 +933,56 @@
 
                 <div class="relative max-w-sm mx-auto">
                     <!-- Center vertical gold line -->
-                    <div class="absolute left-[76px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-gold-300 via-gold-500 to-gold-300"></div>
+                    <div class="absolute left-[87px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-gold-300 via-gold-500 to-gold-300"></div>
 
                     <ol class="space-y-4 relative z-10">
-                        @php
-                            $defaultIcons = ['fa-heart', 'fa-car-side', 'fa-house-chimney-heart', 'medallion-candle', 'medallion-alcohol', 'medallion-birdcage', 'fa-utensils', 'fa-champagne-glasses', 'fa-music'];
-                        @endphp
                         @foreach($timelineEvents as $tIdx => $tl)
                             @php
                                 $tTime = is_array($tl) ? ($tl['time'] ?? '') : '';
                                 $tTitle = is_array($tl) ? ($tl['title'] ?? '') : '';
-                                $tIcon = is_array($tl) && !empty($tl['icon']) ? $tl['icon'] : ($defaultIcons[$tIdx % count($defaultIcons)]);
-                                $isMedallion = str_starts_with($tIcon, 'medallion-');
+                                $tDesc = is_array($tl) ? ($tl['desc'] ?? '') : '';
+
+                                // Smart icon detection
+                                $rawIcon = is_array($tl) ? ($tl['icon'] ?? '') : '';
+                                $tIcon = '';
+                                if (!empty($rawIcon) && !str_starts_with($rawIcon, 'medallion-') && $rawIcon !== 'fa-house-chimney-heart') {
+                                    $tIcon = $rawIcon;
+                                } else {
+                                    $titleLower = mb_strtolower($tTitle, 'UTF-8');
+                                    if (str_contains($titleLower, 'đón dâu') || str_contains($titleLower, 'rước dâu') || str_contains($titleLower, 'xe')) {
+                                        $tIcon = 'fa-car-side';
+                                    } elseif (str_contains($titleLower, 'gia tiên')) {
+                                        $tIcon = 'fa-heart';
+                                    } elseif (str_contains($titleLower, 'đón khách') || str_contains($titleLower, 'chụp')) {
+                                        $tIcon = 'fa-camera-retro';
+                                    } elseif (str_contains($titleLower, 'hôn lễ') || str_contains($titleLower, 'thành hôn') || str_contains($titleLower, 'nghi thức')) {
+                                        $tIcon = 'fa-ring';
+                                    } elseif (str_contains($titleLower, 'rượu') || str_contains($titleLower, 'nâng ly') || str_contains($titleLower, 'giao bôi')) {
+                                        $tIcon = 'fa-champagne-glasses';
+                                    } elseif (str_contains($titleLower, 'bánh')) {
+                                        $tIcon = 'fa-cake-candles';
+                                    } elseif (str_contains($titleLower, 'tiệc') || str_contains($titleLower, 'ăn')) {
+                                        $tIcon = 'fa-utensils';
+                                    } elseif (str_contains($titleLower, 'nhạc') || str_contains($titleLower, 'khiêu vũ') || str_contains($titleLower, 'kết thúc')) {
+                                        $tIcon = 'fa-music';
+                                    } else {
+                                        $fallbackList = ['fa-heart', 'fa-car-side', 'fa-ring', 'fa-champagne-glasses', 'fa-utensils', 'fa-cake-candles', 'fa-music'];
+                                        $tIcon = $fallbackList[$tIdx % count($fallbackList)];
+                                    }
+                                }
                             @endphp
-                            @if($isMedallion)
-                                <li class="flex items-center gap-4 bg-marble-100/85 rounded-2xl p-2 border border-gold-300/60">
-                                    <span class="w-12 text-right font-serif text-lg font-bold text-gold-700 shrink-0">{{ $tTime }}</span>
-                                    <div class="w-10 h-10 rounded-full bg-white border border-gold-400 p-1 shadow shrink-0 flex items-center justify-center">
-                                        <img src="https://chungdoi.com/images/themes/marble-yellow/{{ $tIcon }}.webp" alt="medallion" class="anim-medallion w-full h-full object-contain" onerror="this.style.display='none'">
-                                    </div>
-                                    <span class="text-xs sm:text-sm font-bold text-bronze-900 text-left">{{ $tTitle }}</span>
-                                </li>
-                            @else
-                                <li class="flex items-center gap-4">
-                                    <span class="w-14 text-right font-serif text-lg font-bold text-gold-700 shrink-0">{{ $tTime }}</span>
-                                    <span class="w-6 h-6 rounded-full bg-gold-500 text-white flex items-center justify-center text-[10px] shadow shrink-0 ring-4 ring-marble-100">
-                                        <i class="fa-solid {{ $tIcon }}"></i>
-                                    </span>
-                                    <span class="text-xs sm:text-sm font-semibold text-bronze-900 text-left">{{ $tTitle }}</span>
-                                </li>
-                            @endif
+                            <li class="flex items-center gap-4">
+                                <span class="w-14 text-right font-serif text-base sm:text-lg font-bold text-gold-700 shrink-0">{{ $tTime }}</span>
+                                <span class="w-8 h-8 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 text-white flex items-center justify-center text-xs shadow-md shrink-0 ring-4 ring-marble-100 z-10">
+                                    <i class="fa-solid {{ $tIcon }}"></i>
+                                </span>
+                                <div class="text-left flex-1 min-w-0">
+                                    <h4 class="text-xs sm:text-sm font-bold text-bronze-900 leading-tight">{{ $tTitle }}</h4>
+                                    @if(!empty($tDesc))
+                                    <p class="text-[11px] text-bronze-700 mt-0.5 leading-snug">{{ $tDesc }}</p>
+                                    @endif
+                                </div>
+                            </li>
                         @endforeach
                     </ol>
                 </div>

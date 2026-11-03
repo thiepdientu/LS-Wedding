@@ -621,23 +621,30 @@
                 </svg>
             </div>
 
+            @php
+                $groomAvatarSrc = !empty($weddingCard->groom_avatar)
+                    ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar))
+                    : (!empty($weddingCard->groom_image)
+                        ? (str_starts_with($weddingCard->groom_image, 'http') ? $weddingCard->groom_image : asset('storage/' . $weddingCard->groom_image))
+                        : 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=85');
+
+                $brideAvatarSrc = !empty($weddingCard->bride_avatar)
+                    ? (str_starts_with($weddingCard->bride_avatar, 'http') ? $weddingCard->bride_avatar : asset('storage/' . $weddingCard->bride_avatar))
+                    : (!empty($weddingCard->bride_image)
+                        ? (str_starts_with($weddingCard->bride_image, 'http') ? $weddingCard->bride_image : asset('storage/' . $weddingCard->bride_image))
+                        : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=85');
+            @endphp
             <!-- LAYER 4: TWO TILTED OVERLAPPING PORTRAIT FRAMES & COUPLE TYPOGRAPHY -->
             <div class="relative z-20 w-full h-[640px] mt-[115px]">
 
                 <!-- 4A. GROOM TILTED PORTRAIT FRAME (TOP-LEFT, ROTATED -10.5DEG) -->
                 <div onclick="openLightbox(0)"
                      class="portrait-frame-groom cursor-pointer absolute left-[10.5%] top-[18px] w-[46%] aspect-[3/3.82] overflow-hidden">
-                    <!-- Outdoor Groom Portrait in White Suit & White Bowtie Against Lush Greenery -->
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=85"
-                         alt="{{ $weddingCard->groom_rank ?: 'Trưởng Nam' }} {{ $weddingCard->groom_name }}"
-                         class="w-full h-full object-cover object-top hidden"
-                         id="groom-fallback-img">
-                    <!-- Custom High-Resolution Editorial Studio/Garden Groom Portrait Canvas/Image Matching Screenshot -->
                     <div class="relative w-full h-full bg-[#3A5328] overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=85"
+                        <img src="{{ $groomAvatarSrc }}"
                              alt="Chú Rể {{ $weddingCard->groom_name }}"
                              class="w-full h-full object-cover object-center brightness-105 contrast-[1.02]"
-                             onerror="this.src='https://placehold.co/450x570/3A5328/FFFFFF?text=Minh+Quan'">
+                             onerror="this.src='https://placehold.co/450x570/3A5328/FFFFFF?text=Chú+Rể'">
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-emerald-950/10"></div>
                     </div>
                 </div>
@@ -655,12 +662,11 @@
                 <!-- 4C. BRIDE TILTED PORTRAIT FRAME (BOTTOM-RIGHT, ROTATED +10.5DEG, OVERLAPPING GREEN BAND) -->
                 <div onclick="openLightbox(1)"
                      class="portrait-frame-bride cursor-pointer absolute right-[11.5%] top-[232px] w-[46%] aspect-[3/3.82] overflow-hidden z-20">
-                    <!-- Outdoor Bride Portrait in Strapless White Gown Against Lush Greenery -->
                     <div class="relative w-full h-full bg-[#3D562A] overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=85"
+                        <img src="{{ $brideAvatarSrc }}"
                              alt="Cô Dâu {{ $weddingCard->bride_name }}"
                              class="w-full h-full object-cover object-center brightness-105"
-                             onerror="this.src='https://placehold.co/450x570/3D562A/FFFFFF?text=Thu+Ha'">
+                             onerror="this.src='https://placehold.co/450x570/3D562A/FFFFFF?text=Cô+Dâu'">
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-emerald-950/10"></div>
                     </div>
                 </div>
@@ -791,70 +797,125 @@
         </section>
 
         <!-- ===================================================================
-             4. CEREMONY DETAILS: LỄ VU QUY, LỄ THÀNH HÔN & TIỆC CƯỚI SÂN VƯỜN
+             4. CEREMONY DETAILS: TIỆC CƯỚI NHÀ TRAI & TIỆC CƯỚI NHÀ GÁI
              =================================================================== -->
         <section id="sec-ceremonies" class="relative py-4 px-6 space-y-5">
             <div class="reveal-item text-center">
                 <p class="text-[11px] uppercase tracking-[0.26em] text-moc-taupeDark font-semibold">Thời Gian &amp; Địa Điểm</p>
-                <h3 class="font-serif text-3xl font-bold text-moc-greenTitle mt-0.5">Nghi Thức Hôn Lễ</h3>
+                <h3 class="font-serif text-3xl font-bold text-moc-greenTitle mt-0.5">Thông Tin Tiệc Cưới</h3>
             </div>
 
-            <!-- CARD 1: LỄ VU QUY (NHÀ GÁI) -->
-            <div class="reveal-left bg-white border border-moc-taupe/45 rounded-3xl p-5 shadow-sm">
+            @php
+                // 1. Dữ liệu Tiệc Cưới Nhà Trai
+                $groomPartyDate = $weddingCard->groom_eating_date ?: $weddingCard->wedding_date;
+                $groomPartyTime = $weddingCard->time_groom ?: ($weddingCard->wedding_time ?: '11:00');
+                $groomPartyDayOfWeek = $groomPartyDate ? mb_strtoupper($groomPartyDate->locale('vi')->isoFormat('dddd')) : 'CHỦ NHẬT';
+                $groomPartyDay = $groomPartyDate ? $groomPartyDate->format('d') : '24';
+                $groomPartyMonth = $groomPartyDate ? $groomPartyDate->format('m') : '05';
+                $groomPartyYear = $groomPartyDate ? $groomPartyDate->format('Y') : '2026';
+                $groomPartyLunar = $weddingCard->time_groom_al ?: ($weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: 'ngày 08 tháng 04 năm Bính Ngọ'));
+                $groomVenueAddress = $weddingCard->address_groom ?: ($weddingCard->address_wedding ?: 'Tư gia Nhà Trai');
+                $groomMapUrl = !empty($weddingCard->groom_map)
+                    ? $weddingCard->groom_map
+                    : (!empty($weddingCard->address_wedding_map)
+                        ? $weddingCard->address_wedding_map
+                        : ('https://www.google.com/maps/search/?api=1&query=' . urlencode($groomVenueAddress)));
+
+                // 2. Dữ liệu Tiệc Cưới Nhà Gái
+                $bridePartyDate = $weddingCard->bride_eating_date ?: $weddingCard->wedding_date;
+                $bridePartyTime = $weddingCard->time_bride ?: ($weddingCard->wedding_time ?: '11:00');
+                $bridePartyDayOfWeek = $bridePartyDate ? mb_strtoupper($bridePartyDate->locale('vi')->isoFormat('dddd')) : 'CHỦ NHẬT';
+                $bridePartyDay = $bridePartyDate ? $bridePartyDate->format('d') : '24';
+                $bridePartyMonth = $bridePartyDate ? $bridePartyDate->format('m') : '05';
+                $bridePartyYear = $bridePartyDate ? $bridePartyDate->format('Y') : '2026';
+                $bridePartyLunar = $weddingCard->time_bride_al ?: ($weddingCard->wedding_date_al ?: ($weddingCard->wedding_date_lunar ?: 'ngày 08 tháng 04 năm Bính Ngọ'));
+                $brideVenueAddress = $weddingCard->address_bride ?: ($weddingCard->address_wedding ?: 'Tư gia Nhà Gái');
+                $brideMapUrl = !empty($weddingCard->bride_map)
+                    ? $weddingCard->bride_map
+                    : (!empty($weddingCard->address_wedding_map)
+                        ? $weddingCard->address_wedding_map
+                        : ('https://www.google.com/maps/search/?api=1&query=' . urlencode($brideVenueAddress)));
+            @endphp
+
+            <!-- CARD 1: TIỆC CƯỚI NHÀ TRAI -->
+            <div class="reveal-left bg-gradient-to-b from-[#F9F6F0] to-white border-2 border-moc-taupe rounded-3xl p-5 shadow-md">
                 <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-1.5 bg-moc-card text-moc-greenDark text-[11px] font-semibold px-3 py-1 rounded-full border border-moc-taupe/40">
-                        <span>🌿</span> Lễ Vu Quy • Nhà Gái
+                    <span class="inline-flex items-center gap-1.5 bg-moc-greenDark text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
+                        <span>🤵</span> {{ $weddingCard->groom_eating_title ?: 'Tiệc Cưới Nhà Trai' }}
                     </span>
-                    <span class="text-xs font-serif italic text-moc-taupeDark font-semibold">{{ $weddingCard->ceremony_time ?: '08:00' }} — {{ $weddingCard->wedding_date ? mb_strtoupper($weddingCard->wedding_date->locale('vi')->isoFormat('dddd')) : 'Chủ Nhật' }}</span>
+                    <span class="text-xs font-serif font-bold text-moc-greenTitle">{{ $groomPartyTime }} — {{ $groomPartyDayOfWeek }}</span>
                 </div>
 
-                <h4 class="font-serif text-2xl font-bold text-moc-greenTitle mt-2.5">Lễ Vu Quy</h4>
-
-                <div class="my-3 py-2.5 px-3 bg-moc-paper border border-moc-taupe/35 rounded-2xl flex items-center justify-center gap-3 font-serif text-moc-greenDark">
-                    <span class="text-3xl font-bold text-moc-greenTitle">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d') : '24' }}</span>
+                <div class="my-3 py-2.5 px-3 bg-white border border-moc-taupe/35 rounded-2xl flex items-center justify-center gap-3 font-serif text-moc-greenDark">
+                    <span class="text-3xl font-bold text-moc-greenTitle">{{ $groomPartyDay }}</span>
                     <span class="h-6 w-[1px] bg-moc-taupe/50"></span>
-                    <span class="text-lg font-semibold uppercase tracking-wider">Tháng {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('m') : '05' }}</span>
+                    <span class="text-lg font-semibold uppercase tracking-wider">Tháng {{ $groomPartyMonth }}</span>
                     <span class="h-6 w-[1px] bg-moc-taupe/50"></span>
-                    <span class="text-2xl font-bold">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('Y') : '2026' }}</span>
+                    <span class="text-2xl font-bold">{{ $groomPartyYear }}</span>
                 </div>
 
                 <p class="text-xs italic text-moc-text/80 text-center">
-                    (Nhằm ngày {{ $weddingCard->wedding_date_lunar ?: '08 tháng 04 năm Bính Ngọ' }})
+                    (Tức {{ $groomPartyLunar }})
                 </p>
 
                 <div class="mt-3 pt-3 border-t border-dashed border-moc-taupe/40 text-xs text-moc-text space-y-1.5">
-                    <p>📍 <strong>Tư Gia Nhà Gái:</strong> {{ $weddingCard->bride_address ?: 'Số 128 Xuân Thủy, Quận Cầu Giấy, TP. Hà Nội' }}</p>
-                </div>
-            </div>
-
-            <!-- CARD 2: LỄ THÀNH HÔN & TIỆC CƯỚI SÂN VƯỜN -->
-            <div class="reveal-right bg-gradient-to-b from-[#F9F6F0] to-white border-2 border-moc-taupe rounded-3xl p-5 shadow-md">
-                <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-1.5 bg-moc-greenDark text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
-                        <span>🥂</span> Lễ Thành Hôn &amp; Tiệc Cưới
-                    </span>
-                    <span class="text-xs font-serif font-bold text-moc-greenTitle">{{ $weddingCard->wedding_time ?: '11:00' }} — {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d.m.Y') : '24.05.2026' }}</span>
+                    <p>📍 <strong>Địa điểm tổ chức:</strong> {{ $groomVenueAddress }}</p>
                 </div>
 
-                <h4 class="font-serif text-2xl font-bold text-moc-greenTitle mt-2.5">{{ $weddingCard->wedding_location ?: 'The Chloe Garden & Palace' }}</h4>
-                <p class="text-xs text-moc-text/85 mt-1">📍 {{ $weddingCard->wedding_address ?: 'Số 268 Đường Thanh Niên (Ven Hồ Tây), Quận Tây Hồ, TP. Hà Nội' }}</p>
-
-                <div class="my-3 py-2 px-3 bg-white border border-moc-taupe/40 rounded-xl flex items-center justify-between text-xs">
-                    <span>🕥 Đón khách: <strong>{{ $weddingCard->guest_welcome_time ?: '10:30' }}</strong></span>
-                    <span class="text-moc-taupe">|</span>
-                    <span>🥂 Khai tiệc: <strong>{{ $weddingCard->wedding_time ?: '11:00' }}</strong></span>
-                </div>
-
-                <!-- Google Maps & Copy Address Buttons -->
-                <div class="grid grid-cols-2 gap-2.5 mt-3">
-                    <a href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location ?: '') . ' ' . ($weddingCard->wedding_address ?: ''))) }}"
+                <!-- Google Maps & Call Groom Buttons -->
+                <div class="grid {{ !empty($weddingCard->groom_phone) ? 'grid-cols-2' : 'grid-cols-1' }} gap-2.5 mt-3">
+                    <a href="{{ $groomMapUrl }}"
                        target="_blank" rel="noopener noreferrer"
                        class="bg-moc-greenDark hover:bg-moc-greenTitle text-white text-xs font-medium py-2.5 px-3 rounded-xl text-center shadow-sm flex items-center justify-center gap-1.5 transition">
                         <span>🗺️</span> Chỉ đường Bản đồ
                     </a>
-                    <button onclick="copyVenueAddress()" class="bg-white hover:bg-moc-card text-moc-greenDark border border-moc-taupe text-xs font-medium py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition cursor-pointer">
-                        <span>📋</span> Sao chép địa chỉ
-                    </button>
+                    @if(!empty($weddingCard->groom_phone))
+                        <a href="tel:{{ $weddingCard->groom_phone }}"
+                           class="bg-white hover:bg-moc-card text-moc-greenDark border border-moc-taupe text-xs font-medium py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition">
+                            <span>📞</span> Liên hệ: {{ $weddingCard->groom_phone }}
+                        </a>
+                    @endif
+                </div>
+            </div>
+
+            <!-- CARD 2: TIỆC CƯỚI NHÀ GÁI -->
+            <div class="reveal-right bg-white border border-moc-taupe/45 rounded-3xl p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 bg-moc-card text-moc-greenDark text-[11px] font-semibold px-3 py-1 rounded-full border border-moc-taupe/40">
+                        <span>👰</span> {{ $weddingCard->bride_eating_title ?: 'Tiệc Cưới Nhà Gái' }}
+                    </span>
+                    <span class="text-xs font-serif italic text-moc-taupeDark font-semibold">{{ $bridePartyTime }} — {{ $bridePartyDayOfWeek }}</span>
+                </div>
+
+                <div class="my-3 py-2.5 px-3 bg-moc-paper border border-moc-taupe/35 rounded-2xl flex items-center justify-center gap-3 font-serif text-moc-greenDark">
+                    <span class="text-3xl font-bold text-moc-greenTitle">{{ $bridePartyDay }}</span>
+                    <span class="h-6 w-[1px] bg-moc-taupe/50"></span>
+                    <span class="text-lg font-semibold uppercase tracking-wider">Tháng {{ $bridePartyMonth }}</span>
+                    <span class="h-6 w-[1px] bg-moc-taupe/50"></span>
+                    <span class="text-2xl font-bold">{{ $bridePartyYear }}</span>
+                </div>
+
+                <p class="text-xs italic text-moc-text/80 text-center">
+                    (Tức {{ $bridePartyLunar }})
+                </p>
+
+                <div class="mt-3 pt-3 border-t border-dashed border-moc-taupe/40 text-xs text-moc-text space-y-1.5">
+                    <p>📍 <strong>Địa điểm tổ chức:</strong> {{ $brideVenueAddress }}</p>
+                </div>
+
+                <!-- Google Maps & Call Bride Buttons -->
+                <div class="grid {{ !empty($weddingCard->bride_phone) ? 'grid-cols-2' : 'grid-cols-1' }} gap-2.5 mt-3">
+                    <a href="{{ $brideMapUrl }}"
+                       target="_blank" rel="noopener noreferrer"
+                       class="bg-moc-greenDark hover:bg-moc-greenTitle text-white text-xs font-medium py-2.5 px-3 rounded-xl text-center shadow-sm flex items-center justify-center gap-1.5 transition">
+                        <span>🗺️</span> Chỉ đường Bản đồ
+                    </a>
+                    @if(!empty($weddingCard->bride_phone))
+                        <a href="tel:{{ $weddingCard->bride_phone }}"
+                           class="bg-white hover:bg-moc-card text-moc-greenDark border border-moc-taupe text-xs font-medium py-2.5 px-3 rounded-xl text-center flex items-center justify-center gap-1.5 transition">
+                            <span>📞</span> Liên hệ: {{ $weddingCard->bride_phone }}
+                        </a>
+                    @endif
                 </div>
             </div>
 

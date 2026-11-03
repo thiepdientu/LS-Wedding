@@ -299,7 +299,7 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
     <p class="kicker">Thiệp mời cưới</p>
     <h1>{{ $weddingCard->groom_name }}<span class="amp">&amp;</span>{{ $weddingCard->bride_name }}</h1>
     <div class="fleuron" aria-hidden="true">❦</div>
-    <p class="date">20 tháng 12, 2026</p>
+    <p class="date">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->locale('vi')->isoFormat('D [tháng] M, Y') : '20 tháng 12, 2026' }}</p>
     <p class="invite">Thân mời</p>
     <button class="btn-open" id="openBtn" type="button">Mở thiệp</button>
   </div>
@@ -370,12 +370,87 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
     <div class="wrap">
       <p class="eyebrow reveal">Thông tin tiệc cưới</p>
       <h2 class="title reveal">Tiệc cưới sẽ diễn ra vào lúc</h2>
-      <div class="party-time reveal">
-        <div class="hour">{{ $weddingCard->wedding_time ?: '18:00' }}</div>
-        <div class="datebox"><div class="dow">{{ $weddingCard->wedding_date ? mb_convert_case($weddingCard->wedding_date->locale('vi')->isoFormat('dddd'), MB_CASE_TITLE, "UTF-8") : 'Chủ nhật' }}</div><div class="day">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('d') : '20' }}</div><div class="mon">Tháng {{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('m') : '12' }}</div></div>
-        <p class="year">{{ $weddingCard->wedding_date ? $weddingCard->wedding_date->format('Y') : '2026' }}</p>
-        <p class="lunar">(Tức ngày {{ $weddingCard->wedding_date_lunar ?: '11 tháng 11 năm Bính Ngọ' }})</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:36px">
+        <!-- NHÀ TRAI -->
+        <div class="panel reveal" style="padding:28px 20px;text-align:center;border-top:3px solid var(--jade)">
+          <p class="eyebrow" style="color:var(--jade);margin-bottom:6px">TIỆC CƯỚI NHÀ TRAI</p>
+          <h3 style="font:600 24px var(--f-display);color:var(--deep);margin-bottom:12px">Hôn Trường Nhà Trai</h3>
+          
+          <div class="party-time" style="margin-top:10px">
+            <div class="hour" style="margin:4px 0 10px">{{ $weddingCard->time_groom ?: ($weddingCard->wedding_time ?: '18:00') }}</div>
+            <p style="font-size:15px;color:var(--deep);font-weight:600;letter-spacing:0;text-transform:none">
+              {{ $weddingCard->groom_eating_date ? \Carbon\Carbon::parse($weddingCard->groom_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($weddingCard->wedding_date ? $weddingCard->wedding_date->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Chủ nhật, ngày 20/12/2026') }}
+            </p>
+            <p class="lunar" style="margin-top:4px">(Tức ngày {{ $weddingCard->time_groom_al ?: ($weddingCard->wedding_date_lunar ?: '11 tháng 11 năm Bính Ngọ') }})</p>
+          </div>
+
+          <div style="margin-top:18px;font-size:14px;color:var(--muted)">
+            <strong style="color:var(--deep);display:block;margin-bottom:4px">Địa chỉ:</strong>
+            {{ $weddingCard->address_groom ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai') }}
+          </div>
+
+          <div class="row-btns" style="margin-top:20px;gap:8px">
+            <a class="btn solid" target="_blank" rel="noopener" href="{{ $weddingCard->groom_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_groom ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Trai')))) }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+              Chỉ đường
+            </a>
+            @if(!empty($weddingCard->groom_phone))
+              <a class="btn" href="tel:{{ $weddingCard->groom_phone }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
+                Gọi Chú Rể: {{ $weddingCard->groom_phone }}
+              </a>
+            @endif
+          </div>
+        </div>
+
+        <!-- NHÀ GÁI -->
+        <div class="panel reveal" style="padding:28px 20px;text-align:center;border-top:3px solid var(--jade)">
+          <p class="eyebrow" style="color:var(--jade);margin-bottom:6px">TIỆC CƯỚI NHÀ GÁI</p>
+          <h3 style="font:600 24px var(--f-display);color:var(--deep);margin-bottom:12px">Hôn Trường Nhà Gái</h3>
+          
+          <div class="party-time" style="margin-top:10px">
+            <div class="hour" style="margin:4px 0 10px">{{ $weddingCard->time_bride ?: ($weddingCard->wedding_time ?: '11:00') }}</div>
+            <p style="font-size:15px;color:var(--deep);font-weight:600;letter-spacing:0;text-transform:none">
+              {{ $weddingCard->bride_eating_date ? \Carbon\Carbon::parse($weddingCard->bride_eating_date)->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : ($weddingCard->wedding_date ? $weddingCard->wedding_date->locale('vi')->isoFormat('dddd, [ngày] DD/MM/YYYY') : 'Chủ nhật, ngày 20/12/2026') }}
+            </p>
+            <p class="lunar" style="margin-top:4px">(Tức ngày {{ $weddingCard->time_bride_al ?: ($weddingCard->wedding_date_lunar ?: '11 tháng 11 năm Bính Ngọ') }})</p>
+          </div>
+
+          <div style="margin-top:18px;font-size:14px;color:var(--muted)">
+            <strong style="color:var(--deep);display:block;margin-bottom:4px">Địa chỉ:</strong>
+            {{ $weddingCard->address_bride ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái') }}
+          </div>
+
+          <div class="row-btns" style="margin-top:20px;gap:8px">
+            <a class="btn solid" target="_blank" rel="noopener" href="{{ $weddingCard->bride_map ?: ($weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode($weddingCard->address_bride ?: ($weddingCard->wedding_address ?: 'Tư gia Nhà Gái')))) }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+              Chỉ đường
+            </a>
+            @if(!empty($weddingCard->bride_phone))
+              <a class="btn" href="tel:{{ $weddingCard->bride_phone }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
+                Gọi Cô Dâu: {{ $weddingCard->bride_phone }}
+              </a>
+            @endif
+          </div>
+        </div>
       </div>
+
+      @if($weddingCard->wedding_location && $weddingCard->wedding_location !== $weddingCard->address_groom && $weddingCard->wedding_location !== $weddingCard->address_bride)
+      <div class="panel reveal" style="margin-top:24px;padding:24px;text-align:center">
+        <p class="eyebrow" style="color:var(--gold)">TRUNG TÂM TIỆC CƯỚI CHUNG</p>
+        <p style="font:600 22px var(--f-display);color:var(--deep);margin-top:6px">{{ $weddingCard->wedding_location }}</p>
+        @if($weddingCard->wedding_address)
+          <p style="color:var(--muted);font-size:14px;margin-top:4px">{{ $weddingCard->wedding_address }}</p>
+        @endif
+        @if($weddingCard->google_map_url)
+          <div class="row-btns" style="margin-top:14px">
+            <a class="btn solid" target="_blank" rel="noopener" href="{{ $weddingCard->google_map_url }}">Chỉ đường trung tâm</a>
+          </div>
+        @endif
+      </div>
+      @endif
 
       <h3 class="title reveal" style="margin-top:56px;font-size:28px">Cùng đếm ngược</h3>
       <div class="cd reveal" id="cd" aria-live="off">
@@ -409,22 +484,6 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
         <button class="btn solid" type="submit">Gửi xác nhận</button>
       </form>
       <p class="thanks" id="rsvpOk" hidden></p>
-    </div>
-  </section>
-
-  <!-- ===================== VENUE ===================== -->
-  <section style="padding-top:0">
-    <div class="wrap venue">
-      <p class="eyebrow reveal">Địa điểm</p>
-      <h2 class="title reveal">Tiệc cưới sẽ tổ chức tại</h2>
-      <p class="place reveal">{{ $weddingCard->wedding_location ?: 'Trung tâm Tiệc cưới Hoa Sen' }}</p>
-      <p class="addr reveal">{{ $weddingCard->wedding_address ?: '120 Nguyễn Văn Linh, Thanh Khê, Đà Nẵng' }}</p>
-      <div class="mapcard reveal" aria-label="Vị trí địa điểm tổ chức">
-        <div class="pin"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><em>{{ $weddingCard->wedding_location ?: 'Hoa Sen' }}</em></div>
-      </div>
-      <div class="row-btns reveal">
-        <a class="btn solid" target="_blank" rel="noopener" href="{{ $weddingCard->google_map_url ?: ('https://www.google.com/maps/search/?api=1&query=' . urlencode(($weddingCard->wedding_location ?: '') . ' ' . ($weddingCard->wedding_address ?: ''))) }}">Chỉ đường</a>
-      </div>
     </div>
   </section>
 
@@ -566,7 +625,14 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
   var defaultPhotos=[0,1,2,3,4,5].map(photo);
   var dbPhotos = {!! $albumPhotosJson ?: '[]' !!};
   var photos = (Array.isArray(dbPhotos) && dbPhotos.length > 0) ? dbPhotos : defaultPhotos;
-  $('#heroPhoto').src= '{{ !empty($weddingCard->cover_image) ? asset("storage/" . $weddingCard->cover_image) : "" }}' || photos[0];
+  @php
+    $heroCover28 = !empty($weddingCard->cover_image)
+        ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image))
+        : (!empty($weddingCard->banner_preview)
+            ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
+            : '');
+  @endphp
+  $('#heroPhoto').src= '{{ $heroCover28 }}' || photos[0];
 
   /* ---- album + lightbox ---- */
   var thumbs=$('#lbThumbs'),cur=0;
