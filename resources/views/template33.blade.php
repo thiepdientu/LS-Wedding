@@ -1078,11 +1078,11 @@
             <p class="font-serif italic text-sm sm:text-base text-bronze-800 mt-3 max-w-xs mx-auto leading-relaxed">
                 {{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}
             </p>
-            <div class="mt-5">
+            {{-- <div class="mt-5">
                 <a href="https://chungdoi.com" target="_blank" rel="noopener noreferrer" class="inline-block text-xs text-gold-700 hover:text-bronze-950 font-semibold tracking-wider">
                     ♡ chungdoi.com
                 </a>
-            </div>
+            </div> --}}
         </footer>
     </main>
 

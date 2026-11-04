@@ -371,7 +371,7 @@
     <main id="main-invitation" class="relative z-10 max-w-[520px] mx-auto shadow-[0_0_90px_rgba(0,0,0,0.85)] bg-crimson-900/90 border-x border-gold-400/25 overflow-hidden">
 
         <!-- Top Guest Customizer Bar (Helps preview custom guest names) -->
-        <div class="bg-crimson-950/90 border-b border-gold-400/25 px-4 py-2.5 flex items-center justify-between text-xs text-gold-200/90">
+        {{-- <div class="bg-crimson-950/90 border-b border-gold-400/25 px-4 py-2.5 flex items-center justify-between text-xs text-gold-200/90">
             <div class="flex items-center gap-2">
                 <span class="text-gold-400 font-serif text-base">囍</span>
                 <span>Mẫu thiệp: <strong class="text-gold-200">Song Hỷ Đỏ</strong></span>
@@ -379,7 +379,7 @@
             <button onclick="promptGuestName()" class="underline hover:text-white transition cursor-pointer flex items-center gap-1">
                 <i class="fa-solid fa-pen-to-square text-[10px]"></i> Đổi tên khách mời
             </button>
-        </div>
+        </div> --}}
 
         <!-- SECTION A: HERO BANNER -->
         <section class="relative pt-10 pb-14 px-6 text-center overflow-hidden">
@@ -849,7 +849,7 @@
             }
         @endphp
 
-        <!-- SECTION F: ALBUM HÌNH CƯỚI (PHOTO GALLERY & LIGHTBOX) -->
+        <!-- SECTION F: ALBUM HÌNH CƯỚI (INTERACTIVE CAROUSEL & LIGHTBOX) -->
         <section class="px-4 sm:px-6 py-8">
             <div class="text-center mb-6 reveal-item">
                 <p class="text-xs uppercase tracking-[0.3em] text-gold-300 mb-1">Khoảnh Khắc Ngọt Ngào</p>
@@ -861,37 +861,48 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 reveal-item" id="gallery-grid">
-                @if(!empty($albumList) && count($albumList) > 0)
-                    @foreach($albumList as $idx => $photoUrl)
-                        <div onclick="openLightbox({{ $idx }})" class="{{ $idx === 0 ? 'col-span-2 aspect-[16/10]' : 'aspect-[3/4]' }} rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative shadow-md">
-                            <img src="{{ $photoUrl }}" alt="Ảnh cưới {{ $idx + 1 }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <span class="px-3 py-1 rounded-full bg-crimson-900/80 text-gold-200 text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Phóng to</span>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <!-- Fallback nếu chưa tải ảnh album -->
-                    <div onclick="openLightbox(0)" class="col-span-2 aspect-[16/10] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="Ảnh cưới 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <span class="px-3 py-1 rounded-full bg-crimson-900/80 text-gold-200 text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Phóng to</span>
-                        </div>
+            @php
+                $albumCoverSrc = !empty($albumList) && count($albumList) > 0
+                    ? $albumList[0]
+                    : (!empty($weddingCard->cover_image)
+                        ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image))
+                        : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80');
+            @endphp
+
+            <!-- Interactive Main Slider with 1 / 6 Counter -->
+            <div class="reveal-item max-w-xl mx-auto">
+                <div id="carousel-viewport" class="relative rounded-3xl overflow-hidden border-2 border-gold-400/50 shadow-xl bg-crimson-950 aspect-[3/4] group">
+                    <img 
+                        id="carousel-main-img" 
+                        onclick="openLightbox(currentSlideIndex)"
+                        src="{{ $albumCoverSrc }}" 
+                        alt="Album ảnh cưới {{ $weddingCard->couple_name }}" 
+                        class="w-full h-full object-cover transition-all duration-500 cursor-pointer"
+                    >
+
+                    <!-- Slide Counter Badge (Exact "1 / 6" format) -->
+                    <div id="carousel-counter" class="absolute top-4 right-4 px-3.5 py-1 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-medium tracking-widest select-none">
+                        1 / 6
                     </div>
-                    <div onclick="openLightbox(1)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div onclick="openLightbox(2)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div onclick="openLightbox(3)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div onclick="openLightbox(4)" class="aspect-[3/4] rounded-xl overflow-hidden border border-gold-400/50 cursor-pointer group relative">
-                        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=600&q=80" alt="Ảnh cưới 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                @endif
+
+                    <!-- Fullscreen Trigger Badge -->
+                    <button onclick="openLightbox(currentSlideIndex)" title="Phóng to ảnh" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-black/45 hover:bg-black/70 text-white flex items-center justify-center transition cursor-pointer">
+                        <i class="fa-solid fa-expand text-xs"></i>
+                    </button>
+
+                    <!-- Prev / Next Arrows -->
+                    <button onclick="stepCarousel(-1)" aria-label="Ảnh trước" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/85 hover:bg-white text-crimson-950 shadow-lg flex items-center justify-center transition cursor-pointer">
+                        <i class="fa-solid fa-chevron-left text-sm"></i>
+                    </button>
+                    <button onclick="stepCarousel(1)" aria-label="Ảnh tiếp" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/85 hover:bg-white text-crimson-950 shadow-lg flex items-center justify-center transition cursor-pointer">
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Thumbnail Strip -->
+                <div id="carousel-thumbs" class="flex gap-2.5 overflow-x-auto py-2 px-1 mt-3 scrollbar-none justify-center">
+                    <!-- Populated dynamically by JS -->
+                </div>
             </div>
         </section>
 
@@ -1101,14 +1112,18 @@
 
     <!-- Lightbox Modal -->
     <div id="lightbox-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4">
+        <!-- Slide Counter Badge -->
+        <div id="lightbox-counter" class="absolute top-5 left-5 px-3.5 py-1 rounded-full bg-white/15 text-white text-xs font-medium tracking-widest select-none">
+            1 / 6
+        </div>
         <button onclick="closeLightbox()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/15 text-white hover:bg-white/30 flex items-center justify-center cursor-pointer">
             <i class="fa-solid fa-xmark text-lg"></i>
         </button>
-        <button onclick="stepLightbox(-1)" class="absolute left-3 sm:left-6 w-10 h-10 rounded-full bg-white/15 text-white hover:bg-white/30 flex items-center justify-center cursor-pointer">
+        <button id="lightbox-prev" onclick="stepLightbox(-1)" class="absolute left-3 sm:left-6 w-10 h-10 rounded-full bg-white/15 text-white hover:bg-white/30 flex items-center justify-center cursor-pointer">
             <i class="fa-solid fa-chevron-left"></i>
         </button>
         <img id="lightbox-img" src="" alt="Preview" class="max-h-[85vh] max-w-[90vw] rounded-xl border-2 border-gold-400 object-contain shadow-2xl">
-        <button onclick="stepLightbox(1)" class="absolute right-3 sm:right-6 w-10 h-10 rounded-full bg-white/15 text-white hover:bg-white/30 flex items-center justify-center cursor-pointer">
+        <button id="lightbox-next" onclick="stepLightbox(1)" class="absolute right-3 sm:right-6 w-10 h-10 rounded-full bg-white/15 text-white hover:bg-white/30 flex items-center justify-center cursor-pointer">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
     </div>
@@ -1449,35 +1464,139 @@
         ];
         const dbGallery = {!! $albumPhotosJson ?: '[]' !!};
         const galleryUrls = (Array.isArray(dbGallery) && dbGallery.length > 0) ? dbGallery : defaultGallery;
-        let currentLightboxIndex = 0;
+        let currentSlideIndex = 0;
+
+        function renderThumbnails() {
+            const thumbStrip = document.getElementById('carousel-thumbs');
+            if (!thumbStrip) return;
+            thumbStrip.innerHTML = galleryUrls.map((url, idx) => `
+                <button 
+                    type="button"
+                    onclick="selectSlide(${idx})" 
+                    aria-label="Xem ảnh ${idx + 1}"
+                    class="w-14 h-14 sm:w-16 sm:h-16 aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 cursor-pointer ${idx === currentSlideIndex ? 'border-gold-400 scale-105 shadow-md opacity-100 ring-2 ring-gold-400/40' : 'border-transparent opacity-65 hover:opacity-100'}"
+                >
+                    <img src="${url}" alt="Thumb ${idx + 1}" class="w-full h-full object-cover">
+                </button>
+            `).join('');
+
+            const activeBtn = thumbStrip.children[currentSlideIndex];
+            if (activeBtn && activeBtn.scrollIntoView) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+
+        function selectSlide(idx) {
+            currentSlideIndex = (idx + galleryUrls.length) % galleryUrls.length;
+            const mainImg = document.getElementById('carousel-main-img');
+            const counter = document.getElementById('carousel-counter');
+            if (mainImg) {
+                mainImg.style.opacity = '0.35';
+                setTimeout(() => {
+                    mainImg.src = galleryUrls[currentSlideIndex];
+                    mainImg.style.opacity = '1';
+                }, 120);
+            }
+            if (counter) counter.textContent = `${currentSlideIndex + 1} / ${galleryUrls.length}`;
+            renderThumbnails();
+        }
+
+        function stepCarousel(dir) {
+            selectSlide(currentSlideIndex + dir);
+        }
 
         function openLightbox(idx) {
-            currentLightboxIndex = idx;
+            currentSlideIndex = idx;
             const modal = document.getElementById('lightbox-modal');
             const img = document.getElementById('lightbox-img');
-            img.src = galleryUrls[currentLightboxIndex];
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            const counter = document.getElementById('lightbox-counter');
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+
+            if (prevBtn) prevBtn.style.display = 'flex';
+            if (nextBtn) nextBtn.style.display = 'flex';
+            if (counter) {
+                counter.style.display = 'block';
+                counter.textContent = `${currentSlideIndex + 1} / ${galleryUrls.length}`;
+            }
+            if (img) img.src = galleryUrls[currentSlideIndex];
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+            document.body.classList.add('overflow-hidden');
         }
 
         function openSingleImage(src) {
             const modal = document.getElementById('lightbox-modal');
             const img = document.getElementById('lightbox-img');
-            img.src = src;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            const counter = document.getElementById('lightbox-counter');
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            if (counter) counter.style.display = 'none';
+            if (img) img.src = src;
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+            document.body.classList.add('overflow-hidden');
         }
 
         function closeLightbox() {
             const modal = document.getElementById('lightbox-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            document.body.classList.remove('overflow-hidden');
+            selectSlide(currentSlideIndex);
         }
 
         function stepLightbox(dir) {
-            currentLightboxIndex = (currentLightboxIndex + dir + galleryUrls.length) % galleryUrls.length;
-            document.getElementById('lightbox-img').src = galleryUrls[currentLightboxIndex];
+            currentSlideIndex = (currentSlideIndex + dir + galleryUrls.length) % galleryUrls.length;
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            if (img) img.src = galleryUrls[currentSlideIndex];
+            if (counter) counter.textContent = `${currentSlideIndex + 1} / ${galleryUrls.length}`;
+            selectSlide(currentSlideIndex);
         }
+
+        // Close on Escape or click outside
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                const modal = document.getElementById('lightbox-modal');
+                if (modal && !modal.classList.contains('hidden')) stepLightbox(-1);
+            } else if (e.key === 'ArrowRight') {
+                const modal = document.getElementById('lightbox-modal');
+                if (modal && !modal.classList.contains('hidden')) stepLightbox(1);
+            }
+        });
+
+        // Touch swipe on carousel
+        (function() {
+            const viewport = document.getElementById('carousel-viewport');
+            if (!viewport) return;
+            let touchStartX = 0;
+            let touchEndX = 0;
+            viewport.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            viewport.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 45) {
+                    stepCarousel(1);
+                } else if (touchEndX - touchStartX > 45) {
+                    stepCarousel(-1);
+                }
+            }, { passive: true });
+        })();
+
+        renderThumbnails();
 
         function toggleGiftModal(show) {
             const modal = document.getElementById('gift-modal');

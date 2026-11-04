@@ -1268,11 +1268,11 @@
             <p class="font-serif italic text-sm sm:text-base text-gold-200/90 mt-3 max-w-xs mx-auto leading-relaxed">
                 {{ $weddingCard->message_thanks ?: 'Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!' }}
             </p>
-            <div class="mt-5 pb-6">
+            {{-- <div class="mt-5 pb-6">
                 <a href="https://chungdoi.com" target="_blank" rel="noopener noreferrer" class="inline-block text-xs text-gold-300 hover:text-white font-medium tracking-wider">
                     ♡ chungdoi.com
                 </a>
-            </div>
+            </div> --}}
 
             <!-- Bottom Oriental Waves -->
             <div class="absolute inset-x-0 bottom-0 h-12 pointer-events-none select-none overflow-hidden flex items-end justify-between opacity-75">

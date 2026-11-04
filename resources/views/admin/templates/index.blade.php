@@ -14,7 +14,7 @@
                     {{ $totalTemplates }} Mẫu khả dụng
                 </span>
             </h1>
-            <p class="text-sm text-slate-500 mt-1">Danh mục các giao diện thiệp cưới điện tử tiêu chuẩn trên hệ thống.</p>
+            <p class="text-sm text-slate-500 mt-1">Quản lý trạng thái hoạt động (Active / Inactive) và danh mục các mẫu thiệp cưới điện tử.</p>
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ route('wedding.create') }}" 
@@ -28,16 +28,13 @@
     </div>
 
     <!-- Stats Quick Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Stat 1: Tổng số template -->
         <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs flex items-center justify-between">
             <div>
                 <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tổng mẫu giao diện</p>
                 <h3 class="text-2xl font-bold text-slate-900 mt-1">{{ $totalTemplates }}</h3>
-                <p class="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span>100% Sẵn sàng sử dụng</span>
-                </p>
+                <p class="text-xs text-slate-400 font-medium mt-1">Đã tích hợp trong code</p>
             </div>
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,12 +43,46 @@
             </div>
         </div>
 
-        <!-- Stat 2: Tổng thiệp đang áp dụng -->
+        <!-- Stat 2: Đang kích hoạt (Active) -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs flex items-center justify-between cursor-pointer hover:border-emerald-300 transition-colors" onclick="filterByStatus('active')">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Đang hoạt động</p>
+                <h3 class="text-2xl font-bold text-emerald-600 mt-1" id="stat-active-count">{{ $activeCount }}</h3>
+                <p class="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span>Khả dụng cho tạo mới</span>
+                </p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Stat 3: Tạm ngưng (Inactive) -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs flex items-center justify-between cursor-pointer hover:border-slate-400 transition-colors" onclick="filterByStatus('inactive')">
+            <div>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Đang tạm ngưng</p>
+                <h3 class="text-2xl font-bold text-slate-600 mt-1" id="stat-inactive-count">{{ $inactiveCount }}</h3>
+                <p class="text-xs text-slate-400 font-medium mt-1 flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                    <span>Ẩn khỏi tạo thiệp mới</span>
+                </p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Stat 4: Thiệp đang phát hành -->
         <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs flex items-center justify-between">
             <div>
-                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Thiệp đang phát hành</p>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Thiệp đã áp dụng</p>
                 <h3 class="text-2xl font-bold text-slate-900 mt-1">{{ $totalCards }}</h3>
-                <p class="text-xs text-slate-400 mt-1">Đang hoạt động trên hệ thống</p>
+                <p class="text-xs text-slate-400 mt-1">Đang chạy trên hệ thống</p>
             </div>
             <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,28 +90,12 @@
                 </svg>
             </div>
         </div>
-
-        <!-- Stat 3: Mẫu phổ biến nhất -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs flex items-center justify-between">
-            <div>
-                <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Mẫu được chuộng nhất</p>
-                <h3 class="text-base font-bold text-slate-900 mt-1 truncate max-w-[200px]" title="{{ $mostUsedTemplate ?: 'Chưa có' }}">
-                    {{ $mostUsedTemplate ?: 'Chưa có' }}
-                </h3>
-                <p class="text-xs text-amber-600 font-medium mt-1">Chiếm tỷ trọng cao nhất</p>
-            </div>
-            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                </svg>
-            </div>
-        </div>
     </div>
 
     <!-- Search & Filter Controls -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <!-- Client-side Search -->
-        <div class="relative flex-1 w-full sm:max-w-md">
+        <div class="relative flex-1 w-full md:max-w-md">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -89,25 +104,42 @@
             <input type="text" 
                    id="template-search-input" 
                    onkeyup="filterTemplates()" 
-                   placeholder="Tìm tên mẫu thiệp, phong cách, mã số..." 
+                   placeholder="Tìm tên mẫu thiệp, phong cách, mã số (#1, #24)..." 
                    class="w-full pl-10 pr-4 py-2 text-sm text-slate-800 placeholder-slate-400 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all">
         </div>
 
-        <!-- Filter Tags -->
-        <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 text-xs">
-            <button type="button" onclick="filterByTag('all')" class="filter-tag-btn px-3 py-1.5 rounded-xl font-medium bg-slate-900 text-white transition-colors" data-tag="all">
-                Tất cả ({{ $totalTemplates }})
+        <!-- Filter Controls (Status & Style Tags) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 text-xs">
+            <!-- Status Filters -->
+            <div class="flex items-center p-1 bg-slate-100 rounded-xl">
+                <button type="button" onclick="filterByStatus('all')" class="status-filter-btn px-2.5 py-1 rounded-lg font-medium bg-white text-slate-900 shadow-2xs transition-all" data-status="all">
+                    Tất cả ({{ $totalTemplates }})
+                </button>
+                <button type="button" onclick="filterByStatus('active')" class="status-filter-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-all" data-status="active">
+                    Hoạt động (<span id="filter-active-count">{{ $activeCount }}</span>)
+                </button>
+                <button type="button" onclick="filterByStatus('inactive')" class="status-filter-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-all" data-status="inactive">
+                    Tạm ngưng (<span id="filter-inactive-count">{{ $inactiveCount }}</span>)
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
+
+            <!-- Style Tags -->
+            <button type="button" onclick="filterByTag('all')" class="style-tag-btn px-3 py-1.5 rounded-xl font-medium bg-slate-900 text-white transition-colors" data-tag="all">
+                Tất cả style
             </button>
-            <button type="button" onclick="filterByTag('Hiện đại')" class="filter-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Hiện đại">
+            <button type="button" onclick="filterByTag('Hiện đại')" class="style-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Hiện đại">
                 Hiện đại
             </button>
-            <button type="button" onclick="filterByTag('Cổ điển')" class="filter-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Cổ điển">
+            <button type="button" onclick="filterByTag('Cổ điển')" class="style-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Cổ điển">
                 Cổ điển
             </button>
-            <button type="button" onclick="filterByTag('Sang trọng')" class="filter-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Sang trọng">
+            <button type="button" onclick="filterByTag('Sang trọng')" class="style-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Sang trọng">
                 Sang trọng
             </button>
-            <button type="button" onclick="filterByTag('Mới')" class="filter-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Mới">
+            <button type="button" onclick="filterByTag('Mới')" class="style-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-tag="Mới">
                 Mẫu mới
             </button>
         </div>
@@ -116,7 +148,10 @@
     <!-- Template Cards Grid -->
     <div id="templates-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach ($templates as $tpl)
-            <div class="template-card bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col overflow-hidden group"
+            <div class="template-card bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col overflow-hidden group {{ !$tpl['is_active'] ? 'ring-1 ring-slate-300/80' : '' }}"
+                 id="template-card-{{ $tpl['code'] }}"
+                 data-code="{{ $tpl['code'] }}"
+                 data-status="{{ $tpl['is_active'] ? 'active' : 'inactive' }}"
                  data-name="{{ mb_strtolower($tpl['name'] . ' ' . $tpl['style'] . ' ' . $tpl['code']) }}"
                  data-style="{{ $tpl['style'] }}"
                  data-badge="{{ $tpl['badge'] }}">
@@ -131,9 +166,19 @@
                         <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white/90 backdrop-blur-xs text-slate-800 shadow-2xs">
                             #{{ strtoupper($tpl['code']) }}
                         </span>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/95 text-slate-800 shadow-2xs">
-                            {{ $tpl['badge'] }}
-                        </span>
+
+                        <div class="flex items-center gap-1.5">
+                            <!-- Status Pill (Active / Inactive) -->
+                            <span id="status-pill-{{ $tpl['code'] }}" 
+                                  class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold shadow-2xs transition-colors {{ $tpl['is_active'] ? 'bg-emerald-500 text-white' : 'bg-slate-700/80 text-white backdrop-blur-xs' }}">
+                                {{ $tpl['is_active'] ? 'Hoạt động' : 'Tạm ngưng' }}
+                            </span>
+                            
+                            <!-- Style Badge -->
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-white/90 text-slate-800 shadow-2xs">
+                                {{ $tpl['badge'] }}
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Center Mockup Graphic -->
@@ -154,7 +199,7 @@
                 </div>
 
                 <!-- Card Body -->
-                <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
+                <div class="p-4 flex-1 flex flex-col justify-between space-y-3.5">
                     <div>
                         <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors text-sm leading-snug">
                             {{ $tpl['name'] }}
@@ -165,8 +210,30 @@
                         </p>
                     </div>
 
+                    <!-- Active / Inactive Interactive Toggle Switch -->
+                    <div class="flex items-center justify-between py-2 px-3 rounded-xl bg-slate-50 border border-slate-100 transition-colors" id="toggle-container-{{ $tpl['code'] }}">
+                        <div class="flex items-center gap-2">
+                            <span id="status-dot-{{ $tpl['code'] }}" class="w-2 h-2 rounded-full transition-colors {{ $tpl['is_active'] ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                            <span id="status-label-{{ $tpl['code'] }}" class="text-xs font-semibold transition-colors {{ $tpl['is_active'] ? 'text-emerald-700' : 'text-slate-500' }}">
+                                {{ $tpl['is_active'] ? 'Đang hoạt động' : 'Tạm ngưng' }}
+                            </span>
+                        </div>
+                        <button type="button" 
+                                onclick="toggleTemplate('{{ $tpl['code'] }}', this)" 
+                                id="toggle-btn-{{ $tpl['code'] }}"
+                                class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 {{ $tpl['is_active'] ? 'bg-emerald-500' : 'bg-slate-300' }}"
+                                role="switch" 
+                                aria-checked="{{ $tpl['is_active'] ? 'true' : 'false' }}"
+                                title="Bật / Tắt trạng thái mẫu thiệp">
+                            <span class="sr-only">Bật/tắt trạng thái mẫu #{{ $tpl['code'] }}</span>
+                            <span aria-hidden="true" 
+                                  id="toggle-thumb-{{ $tpl['code'] }}"
+                                  class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {{ $tpl['is_active'] ? 'translate-x-4' : 'translate-x-0' }}"></span>
+                        </button>
+                    </div>
+
                     <!-- Usage Statistics Progress -->
-                    <div class="space-y-1.5 pt-2 border-t border-slate-100">
+                    <div class="space-y-1.5 pt-1 border-t border-slate-100">
                         <div class="flex items-center justify-between text-xs">
                             <span class="text-slate-500">Đang sử dụng</span>
                             <span class="font-semibold text-slate-800">
@@ -195,13 +262,27 @@
                     </a>
 
                     <!-- Use Template Button -->
-                    <a href="{{ $tpl['create_url'] }}" 
-                       class="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-2xs active:scale-98">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        <span>Tạo thiệp</span>
-                    </a>
+                    <div id="create-btn-wrapper-{{ $tpl['code'] }}">
+                        @if($tpl['is_active'])
+                            <a href="{{ $tpl['create_url'] }}" 
+                               class="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-2xs active:scale-98">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                <span>Tạo thiệp</span>
+                            </a>
+                        @else
+                            <button type="button" 
+                                    disabled
+                                    title="Mẫu thiệp đang tạm ngưng. Kích hoạt để tạo thiệp mới."
+                                    class="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 rounded-xl cursor-not-allowed">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                                </svg>
+                                <span>Tạm ngưng</span>
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -213,7 +294,7 @@
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <p class="font-medium text-slate-700">Không tìm thấy mẫu thiệp phù hợp</p>
-        <p class="text-xs text-slate-400 mt-1">Hãy thử tìm với từ khóa khác hoặc xóa bộ lọc phong cách.</p>
+        <p class="text-xs text-slate-400 mt-1">Hãy thử tìm với từ khóa khác hoặc bỏ chọn bộ lọc trạng thái / phong cách.</p>
         <button type="button" onclick="resetFilters()" class="mt-4 px-4 py-2 text-xs font-medium bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors">
             Xem lại tất cả mẫu
         </button>
@@ -226,8 +307,9 @@
 @push('scripts')
 <script>
     let currentFilterTag = 'all';
+    let currentStatusFilter = 'all';
 
-    // Client-side instant filter function
+    // Client-side instant filter function combining text query, status, and style tag
     function filterTemplates() {
         const query = document.getElementById('template-search-input').value.toLowerCase().trim();
         const cards = document.querySelectorAll('.template-card');
@@ -237,11 +319,13 @@
             const name = card.getAttribute('data-name') || '';
             const style = card.getAttribute('data-style') || '';
             const badge = card.getAttribute('data-badge') || '';
+            const status = card.getAttribute('data-status') || 'active';
 
             const matchesQuery = query === '' || name.includes(query);
             const matchesTag = currentFilterTag === 'all' || style.includes(currentFilterTag) || badge.includes(currentFilterTag);
+            const matchesStatus = currentStatusFilter === 'all' || status === currentStatusFilter;
 
-            if (matchesQuery && matchesTag) {
+            if (matchesQuery && matchesTag && matchesStatus) {
                 card.classList.remove('hidden');
                 visibleCount++;
             } else {
@@ -257,14 +341,27 @@
         }
     }
 
-    // Filter by tag button
+    // Filter by tag button (style)
     function filterByTag(tag) {
         currentFilterTag = tag;
-        document.querySelectorAll('.filter-tag-btn').forEach(btn => {
+        document.querySelectorAll('.style-tag-btn').forEach(btn => {
             if (btn.getAttribute('data-tag') === tag) {
-                btn.className = 'filter-tag-btn px-3 py-1.5 rounded-xl font-medium bg-slate-900 text-white transition-colors';
+                btn.className = 'style-tag-btn px-3 py-1.5 rounded-xl font-medium bg-slate-900 text-white transition-colors';
             } else {
-                btn.className = 'filter-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors';
+                btn.className = 'style-tag-btn px-3 py-1.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors';
+            }
+        });
+        filterTemplates();
+    }
+
+    // Filter by status button (all, active, inactive)
+    function filterByStatus(status) {
+        currentStatusFilter = status;
+        document.querySelectorAll('.status-filter-btn').forEach(btn => {
+            if (btn.getAttribute('data-status') === status) {
+                btn.className = 'status-filter-btn px-2.5 py-1 rounded-lg font-medium bg-white text-slate-900 shadow-2xs transition-all';
+            } else {
+                btn.className = 'status-filter-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:text-slate-900 transition-all';
             }
         });
         filterTemplates();
@@ -274,6 +371,158 @@
     function resetFilters() {
         document.getElementById('template-search-input').value = '';
         filterByTag('all');
+        filterByStatus('all');
+    }
+
+    // AJAX Toggle Template Status
+    function toggleTemplate(code, btnElement) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (!csrfToken) {
+            alert('Không tìm thấy mã CSRF token. Vui lòng tải lại trang.');
+            return;
+        }
+
+        btnElement.disabled = true;
+
+        fetch(`/admin/templates/${encodeURIComponent(code)}/toggle-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Có lỗi xảy ra khi cập nhật trạng thái');
+            }
+            return data;
+        })
+        .then(data => {
+            const isActive = data.is_active;
+            const card = document.getElementById(`template-card-${code}`);
+            const pill = document.getElementById(`status-pill-${code}`);
+            const dot = document.getElementById(`status-dot-${code}`);
+            const label = document.getElementById(`status-label-${code}`);
+            const thumb = document.getElementById(`toggle-thumb-${code}`);
+            const createWrapper = document.getElementById(`create-btn-wrapper-${code}`);
+
+            // Update card attributes
+            if (card) {
+                card.setAttribute('data-status', isActive ? 'active' : 'inactive');
+                if (isActive) {
+                    card.classList.remove('ring-1', 'ring-slate-300/80');
+                } else {
+                    card.classList.add('ring-1', 'ring-slate-300/80');
+                }
+            }
+
+            // Update toggle button
+            btnElement.setAttribute('aria-checked', isActive ? 'true' : 'false');
+            if (isActive) {
+                btnElement.classList.remove('bg-slate-300');
+                btnElement.classList.add('bg-emerald-500');
+                thumb.classList.remove('translate-x-0');
+                thumb.classList.add('translate-x-4');
+            } else {
+                btnElement.classList.remove('bg-emerald-500');
+                btnElement.classList.add('bg-slate-300');
+                thumb.classList.remove('translate-x-4');
+                thumb.classList.add('translate-x-0');
+            }
+
+            // Update status pill & label
+            if (pill) {
+                pill.textContent = isActive ? 'Hoạt động' : 'Tạm ngưng';
+                if (isActive) {
+                    pill.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold shadow-2xs transition-colors bg-emerald-500 text-white';
+                } else {
+                    pill.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold shadow-2xs transition-colors bg-slate-700/80 text-white backdrop-blur-xs';
+                }
+            }
+
+            if (dot) {
+                dot.className = `w-2 h-2 rounded-full transition-colors ${isActive ? 'bg-emerald-500' : 'bg-slate-400'}`;
+            }
+
+            if (label) {
+                label.textContent = isActive ? 'Đang hoạt động' : 'Tạm ngưng';
+                label.className = `text-xs font-semibold transition-colors ${isActive ? 'text-emerald-700' : 'text-slate-500'}`;
+            }
+
+            // Update Create Button
+            if (createWrapper) {
+                if (isActive) {
+                    createWrapper.innerHTML = `
+                        <a href="/admin/create?template=${encodeURIComponent(code)}" 
+                           class="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-2xs active:scale-98">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            <span>Tạo thiệp</span>
+                        </a>
+                    `;
+                } else {
+                    createWrapper.innerHTML = `
+                        <button type="button" 
+                                disabled
+                                title="Mẫu thiệp đang tạm ngưng. Kích hoạt để tạo thiệp mới."
+                                class="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 rounded-xl cursor-not-allowed">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                            </svg>
+                            <span>Tạm ngưng</span>
+                        </button>
+                    `;
+                }
+            }
+
+            // Update stats counts
+            const activeStat = document.getElementById('stat-active-count');
+            const inactiveStat = document.getElementById('stat-inactive-count');
+            const filterActive = document.getElementById('filter-active-count');
+            const filterInactive = document.getElementById('filter-inactive-count');
+
+            if (activeStat && inactiveStat) {
+                let currentActive = parseInt(activeStat.textContent) || 0;
+                let currentInactive = parseInt(inactiveStat.textContent) || 0;
+
+                if (isActive) {
+                    currentActive++;
+                    currentInactive = Math.max(0, currentInactive - 1);
+                } else {
+                    currentActive = Math.max(0, currentActive - 1);
+                    currentInactive++;
+                }
+
+                activeStat.textContent = currentActive;
+                inactiveStat.textContent = currentInactive;
+                if (filterActive) filterActive.textContent = currentActive;
+                if (filterInactive) filterInactive.textContent = currentInactive;
+            }
+
+            // Show Toast notification
+            if (typeof window.showToast === 'function') {
+                window.showToast(data.message, 'success');
+            }
+
+            // If a status filter is currently active, re-filter
+            if (currentStatusFilter !== 'all') {
+                filterTemplates();
+            }
+        })
+        .catch(error => {
+            console.error('Error toggling template status:', error);
+            if (typeof window.showToast === 'function') {
+                window.showToast(error.message || 'Lỗi khi cập nhật trạng thái', 'error');
+            } else {
+                alert(error.message || 'Lỗi khi cập nhật trạng thái');
+            }
+        })
+        .finally(() => {
+            btnElement.disabled = false;
+        });
     }
 </script>
 @endpush

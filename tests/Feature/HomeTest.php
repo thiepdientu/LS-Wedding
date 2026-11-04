@@ -41,4 +41,28 @@ class HomeTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Wedding VIP Test');
     }
+
+    public function test_home_page_only_displays_active_templates_and_hides_inactive_templates(): void
+    {
+        // 1. Ensure all active initially
+        SystemSetting::set('inactive_templates', '[]', 'templates');
+
+        $initialResponse = $this->get('/');
+        $initialResponse->assertStatus(200);
+        $initialResponse->assertSee('#5');
+
+        // 2. Hide template 5
+        \App\Models\WeddingCard::toggleTemplateStatus('5');
+        $this->assertFalse(\App\Models\WeddingCard::isTemplateActive('5'));
+
+        $hiddenResponse = $this->get('/');
+        $hiddenResponse->assertStatus(200);
+        // Template 5 preview should not be on home page
+        $hiddenResponse->assertDontSee('#5');
+        // Template 1 should still be visible
+        $hiddenResponse->assertSee('#1');
+
+        // 3. Reset
+        SystemSetting::set('inactive_templates', '[]', 'templates');
+    }
 }

@@ -56,4 +56,32 @@ class NewTemplatesTest extends TestCase
         $response->assertSee('Minimal Đỏ Đậm');
         $response->assertSee('Anh Đào Hồng New');
     }
+
+    public function test_template_23_renders_album_slideshow_and_lightbox(): void
+    {
+        $response = $this->get('/template/23');
+        $response->assertStatus(200);
+        $response->assertSee('albumMainSwiper');
+        $response->assertSee('fullscreenLightbox');
+        $response->assertSee('swiper-bundle.min.js');
+        $response->assertSee('swiper-bundle.min.css');
+        $response->assertSee('openLightbox');
+        $response->assertSee('closeLightbox');
+    }
+
+    public function test_template_26_and_27_render_album_carousel_like_template_24(): void
+    {
+        foreach ([26, 27] as $code) {
+            $response = $this->get('/template/' . $code);
+            $response->assertStatus(200);
+            $response->assertSee('carousel-viewport');
+            $response->assertSee('carousel-main-img');
+            $response->assertSee('carousel-counter');
+            $response->assertSee('carousel-thumbs');
+            $response->assertSee('lightbox-counter');
+            $response->assertSee('lightbox-modal');
+            $response->assertSee('stepCarousel');
+            $response->assertSee('selectSlide');
+        }
+    }
 }

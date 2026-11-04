@@ -39,6 +39,7 @@ class SystemSetting extends Model
             'max_album_photos' => '30',
             'enable_guestbook_default' => '1',
             'enable_banking_qr_default' => '1',
+            'inactive_templates' => '[]',
         ];
     }
 

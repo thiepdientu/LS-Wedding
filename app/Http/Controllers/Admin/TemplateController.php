@@ -66,11 +66,14 @@ class TemplateController extends Controller
         $templates = [];
         $mostUsedTemplate = null;
         $maxUsage = -1;
+        $inactiveCodes = WeddingCard::getInactiveTemplateCodes();
 
         foreach ($allTemplates as $code => $name) {
-            $count = $usageCounts[(string) $code] ?? 0;
+            $codeStr = (string) $code;
+            $isActive = !in_array($codeStr, $inactiveCodes, true);
+            $count = $usageCounts[$codeStr] ?? 0;
             $percent = $totalCards > 0 ? round(($count / $totalCards) * 100, 1) : 0;
-            $meta = $metadata[(string) $code] ?? [
+            $meta = $metadata[$codeStr] ?? [
                 'style' => 'Phong cách Tiêu chuẩn',
                 'badge' => 'Đang phát hành',
                 'badge_class' => 'bg-slate-100 text-slate-700 ring-slate-200',
@@ -83,26 +86,68 @@ class TemplateController extends Controller
             }
 
             $templates[] = [
-                'code' => (string) $code,
+                'code' => $codeStr,
                 'name' => $name,
                 'style' => $meta['style'],
                 'badge' => $meta['badge'],
                 'badge_class' => $meta['badge_class'],
                 'gradient' => $meta['gradient'],
+                'is_active' => $isActive,
                 'used_count' => $count,
                 'percentage' => $percent,
                 'demo_url' => url('/template/' . $code),
                 'create_url' => route('wedding.create', ['template' => $code]),
+                'toggle_url' => route('admin.templates.toggle-status', ['code' => $code]),
             ];
         }
 
         $totalTemplates = count($allTemplates);
+        $activeCount = count(array_filter($templates, fn($t) => $t['is_active']));
+        $inactiveCount = $totalTemplates - $activeCount;
 
         return view('admin.templates.index', compact(
             'templates',
             'totalTemplates',
+            'activeCount',
+            'inactiveCount',
             'totalCards',
             'mostUsedTemplate'
         ));
+    }
+
+    /**
+     * Bật / Tắt trạng thái Active | Inactive của một mẫu thiệp
+     */
+    public function toggleStatus(Request $request, string $code): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    {
+        $allTemplates = WeddingCard::getTemplateOptions();
+        $codeStr = (string) $code;
+
+        if (!array_key_exists($codeStr, $allTemplates)) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Mẫu thiệp #{$codeStr} không tồn tại trên hệ thống.",
+                ], 404);
+            }
+            return back()->with('error', "Mẫu thiệp #{$codeStr} không tồn tại.");
+        }
+
+        $isActive = WeddingCard::toggleTemplateStatus($codeStr);
+        $templateName = $allTemplates[$codeStr];
+        $statusLabel = $isActive ? 'kích hoạt' : 'tạm ngưng';
+        $message = "Đã {$statusLabel} mẫu thiệp #{$codeStr} ({$templateName}) thành công.";
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'code' => $codeStr,
+                'is_active' => $isActive,
+                'status_label' => $isActive ? 'Hoạt động' : 'Tạm ngưng',
+                'message' => $message,
+            ]);
+        }
+
+        return back()->with('success', $message);
     }
 }

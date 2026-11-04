@@ -36,10 +36,42 @@
             }
         }
     </script>
+    <!-- Swiper 3D Carousel CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
     <style>
         .font-cursive { font-family: 'Great Vibes', cursive; }
         .backdrop-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
         .hero-gradient { background: radial-gradient(circle at 50% 0%, rgba(244, 114, 182, 0.15) 0%, rgba(243, 232, 255, 0.2) 50%, rgba(255, 255, 255, 1) 100%); }
+
+        /* Swiper 3D Coverflow Tweaks */
+        .swiper-3d-templates {
+            width: 100%;
+            perspective: 1200px;
+        }
+        .swiper-3d-templates .swiper-slide {
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+        }
+        .swiper-3d-templates .swiper-slide:not(.swiper-slide-active) {
+            opacity: 0.88;
+        }
+        .swiper-3d-templates .swiper-slide-active {
+            opacity: 1;
+            z-index: 20;
+        }
+        .swiper-3d-templates .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: #cbd5e1;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .swiper-3d-templates .swiper-pagination-bullet-active {
+            width: 28px;
+            border-radius: 9999px;
+            background: #e11d48;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="font-sans text-slate-800 bg-white antialiased selection:bg-rose-500 selection:text-white pb-16 lg:pb-0">
@@ -117,7 +149,7 @@
 
                     <!-- Trust Checklist -->
                     <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-semibold text-slate-500">
-                        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Khám phá 21+ mẫu thiệp</span>
+                        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Khám phá {{ count($templates) }}+ mẫu thiệp</span>
                         <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Xem demo mẫu tức thì</span>
                         <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Hỗ trợ tư vấn 24/7</span>
                     </div>
@@ -220,159 +252,120 @@
         </div>
     </section>
 
-    <!-- SECTION 2: KHO MẪU THIỆP CƯỚI NỔI BẬT -->
-    <section id="mau-thiep" class="py-20 bg-slate-50 border-y border-slate-200/70">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <!-- SECTION 2: KHO MẪU THIỆP CƯỚI 3D COVERFLOW SLIDESHOW -->
+    <section id="mau-thiep" class="py-20 sm:py-24 bg-gradient-to-b from-slate-50 via-[#f8fafc] to-white border-y border-slate-200/70 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             
+            <!-- Section Header -->
             <div class="text-center max-w-2xl mx-auto space-y-3">
-                <div class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
-                    Thư Viện Giao Diện
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3.5 py-1.5 rounded-full border border-rose-100">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
+                    <span>Trải Nghiệm 3D Coverflow</span>
                 </div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                    Mẫu thiệp cưới online <span class="font-cursive text-4xl sm:text-5xl text-rose-500 font-normal">đẹp nhất</span>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    Mẫu thiệp cưới online <span class="font-cursive text-4xl sm:text-5xl md:text-6xl text-rose-500 font-normal">đẹp nhất</span>
                 </h2>
-                <p class="text-slate-500 text-sm sm:text-base">
-                    Khám phá 21+ mẫu thiệp cưới được thiết kế tinh tế. Bấm "Xem Demo Mẫu" để trải nghiệm trực tiếp trên điện thoại!
+                <p class="text-slate-500 text-sm sm:text-base max-w-xl mx-auto">
+                    Khám phá {{ count($templates) }}+ mẫu thiệp cưới được thiết kế tinh tế. Vuốt sang hai bên hoặc bấm "Xem mẫu" để trải nghiệm trực tiếp trên điện thoại!
                 </p>
             </div>
 
-            <!-- Templates Grid (Hiển thị 8 mẫu đầu) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @foreach(array_slice($templates, 0, 8) as $tpl)
-                    <div class="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 group flex flex-col justify-between">
-                        
-                        <!-- Template Preview Header / Visual Card -->
-                        <div class="relative aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200/80 p-5 flex flex-col justify-between overflow-hidden">
-                            
-                            <!-- Badges -->
-                            <div class="flex items-center justify-between z-10">
-                                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full border {{ $tpl['badge_class'] }}">
-                                    {{ $tpl['badge'] }}
-                                </span>
-                                <span class="w-6 h-6 rounded-full bg-white/80 backdrop-blur-xs flex items-center justify-center text-xs font-mono font-bold text-slate-500 shadow-xs">
-                                    #{{ $tpl['code'] }}
-                                </span>
-                            </div>
+            <!-- 3D Swiper Coverflow Slider Container -->
+            <div class="relative w-full max-w-[1400px] mx-auto px-1 sm:px-4">
+                
+                <div class="swiper swiper-3d-templates overflow-visible py-8 sm:py-12">
+                    <div class="swiper-wrapper">
+                        @foreach($templates as $tpl)
+                            <div class="swiper-slide w-[280px] sm:w-[315px] md:w-[330px] h-[490px] sm:h-[550px] shrink-0 select-none">
+                                
+                                <!-- Phone Mockup 3D Card Frame -->
+                                <div class="relative w-full h-full rounded-[32px] sm:rounded-[36px] overflow-hidden bg-slate-900 border-[5px] sm:border-[6px] border-white shadow-[0_22px_55px_rgba(0,0,0,0.18)] transition-all duration-300 group flex flex-col justify-between">
+                                    
+                                    <!-- Full Bleed Photography Background -->
+                                    <img src="{{ $tpl['image'] }}" 
+                                         alt="{{ $tpl['name'] }}" 
+                                         loading="lazy"
+                                         class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 pointer-events-none">
+                                    
+                                    <!-- Romantic Scrim Gradient Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/35 pointer-events-none"></div>
 
-                            <!-- Styled Illustration Center -->
-                            <div class="my-auto text-center transform group-hover:scale-105 transition-transform duration-300">
-                                <div class="w-16 h-16 rounded-2xl mx-auto shadow-md flex items-center justify-center text-white text-2xl font-cursive font-bold mb-3"
-                                     style="background: {{ $tpl['color'] }};">
-                                    囍
+                                    <!-- Top Bar inside Card: Template Code Badge & Category -->
+                                    <div class="relative z-10 p-5 flex items-center justify-between">
+                                        <span class="inline-flex items-center text-[11px] font-mono font-bold tracking-wider text-white/95 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xs">
+                                            #{{ $tpl['code'] }}
+                                        </span>
+                                        <span class="inline-flex items-center text-[11px] font-bold tracking-wide text-slate-900 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-xs">
+                                            {{ $tpl['badge'] }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Center Typography / Romantic Visual Art -->
+                                    <div class="relative z-10 px-6 my-auto text-center space-y-2 pointer-events-none">
+                                        <div class="text-[11px] tracking-[0.3em] uppercase text-white/80 font-bold drop-shadow-sm">
+                                            {{ $tpl['date_sample'] ?? '20.03.2027' }}
+                                        </div>
+                                        <h3 class="{{ $tpl['tagline_style'] ?? 'text-4xl font-extrabold text-white tracking-tight' }} drop-shadow-md">
+                                            {{ $tpl['tagline'] ?? $tpl['name'] }}
+                                        </h3>
+                                        <p class="text-xs text-white/90 font-medium tracking-wide drop-shadow-sm">
+                                            {{ $tpl['style'] }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Bottom Bar: Couple Name & The Signature Pill Button -->
+                                    <div class="relative z-10 p-5 pb-6 flex flex-col items-center gap-3 text-center">
+                                        <div class="text-[11px] font-bold tracking-[0.2em] text-white/95 uppercase drop-shadow-sm">
+                                            {{ $tpl['couple_sample'] ?? 'CHÚ RỂ & CÔ DÂU' }}
+                                        </div>
+                                        
+                                        <!-- White Pill Button from user reference image -->
+                                        <a href="{{ $tpl['demo_url'] }}" 
+                                           target="_blank" 
+                                           class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs shadow-lg backdrop-blur-md border border-white/90 hover:shadow-rose-500/25 transform hover:scale-105 active:scale-95 transition-all">
+                                            <span>Xem mẫu</span>
+                                            <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+
                                 </div>
-                                <h4 class="font-cursive text-2xl text-slate-800 font-normal leading-tight">
-                                    {{ $tpl['name'] }}
-                                </h4>
-                                <p class="text-[11px] text-slate-500 font-medium mt-1">
-                                    {{ $tpl['style'] }}
-                                </p>
                             </div>
-
-                            <!-- Bottom bar inside card -->
-                            <div class="z-10 flex items-center justify-between text-[11px] font-semibold text-slate-400 border-t border-slate-300/40 pt-2">
-                                <span>{{ $settings['default_domain'] ?? 'wed.vn' }}</span>
-                                <span class="text-emerald-600">Sẵn sàng trải nghiệm</span>
-                            </div>
-
-                            <!-- Hover Overlay with Public Actions -->
-                            <div class="absolute inset-0 bg-slate-900/75 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-6 z-20">
-                                <a href="{{ $tpl['demo_url'] }}" target="_blank"
-                                   class="w-full py-2.5 px-4 rounded-xl bg-white text-slate-900 font-bold text-xs text-center shadow-lg hover:bg-slate-100 transition-colors flex items-center justify-center gap-1.5">
-                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    <span>Xem Demo Mẫu Này</span>
-                                </a>
-                                <a href="{{ $consultUrl }}" target="_blank"
-                                   class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-500 to-indigo-600 text-white font-bold text-xs text-center shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                                    <span>Chọn Mẫu & Tư Vấn</span>
-                                </a>
-                            </div>
-
-                        </div>
-
-                        <!-- Card Info Footer -->
-                        <div class="p-4 flex items-center justify-between border-t border-slate-100 bg-white">
-                            <div>
-                                <h3 class="font-bold text-sm text-slate-900">{{ $tpl['name'] }}</h3>
-                                <p class="text-xs text-slate-400">{{ $tpl['style'] }}</p>
-                            </div>
-                            <a href="{{ $tpl['demo_url'] }}" target="_blank" class="text-xs font-bold text-indigo-600 hover:text-indigo-800">
-                                Xem Demo &rarr;
-                            </a>
-                        </div>
-
+                        @endforeach
                     </div>
-                @endforeach
+
+                    <!-- Navigation Circular Arrows -->
+                    <button type="button" 
+                            class="swiper-btn-prev absolute left-1 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-white text-slate-800 shadow-xl border border-slate-200/80 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer" 
+                            aria-label="Mẫu trước">
+                        <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button type="button" 
+                            class="swiper-btn-next absolute right-1 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-white text-slate-800 shadow-xl border border-slate-200/80 flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer" 
+                            aria-label="Mẫu tiếp theo">
+                        <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <!-- Pagination Bullets Indicator -->
+                    <div class="swiper-pagination !relative !bottom-0 mt-8"></div>
+                </div>
+
             </div>
 
-            <!-- More Templates Container (Mẫu 9 đến 21, ẩn mặc định) -->
-            <div id="more-templates" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-2">
-                @foreach(array_slice($templates, 8) as $tpl)
-                    <div class="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 group flex flex-col justify-between">
-                        
-                        <div class="relative aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200/80 p-5 flex flex-col justify-between overflow-hidden">
-                            <div class="flex items-center justify-between z-10">
-                                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full border {{ $tpl['badge_class'] }}">
-                                    {{ $tpl['badge'] }}
-                                </span>
-                                <span class="w-6 h-6 rounded-full bg-white/80 backdrop-blur-xs flex items-center justify-center text-xs font-mono font-bold text-slate-500 shadow-xs">
-                                    #{{ $tpl['code'] }}
-                                </span>
-                            </div>
-
-                            <div class="my-auto text-center transform group-hover:scale-105 transition-transform duration-300">
-                                <div class="w-16 h-16 rounded-2xl mx-auto shadow-md flex items-center justify-center text-white text-2xl font-cursive font-bold mb-3"
-                                     style="background: {{ $tpl['color'] }};">
-                                    囍
-                                </div>
-                                <h4 class="font-cursive text-2xl text-slate-800 font-normal leading-tight">
-                                    {{ $tpl['name'] }}
-                                </h4>
-                                <p class="text-[11px] text-slate-500 font-medium mt-1">
-                                    {{ $tpl['style'] }}
-                                </p>
-                            </div>
-
-                            <div class="z-10 flex items-center justify-between text-[11px] font-semibold text-slate-400 border-t border-slate-300/40 pt-2">
-                                <span>{{ $settings['default_domain'] ?? 'wed.vn' }}</span>
-                                <span class="text-emerald-600">Sẵn sàng trải nghiệm</span>
-                            </div>
-
-                            <div class="absolute inset-0 bg-slate-900/75 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-6 z-20">
-                                <a href="{{ $tpl['demo_url'] }}" target="_blank"
-                                   class="w-full py-2.5 px-4 rounded-xl bg-white text-slate-900 font-bold text-xs text-center shadow-lg hover:bg-slate-100 transition-colors flex items-center justify-center gap-1.5">
-                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    <span>Xem Demo Mẫu Này</span>
-                                </a>
-                                <a href="{{ $consultUrl }}" target="_blank"
-                                   class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-500 to-indigo-600 text-white font-bold text-xs text-center shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                                    <span>Chọn Mẫu & Tư Vấn</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="p-4 flex items-center justify-between border-t border-slate-100 bg-white">
-                            <div>
-                                <h3 class="font-bold text-sm text-slate-900">{{ $tpl['name'] }}</h3>
-                                <p class="text-xs text-slate-400">{{ $tpl['style'] }}</p>
-                            </div>
-                            <a href="{{ $tpl['demo_url'] }}" target="_blank" class="text-xs font-bold text-indigo-600 hover:text-indigo-800">
-                                Xem Demo &rarr;
-                            </a>
-                        </div>
-
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Toggle View All Templates Button (Mở rộng ngay trên trang chủ) -->
-            <div class="text-center pt-4">
-                <button type="button" id="btn-toggle-more" onclick="toggleMoreTemplates()" 
-                        class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-sm shadow-xs transition-all cursor-pointer">
-                    <span id="toggle-more-text">Khám phá toàn bộ 21+ mẫu thiệp cưới</span>
-                    <svg id="toggle-more-icon" class="w-4 h-4 text-slate-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
+            <!-- Bottom Interaction Hint & CTA -->
+            <div class="text-center pt-2 space-y-4">
+                <p class="text-xs font-medium text-slate-400 flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    <span>Kéo chuột hoặc vuốt tay sang trái / phải để lướt xem các mẫu thiệp khác</span>
+                </p>
+                <div class="flex items-center justify-center gap-4">
+                    <a href="{{ $consultUrl }}" target="_blank"
+                       class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-500 to-indigo-600 text-white font-bold text-sm shadow-xl shadow-rose-500/20 hover:brightness-110 hover:shadow-rose-500/30 transform hover:-translate-y-0.5 transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        <span>Chọn Mẫu & Nhận Tư Vấn Miễn Phí</span>
+                    </a>
+                </div>
             </div>
 
         </div>
@@ -404,7 +397,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-slate-900">Chọn mẫu thiệp</h3>
                     <p class="text-sm text-slate-600 leading-relaxed">
-                        Lựa chọn trong kho 21+ mẫu thiệp mang đậm nét văn hóa Việt Nam hoặc phong cách phương Tây tối giản, hiện đại.
+                        Lựa chọn trong kho {{ count($templates) }}+ mẫu thiệp mang đậm nét văn hóa Việt Nam hoặc phong cách phương Tây tối giản, hiện đại.
                     </p>
                     <div class="text-xs font-bold text-indigo-600 pt-2">
                         Đa dạng phong cách & xem demo tức thì &rarr;
@@ -777,29 +770,46 @@
         @endif
     </div>
 
+    <!-- Swiper 3D Carousel JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <!-- Scripts -->
     <script>
-        // Toggle More Templates
-        function toggleMoreTemplates() {
-            const moreContainer = document.getElementById('more-templates');
-            const toggleText = document.getElementById('toggle-more-text');
-            const toggleIcon = document.getElementById('toggle-more-icon');
-
-            if (!moreContainer) return;
-
-            const isHidden = moreContainer.classList.contains('hidden');
-            if (isHidden) {
-                moreContainer.classList.remove('hidden');
-                if (toggleText) toggleText.innerText = 'Thu gọn bớt danh sách mẫu';
-                if (toggleIcon) toggleIcon.classList.add('rotate-180');
-            } else {
-                moreContainer.classList.add('hidden');
-                if (toggleText) toggleText.innerText = 'Khám phá toàn bộ 21+ mẫu thiệp cưới';
-                if (toggleIcon) toggleIcon.classList.remove('rotate-180');
-                const section = document.getElementById('mau-thiep');
-                if (section) section.scrollIntoView({ behavior: 'smooth' });
+        // Khởi tạo Swiper 3D Coverflow cho Kho Mẫu Thiệp
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof Swiper !== 'undefined') {
+                const templateSwiper = new Swiper('.swiper-3d-templates', {
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    loop: true,
+                    speed: 600,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                    },
+                    coverflowEffect: {
+                        rotate: 32,          // Độ nghiêng 3D chính xác như ảnh mẫu
+                        stretch: -25,        // Khoảng cách kéo lồng các slide
+                        depth: 220,          // Chiều sâu trục Z
+                        modifier: 1,
+                        slideShadows: false, // Giữ độ sáng và màu sắc ảnh tự nhiên
+                    },
+                    navigation: {
+                        nextEl: '.swiper-btn-next',
+                        prevEl: '.swiper-btn-prev',
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                        dynamicBullets: true,
+                    },
+                    slideToClickedSlide: true, // Click vào slide bên cạnh tự trượt về trung tâm
+                });
             }
-        }
+        });
 
         // Simple FAQ Accordion Toggle
         function toggleFaq(index) {

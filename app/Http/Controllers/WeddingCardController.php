@@ -101,6 +101,11 @@ class WeddingCardController extends Controller
 
     public function showTemplate($key)
     {
+        $codeStr = (string) $key;
+        if (!WeddingCard::isTemplateActive($codeStr) && !auth()->check()) {
+            abort(404, 'Mẫu thiệp cưới này hiện đang tạm ngưng phát hành.');
+        }
+
         // Tìm thiệp cưới theo name
         $weddingCard = WeddingCard::where('identifyWedding', 'test')->first() ?? WeddingCard::first();
         if (!$weddingCard) {
@@ -190,7 +195,16 @@ class WeddingCardController extends Controller
         }
         $validated = $request->validate([
             'identifyWedding' => 'required|string|max:255',
-            'template' => 'required|string|max:255',
+            'template' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (!WeddingCard::isTemplateActive((string) $value)) {
+                        $fail("Mẫu thiệp #{$value} hiện đang tạm ngưng phát hành. Vui lòng chọn mẫu khác.");
+                    }
+                },
+            ],
             'wedding_time' => 'required|string|max:255',
             'banner_preview' => 'nullable|string|max:1000',
             'bride_name' => 'required|string|max:255',
@@ -421,7 +435,16 @@ class WeddingCardController extends Controller
 
         $data = $request->validate([
             'identifyWedding' => 'required|string|max:255',
-            'template' => 'required|string|max:255',
+            'template' => [
+                'required',
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) use ($weddingCard) {
+                    if ((string) $value !== (string) $weddingCard->template && !WeddingCard::isTemplateActive((string) $value)) {
+                        $fail("Mẫu thiệp #{$value} hiện đang tạm ngưng phát hành. Vui lòng chọn mẫu khác.");
+                    }
+                },
+            ],
             'status' => 'nullable|string|in:active,locked,draft',
             'customer_email' => 'nullable|email|max:255',
             'expires_at' => 'nullable|date',

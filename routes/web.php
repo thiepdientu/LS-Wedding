@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
 
         // Quản lý mẫu giao diện (Templates)
         Route::get('/templates', [TemplateController::class, 'index'])->name('admin.templates.index');
+        Route::post('/templates/{code}/toggle-status', [TemplateController::class, 'toggleStatus'])->name('admin.templates.toggle-status');
 
         // Quản lý Lời chúc & Sổ lưu bút (Wishes)
         Route::get('/wishes', [AdminWishController::class, 'index'])->name('admin.wishes.index');

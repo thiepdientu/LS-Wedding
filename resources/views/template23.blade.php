@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Pattaya&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <!-- Swiper 11 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
     :root {
       --brown-950: #281611;
@@ -862,34 +864,57 @@
       margin-bottom: 22px;
     }
 
-    /* Album Carousel 1 / 8 */
+    /* =====================================================
+       ALBUM SLIDESHOW & FULLSCREEN LIGHTBOX
+       ===================================================== */
     .album-carousel-card {
       position: relative;
       background: #ffffff;
-      border-radius: 18px;
-      padding: 10px;
-      box-shadow: 0 12px 30px rgba(40, 22, 17, 0.1);
-      border: 1px solid rgba(78, 47, 36, 0.1);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 16px 36px rgba(40, 22, 17, 0.12);
+      border: 1px solid rgba(78, 47, 36, 0.12);
+      margin: 0 auto;
+      max-width: 480px;
+      overflow: hidden;
     }
 
-    .album-main-viewport {
+    .album-main-swiper {
       position: relative;
       width: 100%;
       aspect-ratio: 3 / 4;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      background: #f2ebe6;
-    }
-
-    .album-main-viewport img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease, opacity 0.35s ease;
+      background: #f4ede7;
       cursor: zoom-in;
     }
 
-    .album-nav-btn {
+    .album-main-swiper .swiper-slide {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #2a1711;
+    }
+
+    .album-main-swiper .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+
+    .album-main-swiper:hover .swiper-slide img {
+      transform: scale(1.025);
+    }
+
+    /* In-page Nav Arrows */
+    .album-swiper-button-prev,
+    .album-swiper-button-next {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -897,59 +922,327 @@
       height: 38px;
       border-radius: 50%;
       border: none;
-      background: rgba(255, 255, 255, 0.85);
-      color: var(--brown-800);
-      font-size: 1.1rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--brown-900);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 4;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      z-index: 10;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(4px);
     }
 
-    .album-nav-btn.prev { left: 10px; }
-    .album-nav-btn.next { right: 10px; }
+    .album-swiper-button-prev:hover,
+    .album-swiper-button-next:hover {
+      background: #ffffff;
+      color: var(--brown-950);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .album-swiper-button-prev { left: 10px; }
+    .album-swiper-button-next { right: 10px; }
+
+    /* Tap / Zoom Hint on Slide */
+    .album-tap-hint {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 9;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 99px;
+      background: rgba(40, 22, 17, 0.72);
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Meta Row (Counter & Hint) */
+    .album-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding: 0 4px;
+    }
 
     .album-counter-pill {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 4px 16px;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
       border-radius: 99px;
       background: var(--brown-100);
-      color: var(--brown-800);
-      font-size: 0.8rem;
+      color: var(--brown-900);
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
     }
 
-    .album-thumbs-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+    .album-swipe-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Thumbs Strip */
+    .album-thumbs-wrapper {
       margin-top: 12px;
+      width: 100%;
+    }
+
+    .album-thumbs-track {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(78, 47, 36, 0.3) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .album-thumbs-track::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .album-thumbs-track::-webkit-scrollbar-thumb {
+      background: rgba(78, 47, 36, 0.3);
+      border-radius: 4px;
     }
 
     .album-thumb-item {
-      aspect-ratio: 1;
-      border-radius: 8px;
+      flex: 0 0 62px;
+      width: 62px;
+      height: 62px;
+      border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
-      opacity: 0.55;
+      opacity: 0.52;
       border: 2px solid transparent;
       transition: all 0.25s ease;
+      background: #f0e7df;
+    }
+
+    .album-thumb-item:hover {
+      opacity: 0.85;
     }
 
     .album-thumb-item.active {
       opacity: 1;
       border-color: var(--brown-800);
-      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(78, 47, 36, 0.25);
+      transform: scale(1.05);
     }
 
     .album-thumb-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+    }
+
+    /* =====================================================
+       FULLSCREEN LIGHTBOX VIEWER
+       ===================================================== */
+    body.lightbox-open {
+      overflow: hidden !important;
+      touch-action: none;
+    }
+
+    .fullscreen-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      background: rgba(14, 8, 6, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      user-select: none;
+    }
+
+    .fullscreen-lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    /* Lightbox Header Bar */
+    .lightbox-header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      background: linear-gradient(to bottom, rgba(14, 8, 6, 0.88) 0%, rgba(14, 8, 6, 0) 100%);
+    }
+
+    .lightbox-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lightbox-tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #e6c998;
+      letter-spacing: 1px;
+    }
+
+    .lightbox-counter {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+    }
+
+    .lightbox-close-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .lightbox-close-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+      transform: scale(1.08) rotate(90deg);
+    }
+
+    /* Lightbox Swiper Fullscreen Stage */
+    .lightbox-swiper {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-swiper .swiper-wrapper {
+      height: 100%;
+      align-items: center;
+    }
+
+    .lightbox-swiper .swiper-slide {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      box-sizing: border-box;
+    }
+
+    .lightbox-swiper .swiper-slide img {
+      max-width: 95vw;
+      max-height: 80vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+      transition: transform 0.25s ease;
+    }
+
+    /* Lightbox Nav Arrows */
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(20, 10, 8, 0.65);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 15;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .lightbox-nav-btn:hover {
+      background: rgba(230, 201, 152, 0.95);
+      color: #281611;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .lightbox-nav-btn.prev { left: 24px; }
+    .lightbox-nav-btn.next { right: 24px; }
+
+    @media (max-width: 640px) {
+      .lightbox-nav-btn {
+        width: 40px;
+        height: 40px;
+      }
+      .lightbox-nav-btn.prev { left: 10px; }
+      .lightbox-nav-btn.next { right: 10px; }
+      .lightbox-header { padding: 14px 16px; }
+      .lightbox-swiper .swiper-slide { padding: 8px; }
+      .lightbox-swiper .swiper-slide img { max-height: 75vh; }
+    }
+
+    /* Lightbox Bottom Bar */
+    .lightbox-bottom-bar {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 14px 20px 22px;
+      background: linear-gradient(to top, rgba(14, 8, 6, 0.9) 0%, rgba(14, 8, 6, 0) 100%);
+    }
+
+    .lightbox-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #faf7f3;
+      letter-spacing: 1px;
+    }
+
+    .lightbox-hint {
+      margin-top: 4px;
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.3px;
     }
 
     /* Party Cards for Nhà Trai & Nhà Gái */
@@ -1766,27 +2059,47 @@
       </div>
     </section>
 
-    <!-- 3. ALBUM ẢNH CƯỚI (1 / 8) -->
+    <!-- 3. ALBUM ẢNH CƯỚI (SLIDESHOW) -->
     <section class="content-section reveal">
       <img class="section-floral-badge" src="https://chungdoi.com/images/themes/minimalism-dark-brown/flower2-decoration.webp" alt="" onerror="this.style.display='none'">
       <h2 class="section-heading">Album Ảnh</h2>
       <p class="section-subtext">Khoảnh khắc hạnh phúc của {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</p>
 
-      @php
-        $albumCoverSrc = !empty($weddingCard->cover_image)
-            ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image))
-            : (!empty($weddingCard->banner_preview)
-                ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
-                : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp');
-      @endphp
       <div class="album-carousel-card">
-        <div class="album-main-viewport">
-          <button class="album-nav-btn prev" onclick="stepAlbum(-1)" aria-label="Ảnh trước">❮</button>
-          <img id="albumActiveImg" src="{{ $albumCoverSrc }}" alt="Ảnh cưới {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" onclick="openLightbox(currentAlbumIndex)">
-          <button class="album-nav-btn next" onclick="stepAlbum(1)" aria-label="Ảnh tiếp">❯</button>
+        <!-- Main Slideshow Swiper -->
+        <div class="swiper album-main-swiper" id="albumMainSwiper">
+          <div class="swiper-wrapper" id="albumSwiperWrapper">
+            <!-- Slides rendered dynamically via JS -->
+          </div>
+          <!-- Swiper Navigation Arrows -->
+          <button type="button" class="album-swiper-button-prev" id="albumPrevBtn" aria-label="Ảnh trước">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button type="button" class="album-swiper-button-next" id="albumNextBtn" aria-label="Ảnh tiếp theo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <!-- Fullscreen Hint Badge -->
+          <div class="album-tap-hint">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            <span>Phóng to</span>
+          </div>
         </div>
-        <div class="album-counter-pill" id="albumCounter">1 / 8</div>
-        <div class="album-thumbs-row" id="albumThumbs"></div>
+
+        <!-- Counter & Hint -->
+        <div class="album-meta-row">
+          <div class="album-counter-pill" id="albumCounter">1 / 8</div>
+          <div class="album-swipe-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+            Bấm vào ảnh để xem full màn hình
+          </div>
+        </div>
+
+        <!-- Thumbnails Strip -->
+        <div class="album-thumbs-wrapper">
+          <div class="album-thumbs-track" id="albumThumbs">
+            <!-- Thumbs rendered dynamically via JS -->
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2088,11 +2401,38 @@
     </div>
   </div>
 
-  <!-- MODAL LIGHTBOX ALBUM -->
-  <div class="modal-backdrop" id="lightboxModal" onclick="if(event.target===this) closeLightbox()">
-    <div class="modal-panel" style="background: transparent; box-shadow: none; max-width: 440px; padding: 0;">
-      <button class="modal-close" style="background: #fff; top: -40px; right: 0;" onclick="closeLightbox()">✕</button>
-      <img id="lightboxImg" src="" alt="Phóng to ảnh cưới" style="width: 100%; border-radius: 14px; max-height: 82vh; object-fit: contain;">
+  <!-- FULLSCREEN LIGHTBOX ALBUM VIEWER -->
+  <div class="fullscreen-lightbox" id="fullscreenLightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" onclick="closeLightbox()"></div>
+
+    <!-- Header Bar -->
+    <div class="lightbox-header">
+      <div class="lightbox-info">
+        <span class="lightbox-tag">Album Ảnh Cưới</span>
+        <span class="lightbox-counter" id="lightboxCounter">1 / 8</span>
+      </div>
+      <button type="button" class="lightbox-close-btn" onclick="closeLightbox()" aria-label="Đóng (Esc)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Swiper Fullscreen Container -->
+    <div class="swiper lightbox-swiper" id="lightboxSwiper">
+      <div class="swiper-wrapper" id="lightboxSwiperWrapper">
+        <!-- Rendered dynamically via JS -->
+      </div>
+      <button type="button" class="lightbox-nav-btn prev" id="lightboxPrevBtn" aria-label="Ảnh trước">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button type="button" class="lightbox-nav-btn next" id="lightboxNextBtn" aria-label="Ảnh sau">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- Bottom Info Bar -->
+    <div class="lightbox-bottom-bar">
+      <div class="lightbox-title">{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</div>
+      <div class="lightbox-hint">Vuốt ngang màn hình &bull; Bấm [Esc] hoặc chạm nền để thoát</div>
     </div>
   </div>
 
@@ -2102,6 +2442,8 @@
         return str_starts_with($img, 'http') ? $img : asset('storage/' . $img);
     }, $albumData)) : []);
   @endphp
+  <!-- Swiper 11 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const defaultPhotos = [
       "https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp",
@@ -2162,46 +2504,189 @@
       layer.classList.toggle('off');
     }
 
-    const thumbsContainer = document.getElementById('albumThumbs');
-    const activeImg = document.getElementById('albumActiveImg');
-    const counterEl = document.getElementById('albumCounter');
+    let albumSwiper = null;
+    let lightboxSwiper = null;
 
     function renderAlbum() {
-      thumbsContainer.innerHTML = '';
+      const mainWrapper = document.getElementById('albumSwiperWrapper');
+      const thumbsWrapper = document.getElementById('albumThumbs');
+      const lbWrapper = document.getElementById('lightboxSwiperWrapper');
+
+      if (!mainWrapper || !albumPhotos || albumPhotos.length === 0) return;
+
+      mainWrapper.innerHTML = '';
+      if (thumbsWrapper) thumbsWrapper.innerHTML = '';
+      if (lbWrapper) lbWrapper.innerHTML = '';
+
       albumPhotos.forEach((src, idx) => {
-        const div = document.createElement('div');
-        div.className = 'album-thumb-item' + (idx === currentAlbumIndex ? ' active' : '');
-        div.innerHTML = `<img src="${src}" alt="Ảnh ${idx + 1}">`;
-        div.onclick = () => selectAlbumPhoto(idx);
-        thumbsContainer.appendChild(div);
+        // In-page slide
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `<img src="${src}" alt="Ảnh cưới ${idx + 1}" loading="lazy">`;
+        slide.addEventListener('click', () => openLightbox(idx));
+        mainWrapper.appendChild(slide);
+
+        // Thumbnail item
+        if (thumbsWrapper) {
+          const thumb = document.createElement('div');
+          thumb.className = 'album-thumb-item' + (idx === 0 ? ' active' : '');
+          thumb.innerHTML = `<img src="${src}" alt="Thumb ${idx + 1}" loading="lazy">`;
+          thumb.addEventListener('click', () => selectAlbumPhoto(idx));
+          thumbsWrapper.appendChild(thumb);
+        }
+
+        // Fullscreen slide
+        if (lbWrapper) {
+          const lbSlide = document.createElement('div');
+          lbSlide.className = 'swiper-slide';
+          lbSlide.innerHTML = `
+            <div class="swiper-zoom-container">
+              <img src="${src}" alt="Ảnh cưới phóng to ${idx + 1}">
+            </div>`;
+          lbWrapper.appendChild(lbSlide);
+        }
       });
+
+      // Initialize In-Page Album Swiper
+      albumSwiper = new Swiper('#albumMainSwiper', {
+        loop: albumPhotos.length > 1,
+        autoplay: {
+          delay: 3800,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
+        speed: 550,
+        grabCursor: true,
+        navigation: {
+          prevEl: '#albumPrevBtn',
+          nextEl: '#albumNextBtn',
+        },
+        on: {
+          slideChange: function() {
+            const idx = this.realIndex;
+            currentAlbumIndex = idx;
+            syncAlbumState(idx);
+          }
+        }
+      });
+
+      // Initialize Fullscreen Lightbox Swiper
+      lightboxSwiper = new Swiper('#lightboxSwiper', {
+        loop: albumPhotos.length > 1,
+        speed: 350,
+        zoom: {
+          maxRatio: 3,
+        },
+        keyboard: {
+          enabled: true,
+        },
+        navigation: {
+          prevEl: '#lightboxPrevBtn',
+          nextEl: '#lightboxNextBtn',
+        },
+        on: {
+          slideChange: function() {
+            const idx = this.realIndex;
+            const lbCounter = document.getElementById('lightboxCounter');
+            if (lbCounter) lbCounter.textContent = `${idx + 1} / ${albumPhotos.length}`;
+          }
+        }
+      });
+
+      syncAlbumState(0);
+    }
+
+    function syncAlbumState(idx) {
+      const counterEl = document.getElementById('albumCounter');
+      if (counterEl) counterEl.textContent = `${idx + 1} / ${albumPhotos.length}`;
+
+      const thumbs = document.querySelectorAll('.album-thumb-item');
+      thumbs.forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+      });
+
+      const activeThumb = thumbs[idx];
+      if (activeThumb && activeThumb.scrollIntoView) {
+        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     }
 
     function selectAlbumPhoto(idx) {
       currentAlbumIndex = (idx + albumPhotos.length) % albumPhotos.length;
-      activeImg.style.opacity = '0.35';
-      setTimeout(() => {
-        activeImg.src = albumPhotos[currentAlbumIndex];
-        activeImg.style.opacity = '1';
-      }, 140);
-      counterEl.textContent = `${currentAlbumIndex + 1} / ${albumPhotos.length}`;
-      renderAlbum();
+      if (albumSwiper) {
+        if (albumPhotos.length > 1) {
+          albumSwiper.slideToLoop(currentAlbumIndex);
+        } else {
+          albumSwiper.slideTo(currentAlbumIndex);
+        }
+      }
+      syncAlbumState(currentAlbumIndex);
     }
 
     function stepAlbum(dir) {
-      selectAlbumPhoto(currentAlbumIndex + dir);
+      if (albumSwiper) {
+        if (dir > 0) albumSwiper.slideNext();
+        else albumSwiper.slidePrev();
+      }
     }
 
-    renderAlbum();
-
     function openLightbox(idx) {
-      document.getElementById('lightboxImg').src = albumPhotos[idx];
-      document.getElementById('lightboxModal').classList.add('active');
+      idx = parseInt(idx, 10);
+      if (isNaN(idx) || idx < 0 || idx >= albumPhotos.length) idx = 0;
+
+      const lb = document.getElementById('fullscreenLightbox') || document.getElementById('lightboxModal');
+      if (!lb) return;
+
+      lb.classList.add('active');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open');
+
+      if (lightboxSwiper) {
+        lightboxSwiper.update();
+        if (albumPhotos.length > 1) {
+          lightboxSwiper.slideToLoop(idx, 0);
+        } else {
+          lightboxSwiper.slideTo(idx, 0);
+        }
+      }
+
+      const lbCounter = document.getElementById('lightboxCounter');
+      if (lbCounter) lbCounter.textContent = `${idx + 1} / ${albumPhotos.length}`;
+
+      if (albumSwiper && albumSwiper.autoplay) {
+        albumSwiper.autoplay.stop();
+      }
     }
 
     function closeLightbox() {
-      document.getElementById('lightboxModal').classList.remove('active');
+      const lb = document.getElementById('fullscreenLightbox') || document.getElementById('lightboxModal');
+      if (!lb) return;
+
+      lb.classList.remove('active');
+      lb.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+
+      if (lightboxSwiper && albumSwiper) {
+        const currentIdx = lightboxSwiper.realIndex;
+        selectAlbumPhoto(currentIdx);
+      }
+
+      if (albumSwiper && albumSwiper.autoplay) {
+        albumSwiper.autoplay.start();
+      }
     }
+
+    // Keyboard support for Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        const lb = document.getElementById('fullscreenLightbox') || document.getElementById('lightboxModal');
+        if (lb && lb.classList.contains('active')) {
+          closeLightbox();
+        }
+      }
+    });
+
+    renderAlbum();
 
     function toggleGiftModal(show) {
       document.getElementById('giftModal').classList.toggle('active', show);

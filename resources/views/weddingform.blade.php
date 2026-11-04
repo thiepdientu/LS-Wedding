@@ -929,8 +929,8 @@
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Mẫu giao diện (Template) <span class="text-rose-500">*</span></label>
                     <select name="template" class="w-full px-3 py-2 text-sm text-slate-800 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 transition-all">
                         @php
-                            $templateList = \App\Models\WeddingCard::getTemplateOptions();
                             $currentTemplate = old('template', $weddingCard->template ?? request('template', '1'));
+                            $templateList = \App\Models\WeddingCard::getActiveTemplateOptions($weddingCard->template ?? null);
                         @endphp
                         @foreach ($templateList as $code => $title)
                             <option value="{{ $code }}" {{ (string)$currentTemplate === (string)$code ? 'selected' : '' }}>

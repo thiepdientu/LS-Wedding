@@ -185,6 +185,86 @@ class WeddingCard extends Model
     }
 
     /**
+     * Danh sách mã các template đang bị tắt (inactive)
+     *
+     * @return array<string>
+     */
+    public static function getInactiveTemplateCodes(): array
+    {
+        $raw = SystemSetting::get('inactive_templates', '[]');
+        if (is_array($raw)) {
+            return array_map('strval', $raw);
+        }
+        if (is_string($raw)) {
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                return array_map('strval', $decoded);
+            }
+        }
+        return [];
+    }
+
+    /**
+     * Kiểm tra một template có đang active không
+     */
+    public static function isTemplateActive(string $code): bool
+    {
+        $codeStr = (string) $code;
+        $inactive = self::getInactiveTemplateCodes();
+        return !in_array($codeStr, $inactive, true);
+    }
+
+    /**
+     * Danh sách các template đang active
+     * Nếu có $includeCurrent (khi chỉnh sửa thiệp), giữ lại template đó kèm ghi chú nếu đang inactive
+     *
+     * @return array<string, string>
+     */
+    public static function getActiveTemplateOptions(?string $includeCurrent = null): array
+    {
+        $inactive = self::getInactiveTemplateCodes();
+        $options = [];
+
+        foreach (self::TEMPLATES as $code => $title) {
+            $codeStr = (string) $code;
+            $isInactive = in_array($codeStr, $inactive, true);
+
+            if (!$isInactive) {
+                $options[$code] = $title;
+            } elseif ($includeCurrent !== null && (string) $includeCurrent === $codeStr) {
+                $options[$code] = $title . ' (Đã tạm ngưng)';
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * Bật/tắt trạng thái của một template
+     * Trả về true nếu chuyển sang active, false nếu chuyển sang inactive
+     */
+    public static function toggleTemplateStatus(string $code): bool
+    {
+        $codeStr = (string) $code;
+        $inactive = self::getInactiveTemplateCodes();
+
+        if (in_array($codeStr, $inactive, true)) {
+            // Đang inactive -> chuyển sang active
+            $inactive = array_values(array_filter($inactive, fn($item) => (string) $item !== $codeStr));
+            $isActive = true;
+        } else {
+            // Đang active -> chuyển sang inactive
+            $inactive[] = $codeStr;
+            $inactive = array_values(array_unique($inactive));
+            $isActive = false;
+        }
+
+        SystemSetting::set('inactive_templates', json_encode($inactive), 'templates');
+
+        return $isActive;
+    }
+
+    /**
      * Tên template hiển thị thân thiện
      */
     public function getTemplateNameAttribute(): string
