@@ -396,249 +396,125 @@
     }
 
     /* =====================================================
-       HERO SECTION (100% Minimalism Envelope + 2 Polaroids)
+       HERO TOP BANNER SECTION (100% MATCH IMAGE #1)
        ===================================================== */
-    .hero-minimal-section {
+    .hero-banner-section {
       position: relative;
-      padding: 48px 20px 10px;
-      text-align: center;
+      width: 100%;
       z-index: 2;
+      overflow: hidden;
+      background-color: var(--brown-950);
     }
 
-    .save-the-date-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.48rem;
-      font-weight: 500;
-      letter-spacing: 4.5px;
-      color: var(--brown-800);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .leaf-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      width: 155px;
-      margin: 0 auto 34px;
-    }
-
-    .leaf-divider::before,
-    .leaf-divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background-color: rgba(78, 47, 36, 0.32);
-    }
-
-    .leaf-divider svg {
-      width: 16px;
-      height: 16px;
-      fill: rgba(78, 47, 36, 0.55);
-    }
-
-    /* 3D Dark Brown Envelope & 2 Tilted Polaroid Photos */
-    .envelope-stage {
+    .hero-banner-media {
       position: relative;
-      width: 300px;
-      height: 335px;
-      margin: 10px auto 28px;
-      user-select: none;
-    }
-
-    /* Back Flap (Open Triangular Top) */
-    .env-back-flap {
-      position: absolute;
-      top: 14px;
-      left: 15px;
-      width: 270px;
-      height: 170px;
-      background: linear-gradient(180deg, #472b21 0%, #361f17 100%);
-      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-      z-index: 1;
-      filter: drop-shadow(0 -3px 8px rgba(40, 22, 17, 0.15));
-    }
-
-    .env-inner-pocket {
-      position: absolute;
-      bottom: 0;
-      left: 15px;
-      width: 270px;
-      height: 165px;
-      background: #2f1a13;
-      z-index: 1;
-      border-radius: 0 0 6px 6px;
-    }
-
-    /* Two Polaroid Cards Inside Envelope */
-    .polaroid-card {
-      position: absolute;
-      background: #ffffff;
-      padding: 6px 6px 14px 6px;
-      border-radius: 2px;
-      box-shadow: 0 10px 24px rgba(32, 18, 12, 0.25);
-      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+      width: 100%;
+      min-height: 560px;
+      height: 78vh;
+      max-height: 720px;
+      overflow: hidden;
       cursor: pointer;
     }
 
-    .polaroid-card img {
+    .hero-banner-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
       display: block;
+      transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* Left Polaroid (Bride) */
-    .polaroid-card.bride-card {
-      width: 148px;
-      height: 186px;
-      top: 48px;
-      left: 18px;
-      z-index: 3;
-      transform: rotate(-10.5deg) translateY(25px);
+    .hero-banner-media:hover .hero-banner-img {
+      transform: scale(1.03);
     }
 
-    /* Right Polaroid (Groom) */
-    .polaroid-card.groom-card {
-      width: 146px;
-      height: 184px;
-      top: 10px;
-      right: 16px;
-      z-index: 2;
-      transform: rotate(9.5deg) translateY(25px);
-    }
-
-    body.card-unlocked .polaroid-card.bride-card {
-      transform: rotate(-10.5deg) translateY(0);
-    }
-
-    body.card-unlocked .polaroid-card.groom-card {
-      transform: rotate(9.5deg) translateY(0);
-    }
-
-    .polaroid-card:hover {
-      z-index: 6 !important;
-      transform: scale(1.05) rotate(0deg) !important;
-      box-shadow: 0 16px 32px rgba(40, 22, 17, 0.35);
-    }
-
-    /* Front Envelope Pocket Flaps */
-    .env-front-left {
+    /* Bottom Dark Gradient for crisp contrast matching Image #1 */
+    .hero-banner-overlay {
       position: absolute;
-      bottom: 0;
-      left: 15px;
-      width: 270px;
-      height: 165px;
-      background: linear-gradient(135deg, #684235 0%, #523227 100%);
-      clip-path: polygon(0 0, 52% 54%, 0 100%);
-      z-index: 4;
-    }
-
-    .env-front-right {
-      position: absolute;
-      bottom: 0;
-      left: 15px;
-      width: 270px;
-      height: 165px;
-      background: linear-gradient(225deg, #613c30 0%, #4b2d22 100%);
-      clip-path: polygon(100% 0, 48% 54%, 100% 100%);
-      z-index: 4;
-    }
-
-    .env-front-bottom {
-      position: absolute;
-      bottom: 0;
-      left: 15px;
-      width: 270px;
-      height: 165px;
-      background: linear-gradient(180deg, #5a372c 0%, #42261d 100%);
-      clip-path: polygon(0 100%, 50% 42%, 100% 100%);
-      z-index: 5;
-      border-radius: 0 0 6px 6px;
-      filter: drop-shadow(0 -3px 6px rgba(24, 12, 8, 0.25));
-    }
-
-    .env-base-shadow {
-      position: absolute;
-      bottom: -8px;
-      left: 22px;
-      width: 256px;
-      height: 18px;
-      background: radial-gradient(ellipse at center, rgba(40, 22, 17, 0.32) 0%, transparent 75%);
-      z-index: 0;
-    }
-
-    /* 3D Gold Wax Seal Stamp */
-    .gold-wax-seal {
-      position: absolute;
-      bottom: 66px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 32% 28%, #f8e2a2 0%, #d4a449 45%, #9e6f1e 85%, #78500d 100%);
-      box-shadow:
-        0 4px 10px rgba(28, 14, 9, 0.42),
-        inset 0 2px 3px rgba(255, 250, 220, 0.65),
-        inset 0 -2px 4px rgba(84, 52, 6, 0.7);
-      z-index: 6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gold-wax-seal::before {
-      content: "";
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1.5px dashed rgba(120, 80, 13, 0.55);
-      position: absolute;
-    }
-
-    .gold-wax-seal svg {
-      width: 22px;
-      height: 22px;
-      fill: #724b0b;
-      filter: drop-shadow(0 1px 0 rgba(255, 238, 185, 0.55));
-    }
-
-    /* Couple Names Stacked with Watermark Ampersand */
-    .hero-couple-block {
-      position: relative;
-      padding: 8px 16px 18px;
-      margin-bottom: 6px;
-    }
-
-    .hero-ampersand-bg {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -52%);
-      font-family: 'Great Vibes', cursive;
-      font-size: 6.8rem;
-      color: rgba(78, 47, 36, 0.09);
+      inset: 0;
       pointer-events: none;
-      z-index: 0;
-      line-height: 1;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.02) 0%,
+        rgba(0, 0, 0, 0.08) 35%,
+        rgba(0, 0, 0, 0.48) 68%,
+        rgba(24, 13, 9, 0.88) 90%,
+        rgba(40, 22, 17, 0.98) 100%
+      );
     }
 
-    .hero-couple-name {
-      position: relative;
-      z-index: 1;
+    /* Vertical Watermark Text along right border like Image #1 */
+    .hero-vertical-tag {
+      position: absolute;
+      right: 12px;
+      bottom: 24px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.45);
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+      text-transform: none;
+    }
+
+    /* Date & Romantic Quote pinned at the bottom */
+    .hero-content-wrap {
+      position: absolute;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      padding: 0 24px;
+      text-align: center;
+      color: #ffffff;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .hero-date-text {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 600;
-      font-size: 3.1rem;
-      line-height: 1.18;
-      color: var(--brown-800);
-      letter-spacing: 0.5px;
+      font-size: 2.15rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      line-height: 1.15;
+      margin-bottom: 10px;
     }
 
-    .hero-couple-name + .hero-couple-name {
-      margin-top: 8px;
+    .hero-quote-text {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 0.88rem;
+      line-height: 1.62;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      max-width: 360px;
+      margin: 0 auto;
+      letter-spacing: 0.2px;
+    }
+
+    @media (max-width: 380px) {
+      .hero-banner-media {
+        min-height: 500px;
+        height: 74vh;
+      }
+      .hero-date-text {
+        font-size: 1.85rem;
+      }
+      .hero-quote-text {
+        font-size: 0.82rem;
+        line-height: 1.55;
+      }
+      .hero-content-wrap {
+        padding: 0 16px;
+        bottom: 18px;
+      }
     }
 
     /* =====================================================
@@ -2064,64 +1940,41 @@
   <div class="app-shell">
     <div class="watercolor-branch-bg" aria-hidden="true"></div>
 
-    <!-- 1. HERO SAVE THE DATE WITH DARK BROWN ENVELOPE & 2 POLAROIDS -->
-    <section class="hero-minimal-section">
-      <h2 class="save-the-date-heading">SAVE THE DATE</h2>
-      <div class="leaf-divider" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
-      </div>
+    <!-- 1. HERO TOP BANNER WITH QUOTE & WEDDING DATE (100% MATCH IMAGE #1) -->
+    @php
+      $heroBannerTop = !empty($weddingCard->banner_top)
+          ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top))
+          : (!empty($weddingCard->banner_preview)
+              ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
+              : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85');
 
-      <!-- 3D Dark Brown Envelope + 2 Polaroids + Gold Wax Seal -->
-      <div class="envelope-stage">
-        <div class="env-base-shadow"></div>
-        <div class="env-back-flap"></div>
-        <div class="env-inner-pocket"></div>
+      $formattedWeddingDate = $weddingCard->wedding_date
+          ? $weddingCard->wedding_date->format('d.m.Y')
+          : '28.12.2026';
+    @endphp
+    <section class="hero-banner-section">
+      <div class="hero-banner-media" onclick="openLightbox(0)" title="Chạm để phóng to ảnh cưới">
+        <img 
+          src="{{ $heroBannerTop }}" 
+          alt="{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}" 
+          class="hero-banner-img"
+          onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85'"
+        >
+        <div class="hero-banner-overlay"></div>
 
-        @php
-          $brideAvatarSrc = !empty($weddingCard->bride_avatar)
-              ? (str_starts_with($weddingCard->bride_avatar, 'http') ? $weddingCard->bride_avatar : asset('storage/' . $weddingCard->bride_avatar))
-              : (!empty($weddingCard->bride_image)
-                  ? (str_starts_with($weddingCard->bride_image, 'http') ? $weddingCard->bride_image : asset('storage/' . $weddingCard->bride_image))
-                  : 'https://assets.chungdoi.com/photo-library/design/5019eadee002f02ce6f39d9c5bdb7304d4da683b4e109c41e7ed14e63391d9b0.webp');
+        <!-- Vertical watermark text on right bottom margin like Image #1 -->
+        <div class="hero-vertical-tag" aria-hidden="true">Ngày Chung Đôi</div>
 
-          $groomAvatarSrc = !empty($weddingCard->groom_avatar)
-              ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar))
-              : (!empty($weddingCard->groom_image)
-                  ? (str_starts_with($weddingCard->groom_image, 'http') ? $weddingCard->groom_image : asset('storage/' . $weddingCard->groom_image))
-                  : 'https://assets.chungdoi.com/photo-library/design/1f83fb78c75b96a05661eca4cbc50dd771fc37411920623d6d9729eea1daa7c8.webp');
-        @endphp
-        <!-- Bride Polaroid (Left Tilted) -->
-        <div class="polaroid-card bride-card" onclick="openLightbox(0)">
-          <img src="{{ $brideAvatarSrc }}" alt="Cô Dâu {{ $weddingCard->bride_name }}">
+        <!-- Date & Romantic Quote pinned at the bottom -->
+        <div class="hero-content-wrap">
+          <div class="hero-date-text">{{ $formattedWeddingDate }}</div>
+          <p class="hero-quote-text">
+            “Chúng ta đã cùng nhau đi qua nhiều thăng trầm để nhận ra rằng được ở bên nhau là điều quý giá nhất<br>
+            Hôm nay, Trước sự chứng kiến của mọi người,<br>
+            từ khoảnh khắc này chúng ta nhẹ nhàng gọi nhau<br>
+            bằng hai tiếng Vợ - Chồng ”
+          </p>
         </div>
-
-        <!-- Groom Polaroid (Right Tilted) -->
-        <div class="polaroid-card groom-card" onclick="openLightbox(1)">
-          <img src="{{ $groomAvatarSrc }}" alt="Chú Rể {{ $weddingCard->groom_name }}">
-        </div>
-
-        <!-- Envelope Front Flaps -->
-        <div class="env-front-left"></div>
-        <div class="env-front-right"></div>
-        <div class="env-front-bottom"></div>
-
-        <!-- Embossed Gold Wax Seal -->
-        <div class="gold-wax-seal" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C9.5 2 8 4 8 6.5C8 8.2 9 9.7 10.5 10.4C7.5 11.2 5 13.8 5 17H7C7 14.2 9.2 12 12 12C14.8 12 17 14.2 17 17H19C19 13.8 16.5 11.2 13.5 10.4C15 9.7 16 8.2 16 6.5C16 4 14.5 2 12 2ZM12 4C13.4 4 14 5.1 14 6.5C14 7.9 13.4 9 12 9C10.6 9 10 7.9 10 6.5C10 5.1 10.6 4 12 4ZM12 14C9.8 14 8 15.8 8 18V22H16V18C16 15.8 14.2 14 12 14Z"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Couple Names with Watermark '&' -->
-      <div class="hero-couple-block">
-        <div class="hero-ampersand-bg">&amp;</div>
-        <div class="hero-couple-name">{{ $weddingCard->groom_name }}</div>
-        <div class="hero-couple-name">{{ $weddingCard->bride_name }}</div>
-      </div>
-
-      <div class="leaf-divider" style="margin-bottom: 16px;" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
       </div>
     </section>
 
@@ -2586,9 +2439,13 @@
 
   @php
     $albumData = !empty($weddingCard->album) ? (is_string($weddingCard->album) ? json_decode($weddingCard->album, true) : $weddingCard->album) : [];
-    $albumPhotosJson = json_encode(!empty($albumData) && is_array($albumData) ? array_values(array_map(function($img) {
+    $resolvedAlbum = (!empty($albumData) && is_array($albumData)) ? array_values(array_map(function($img) {
         return str_starts_with($img, 'http') ? $img : asset('storage/' . $img);
-    }, $albumData)) : []);
+    }, $albumData)) : [];
+    if (!empty($heroBannerTop) && !in_array($heroBannerTop, $resolvedAlbum)) {
+        array_unshift($resolvedAlbum, $heroBannerTop);
+    }
+    $albumPhotosJson = json_encode($resolvedAlbum);
   @endphp
   <!-- Swiper 11 JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
