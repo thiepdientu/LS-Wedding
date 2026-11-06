@@ -274,6 +274,16 @@
                             <!-- Thao tác -->
                             <td class="py-4 pl-4 pr-6 text-right whitespace-nowrap">
                                 <div class="inline-flex items-center gap-2">
+                                    <!-- Sổ lưu bút & RSVP Icon -->
+                                    <a href="{{ route('wedding.card-guestbook', $card->identifyWedding ?: $card->id) }}" 
+                                       target="_blank"
+                                       class="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" 
+                                       title="Xem Sổ lưu bút & Xác nhận tham dự (RSVP)">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                        </svg>
+                                    </a>
+
                                     <!-- Edit Icon -->
                                     <a href="{{ route('wedding.edit', $card->id) }}" 
                                        class="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" 

@@ -1262,90 +1262,89 @@
                 </svg>
             </div>
 
-            <!-- RSVP CARD -->
-            <div class="reveal-item bg-white border border-lotus-200 rounded-3xl p-5 shadow-md">
+            <!-- UNIFIED RSVP & GUESTBOOK CARD -->
+            <div class="reveal-item bg-white border border-lotus-200 rounded-3xl p-5 sm:p-6 shadow-md">
                 <div class="text-center mb-4">
-                    <p class="text-[11px] uppercase tracking-[0.25em] text-lotus-500 font-medium">Thông Tin Phản Hồi</p>
-                    <h3 class="font-pattaya text-3xl text-lotus-500 mt-0.5">Xác Nhận Tham Dự</h3>
-                    <p class="text-xs text-lotus-800 mt-1">Hãy xác nhận để gia đình chuẩn bị đón tiếp Quý khách chu đáo nhất</p>
+                    <p class="text-[11px] uppercase tracking-[0.25em] text-lotus-500 font-medium">Xác Nhận Tham Dự &amp; Sổ Lưu Bút</p>
+                    <h3 class="font-pattaya text-3xl text-lotus-500 mt-0.5">Gửi Lời Chúc &amp; Phản Hồi</h3>
+                    <p class="text-xs text-lotus-800 mt-1">Hãy gửi lời chúc và xác nhận để gia đình chuẩn bị đón tiếp Quý khách chu đáo nhất</p>
                 </div>
 
                 <form id="rsvp-form" onsubmit="submitRSVP(event)" class="space-y-3 text-xs">
                     <div>
                         <label class="block text-lotus-900 font-medium mb-1">Tên của Quý khách *</label>
-                        <input id="rsvp-name" type="text" required placeholder="Nhập họ và tên của bạn..." 
+                        <input id="rsvp-name" name="sender_name" type="text" required placeholder="Nhập họ và tên của bạn..." 
                                class="w-full rounded-xl border border-lotus-300 bg-lotus-50/40 px-3.5 py-2.5 text-lotus-900 focus:outline-none focus:border-lotus-500">
                     </div>
 
                     <div class="grid grid-cols-2 gap-2.5">
                         <div>
                             <label class="block text-lotus-900 font-medium mb-1">Khách mời của</label>
-                            <select id="rsvp-side" class="w-full rounded-xl border border-lotus-300 bg-lotus-50/40 px-3 py-2.5 text-lotus-900 focus:outline-none focus:border-lotus-500">
-                                <option value="Nhà Trai">Khách Nhà Trai</option>
-                                <option value="Nhà Gái">Khách Nhà Gái</option>
-                                <option value="Chung hai nhà">Bạn chung hai nhà</option>
+                            <select id="rsvp-side" name="guest_side" class="w-full rounded-xl border border-lotus-300 bg-lotus-50/40 px-3 py-2.5 text-lotus-900 focus:outline-none focus:border-lotus-500">
+                                <option value="Khách Nhà Trai">Khách Nhà Trai</option>
+                                <option value="Khách Nhà Gái">Khách Nhà Gái</option>
+                                <option value="Bạn chung hai nhà">Bạn chung hai nhà</option>
                             </select>
                         </div>
-                        <div>
+                        <div id="rsvp-count-wrapper-31">
                             <label class="block text-lotus-900 font-medium mb-1">Số người đi cùng</label>
-                            <select id="rsvp-count" class="w-full rounded-xl border border-lotus-300 bg-lotus-50/40 px-3 py-2.5 text-lotus-900 focus:outline-none focus:border-lotus-500">
-                                <option value="1 người">Đi 1 mình</option>
-                                <option value="2 người">Đi 2 người</option>
-                                <option value="Gia đình (3-4 người)">Gia đình (3-4 người)</option>
+                            <select id="rsvp-count" name="guest_count" class="w-full rounded-xl border border-lotus-300 bg-lotus-50/40 px-3 py-2.5 text-lotus-900 focus:outline-none focus:border-lotus-500">
+                                <option value="1">1 người (Chỉ mình tôi)</option>
+                                <option value="2" selected>2 người (Đi cùng người thương)</option>
+                                <option value="3">3 người (Gia đình 3 người)</option>
+                                <option value="4">4+ người (Cả gia đình)</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-lotus-900 font-medium mb-1">Trạng thái tham dự</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <label class="flex items-center justify-center gap-1.5 border border-lotus-300 rounded-xl py-2 px-2 cursor-pointer has-[:checked]:bg-lotus-500 has-[:checked]:text-white has-[:checked]:border-lotus-500 transition">
-                                <input type="radio" name="attendance" value="Sẽ tham dự" checked class="hidden">
-                                <span>💗 Chắc chắn tham dự</span>
+                        <label class="block text-lotus-900 font-medium mb-1">Xác nhận tham dự</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="flex items-center justify-center gap-1 border border-lotus-300 rounded-xl py-2 px-1 cursor-pointer has-[:checked]:bg-lotus-500 has-[:checked]:text-white has-[:checked]:border-lotus-500 transition">
+                                <input type="radio" name="attendance_status" value="attending" checked onchange="toggleGuestCount31(this.value)" class="hidden">
+                                <span>💗 Tham dự</span>
                             </label>
-                            <label class="flex items-center justify-center gap-1.5 border border-lotus-300 rounded-xl py-2 px-2 cursor-pointer has-[:checked]:bg-lotus-500 has-[:checked]:text-white has-[:checked]:border-lotus-500 transition">
-                                <input type="radio" name="attendance" value="Xin phép vắng mặt" class="hidden">
-                                <span>🕊️ Rất tiếc bận việc</span>
+                            <label class="flex items-center justify-center gap-1 border border-lotus-300 rounded-xl py-2 px-1 cursor-pointer has-[:checked]:bg-lotus-500 has-[:checked]:text-white has-[:checked]:border-lotus-500 transition">
+                                <input type="radio" name="attendance_status" value="not_attending" onchange="toggleGuestCount31(this.value)" class="hidden">
+                                <span>🕊️ Bận rồi</span>
+                            </label>
+                            <label class="flex items-center justify-center gap-1 border border-lotus-300 rounded-xl py-2 px-1 cursor-pointer has-[:checked]:bg-lotus-500 has-[:checked]:text-white has-[:checked]:border-lotus-500 transition">
+                                <input type="radio" name="attendance_status" value="unsure" onchange="toggleGuestCount31(this.value)" class="hidden">
+                                <span>🤔 Chưa rõ</span>
                             </label>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-shimmer w-full bg-lotus-500 hover:bg-lotus-600 text-white font-medium py-3 rounded-xl shadow-md transition">
-                        Gửi Xác Nhận Tham Dự
-                    </button>
-                </form>
-            </div>
+                    <!-- Quick Preset Wish Chips -->
+                    <div>
+                        <label class="block text-lotus-900 font-medium mb-1">Gợi ý lời chúc nhanh</label>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="fillPresetWish('Chúc {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }} trăm năm hạnh phúc, sớm sinh quý tử!')" class="text-[11px] bg-white hover:bg-lotus-100 border border-lotus-200 text-lotus-800 rounded-full px-2.5 py-1 transition cursor-pointer">
+                                ✨ Trăm năm hạnh phúc
+                            </button>
+                            <button type="button" onclick="fillPresetWish('Chúc hai bạn mãi luôn ngọt ngào, tơ duyên hồng bền chặt trọn đời!')" class="text-[11px] bg-white hover:bg-lotus-100 border border-lotus-200 text-lotus-800 rounded-full px-2.5 py-1 transition cursor-pointer">
+                                🌸 Tơ duyên bền chặt
+                            </button>
+                        </div>
+                    </div>
 
-            <!-- GUESTBOOK / SỔ LƯU BÚT -->
-            <div class="reveal-item bg-lotus-50/70 border border-lotus-200 rounded-3xl p-5 shadow-md">
-                <div class="text-center mb-4">
-                    <p class="text-[11px] uppercase tracking-[0.25em] text-lotus-500 font-medium">Gửi Trao Yêu Thương</p>
-                    <h3 class="font-pattaya text-3xl text-lotus-500 mt-0.5">Sổ Lưu Bút</h3>
-                </div>
+                    <div>
+                        <label class="block text-lotus-900 font-medium mb-1">Lời chúc mừng của Quý khách *</label>
+                        <textarea id="rsvp-message" name="message" rows="2" required placeholder="Viết lời chúc mừng gửi tới {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}..." 
+                                  class="w-full rounded-xl border border-lotus-300 bg-white px-3.5 py-2 text-lotus-900 focus:outline-none focus:border-lotus-500"></textarea>
+                    </div>
 
-                <!-- Quick Preset Wish Chips -->
-                <div class="flex flex-wrap gap-1.5 mb-3">
-                    <button type="button" onclick="fillPresetWish('Chúc {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }} trăm năm hạnh phúc, sớm sinh quý tử!')" class="text-[11px] bg-white hover:bg-lotus-100 border border-lotus-200 text-lotus-800 rounded-full px-2.5 py-1 transition">
-                        ✨ Trăm năm hạnh phúc
-                    </button>
-                    <button type="button" onclick="fillPresetWish('Chúc hai bạn mãi luôn ngọt ngào, tơ duyên hồng bền chặt trọn đời!')" class="text-[11px] bg-white hover:bg-lotus-100 border border-lotus-200 text-lotus-800 rounded-full px-2.5 py-1 transition">
-                        🌸 Tơ duyên bền chặt
-                    </button>
-                </div>
-
-                <form onsubmit="submitWish(event)" class="space-y-2.5 text-xs mb-5">
-                    <input id="wish-author" type="text" required placeholder="Tên của bạn..." 
-                           class="w-full rounded-xl border border-lotus-300 bg-white px-3.5 py-2 text-lotus-900 focus:outline-none focus:border-lotus-500">
-                    <textarea id="wish-message" rows="2" required placeholder="Viết lời chúc mừng gửi tới {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}..." 
-                              class="w-full rounded-xl border border-lotus-300 bg-white px-3.5 py-2 text-lotus-900 focus:outline-none focus:border-lotus-500"></textarea>
-                    <button type="submit" class="w-full bg-lotus-600 hover:bg-lotus-700 text-white font-medium py-2.5 rounded-xl shadow transition">
-                        Gửi Lời Chúc Mừng 💌
+                    <button id="rsvp-submit-btn" type="submit" class="btn-shimmer w-full bg-lotus-500 hover:bg-lotus-600 text-white font-medium py-3 rounded-xl shadow-md transition cursor-pointer flex items-center justify-center gap-2">
+                        <span>Gửi Lời Chúc &amp; Xác Nhận Tham Dự 💌</span>
                     </button>
                 </form>
 
                 <!-- Scrollable Wishes Feed -->
-                <div id="wishes-list" class="wishes-scroll max-h-60 overflow-y-auto space-y-2.5 pr-1">
-                    <!-- Populated by JS -->
+                <div class="mt-6 pt-5 border-t border-lotus-200">
+                    <p class="text-[11px] uppercase tracking-[0.2em] text-lotus-500 font-medium text-center mb-3">Lời Chúc Đã Nhận</p>
+                    <div id="wishes-list" class="wishes-scroll max-h-64 overflow-y-auto space-y-2.5 pr-1">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
             </div>
 
@@ -1766,15 +1765,36 @@
            4. GUESTBOOK (SỔ LƯU BÚT) & RSVP HANDLERS
         ----------------------------------------------------------- */
         @php
-            $cardWishes31 = $weddingCard->wishes()->approved()->latest()->take(10)->get()->map(function($w) {
+            $cardWishes31 = $weddingCard->wishes()->approved()->latest()->take(30)->get()->map(function($w) {
                 return [
                     'author' => $w->sender_name,
                     'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
                     'message' => $w->message,
+                    'attendance_status' => $w->attendance_status,
+                    'guest_count' => $w->guest_count,
                 ];
             });
         @endphp
-        const initialWishes = @json($cardWishes31);
+        const initialWishes = @json($cardWishes31, JSON_UNESCAPED_UNICODE);
+        const wishStoreUrl31 = "{{ route('wishes.store', $weddingCard->id) }}";
+        const csrfToken31 = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+        function toggleGuestCount31(val) {
+            const wrap = document.getElementById('rsvp-count-wrapper-31');
+            if (wrap) wrap.style.display = (val === 'not_attending') ? 'none' : 'block';
+        }
+
+        function getBadgeHtml31(status, count) {
+            if (status === 'attending') {
+                const countText = (count && count > 1) ? ` (${count} người)` : '';
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-rose-100 text-rose-700 border border-rose-300 ml-1.5">✓ Tham dự${countText}</span>`;
+            } else if (status === 'not_attending') {
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-300 ml-1.5">✕ Bận việc</span>`;
+            } else if (status === 'unsure') {
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-300 ml-1.5">? Chưa rõ</span>`;
+            }
+            return '';
+        }
 
         function renderWishes() {
             const container = document.getElementById('wishes-list');
@@ -1788,9 +1808,12 @@
             }
             container.innerHTML = initialWishes.map(w => `
                 <div class="bg-white border border-lotus-200/90 rounded-2xl p-3 text-left shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <span class="font-semibold text-xs text-lotus-900">🌸 ${w.author}</span>
-                        <span class="text-[10px] text-lotus-400">${w.time}</span>
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center flex-wrap">
+                            <span class="font-semibold text-xs text-lotus-900">🌸 ${w.author}</span>
+                            ${getBadgeHtml31(w.attendance_status, w.guest_count)}
+                        </div>
+                        <span class="text-[10px] text-lotus-400 whitespace-nowrap">${w.time}</span>
                     </div>
                     <p class="text-xs text-lotus-800 mt-1 leading-relaxed">${w.message}</p>
                 </div>
@@ -1798,34 +1821,75 @@
         }
 
         function fillPresetWish(text) {
-            document.getElementById('wish-message').value = text;
+            const msgEl = document.getElementById('rsvp-message');
+            if (msgEl) msgEl.value = text;
             showToast('✨ Đã điền gợi ý lời chúc!');
-        }
-
-        function submitWish(e) {
-            e.preventDefault();
-            const authorInput = document.getElementById('wish-author');
-            const msgInput = document.getElementById('wish-message');
-            if (!authorInput.value.trim() || !msgInput.value.trim()) return;
-
-            initialWishes.unshift({
-                author: authorInput.value.trim(),
-                time: 'Vừa xong',
-                message: msgInput.value.trim()
-            });
-            renderWishes();
-            authorInput.value = '';
-            msgInput.value = '';
-            showToast('💌 Cảm ơn lời chúc tốt đẹp của Quý khách!');
         }
 
         function submitRSVP(e) {
             e.preventDefault();
-            const name = document.getElementById('rsvp-name').value.trim();
-            const side = document.getElementById('rsvp-side').value;
-            const count = document.getElementById('rsvp-count').value;
-            showToast(`💗 Cảm ơn ${name} (${side} - ${count}) đã xác nhận!`);
-            document.getElementById('rsvp-form').reset();
+            const nameInput = document.getElementById('rsvp-name');
+            const sideSelect = document.getElementById('rsvp-side');
+            const msgInput = document.getElementById('rsvp-message');
+            const submitBtn = document.getElementById('rsvp-submit-btn');
+
+            const name = nameInput.value.trim();
+            const side = sideSelect ? sideSelect.value : '';
+            let message = msgInput.value.trim();
+            if (!name || !message) return;
+
+            const attRadio = document.querySelector('input[name="attendance_status"]:checked');
+            const attendanceStatus = attRadio ? attRadio.value : 'attending';
+            const guestCount = (attendanceStatus === 'not_attending') ? 1 : (parseInt(document.getElementById('rsvp-count')?.value) || 1);
+
+            if (side) {
+                message = `[${side}] ${message}`;
+            }
+
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i><span>Đang gửi xác nhận...</span>';
+
+            fetch(wishStoreUrl31, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken31
+                },
+                body: JSON.stringify({
+                    sender_name: name,
+                    message: message,
+                    attendance_status: attendanceStatus,
+                    guest_count: guestCount
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+
+                if (data && data.success) {
+                    initialWishes.unshift({
+                        author: name,
+                        time: 'Vừa xong',
+                        message: message,
+                        attendance_status: attendanceStatus,
+                        guest_count: guestCount
+                    });
+                    renderWishes();
+                    msgInput.value = '';
+                    showToast(data.message || 'Cảm ơn bạn đã gửi lời chúc & xác nhận! 💌');
+                } else {
+                    showToast((data && data.message) ? data.message : 'Có lỗi xảy ra, vui lòng thử lại.');
+                }
+            })
+            .catch(err => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+                console.error(err);
+                showToast('Lỗi kết nối, vui lòng thử lại sau.');
+            });
         }
 
         /* -----------------------------------------------------------
@@ -1977,57 +2041,6 @@
             triggerVisibleScrollReveals();
             initFloatingPetalsCanvas();
         };
-    </script>
-    <!-- Universal Laravel AJAX Wishes & RSVP Integration -->
-    <script>
-    (function() {
-        const cardId = {{ $weddingCard->id }};
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
-        const wishStoreUrl = "{{ route('wishes.store', $weddingCard->id) }}";
-        const wishIndexUrl = "{{ route('wishes.index', $weddingCard->id) }}";
-
-        window.submitLaravelWish = function(senderName, message, attendanceStatus = 'unsure', guestCount = 1) {
-            return fetch(wishStoreUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({
-                    sender_name: senderName,
-                    message: message || 'Chúc mừng hai bạn trăm năm hạnh phúc!',
-                    attendance_status: attendanceStatus,
-                    guest_count: guestCount
-                })
-            }).then(r => r.json());
-        };
-
-        // Listen for form submissions
-        document.addEventListener('submit', function(e) {
-            const form = e.target;
-            const isWish = form.id === 'wishForm' || form.id === 'wish-form' || form.classList.contains('guestbook-form');
-            const isRsvp = form.id === 'rsvp-form' || form.id === 'rsvp' || form.classList.contains('rsvp');
-
-            if (isWish || isRsvp) {
-                const nameInput = form.querySelector('#guestNameInput, #wish-name, #wish-author, #r-name, #rsvp-name, input[name="name"], input[name="sender_name"]');
-                const msgInput = form.querySelector('#guestWishInput, #wish-message, #r-msg, #rsvp-msg, textarea[name="message"]');
-                const attInput = form.querySelector('input[name="att"]:checked, input[name="attendance"]:checked, select[name="attendance"]');
-                const countInput = form.querySelector('input[name="guest_count"], select[name="guest_count"]');
-
-                const name = nameInput ? nameInput.value.trim() : '';
-                const message = msgInput ? msgInput.value.trim() : '';
-                const attendance = attInput ? attInput.value : (isRsvp ? 'attending' : 'unsure');
-                const count = countInput ? parseInt(countInput.value) || 1 : 1;
-
-                if (name) {
-                    window.submitLaravelWish(name, message, attendance, count).then(res => {
-                        console.log('Wish stored in Laravel DB:', res);
-                    }).catch(err => console.error('Error saving wish to Laravel:', err));
-                }
-            }
-        }, true);
-    })();
     </script>
 </body>
 </html>

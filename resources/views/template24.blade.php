@@ -139,6 +139,71 @@
             }
         }
 
+        /* RSVP Radio Pills Boho Styling */
+        .rsvp-radio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .rsvp-radio-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 5px;
+            background: rgba(240, 245, 241, 0.7);
+            border: 1.5px solid rgba(88, 125, 96, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--boho-dark);
+            transition: all 0.2s ease;
+            text-align: center;
+            line-height: 1.25;
+            user-select: none;
+        }
+        .rsvp-radio-label input {
+            display: none;
+        }
+        .rsvp-radio-label:hover {
+            border-color: var(--boho-sage);
+        }
+        .rsvp-radio-label.active,
+        .rsvp-radio-label:has(input:checked) {
+            background: var(--boho-main);
+            color: #ffffff;
+            border-color: var(--sand-gold);
+            box-shadow: 0 3px 10px rgba(53, 79, 59, 0.28);
+        }
+        .wish-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            margin-left: 6px;
+            vertical-align: middle;
+            line-height: 1.3;
+        }
+        .wish-badge-attending {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .wish-badge-declined {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        .wish-badge-unsure {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
         /* 3D Split-Gate Cover Screen (Màn hình Mở Thiệp Hoa Mộc Xanh) */
         #invitation-gate {
             position: fixed;
@@ -1073,24 +1138,61 @@
                         <input 
                             type="text" 
                             id="wish-name" 
+                            name="sender_name"
                             required 
                             placeholder="Nhập họ tên của bạn *" 
-                            class="w-full px-4 py-2.5 rounded-xl border border-boho-300 bg-boho-50/40 focus:outline-none focus:ring-2 focus:ring-boho-600"
+                            class="w-full px-4 py-2.5 rounded-xl border border-boho-300 bg-boho-50/40 focus:outline-none focus:ring-2 focus:ring-boho-600 text-boho-900"
                         >
                     </div>
+
+                    <div>
+                        <span class="block text-xs font-semibold text-boho-800 mb-1.5">Xác nhận tham dự:</span>
+                        <div class="rsvp-radio-grid">
+                            <label class="rsvp-radio-label active" id="label-attending">
+                                <input type="radio" name="attendance_status" value="attending" checked onchange="handleRsvpChange('attending')" />
+                                <span>🌿 Sẽ tham dự</span>
+                            </label>
+                            <label class="rsvp-radio-label" id="label-not-attending">
+                                <input type="radio" name="attendance_status" value="not_attending" onchange="handleRsvpChange('not_attending')" />
+                                <span>💌 Không thể đến</span>
+                            </label>
+                            <label class="rsvp-radio-label" id="label-unsure">
+                                <input type="radio" name="attendance_status" value="unsure" onchange="handleRsvpChange('unsure')" />
+                                <span>🤔 Chưa rõ</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="guest-count-wrapper">
+                        <span class="block text-xs font-semibold text-boho-800 mb-1.5">Số người cùng tham dự:</span>
+                        <select 
+                            id="guest-count" 
+                            name="guest_count"
+                            class="w-full px-4 py-2.5 rounded-xl border border-boho-300 bg-boho-50/40 focus:outline-none focus:ring-2 focus:ring-boho-600 text-boho-900 cursor-pointer"
+                        >
+                            <option value="1">1 người (Chỉ mình tôi)</option>
+                            <option value="2">2 người (Đi cùng người thương)</option>
+                            <option value="3">3 người (Đi cùng gia đình/bạn)</option>
+                            <option value="4">4+ người (Cả gia đình)</option>
+                        </select>
+                    </div>
+
                     <div>
                         <textarea 
                             id="wish-message" 
+                            name="message"
                             rows="3" 
                             required 
                             placeholder="Nhập lời chúc của bạn *" 
-                            class="w-full px-4 py-2.5 rounded-xl border border-boho-300 bg-boho-50/40 focus:outline-none focus:ring-2 focus:ring-boho-600"
+                            class="w-full px-4 py-2.5 rounded-xl border border-boho-300 bg-boho-50/40 focus:outline-none focus:ring-2 focus:ring-boho-600 text-boho-900"
                         ></textarea>
                     </div>
-                    <button type="submit" class="btn-boho w-full py-3 rounded-xl font-semibold uppercase tracking-wider text-xs sm:text-sm cursor-pointer flex items-center justify-center gap-2">
+
+                    <button type="submit" id="wish-submit-btn" class="btn-boho w-full py-3 rounded-xl font-semibold uppercase tracking-wider text-xs sm:text-sm cursor-pointer flex items-center justify-center gap-2">
                         <i class="fa-solid fa-paper-plane"></i>
-                        <span>Gửi lời chúc</span>
+                        <span>Gửi lời chúc &amp; Xác nhận</span>
                     </button>
+                    <div id="wish-alert" class="hidden py-2 px-3 rounded-xl text-xs text-center"></div>
                 </form>
 
                 <!-- Live Wishes List (Pre-populated with Exact 6 Wishes from Demo) -->
@@ -1512,6 +1614,8 @@
                     'name' => $w->sender_name,
                     'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
                     'message' => $w->message,
+                    'attendance_status' => $w->attendance_status,
+                    'guest_count' => $w->guest_count,
                 ];
             });
         @endphp
@@ -1521,6 +1625,17 @@
             return String(str).replace(/[&<>"']/g, s => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             }[s]));
+        }
+
+        function handleRsvpChange(status) {
+            document.querySelectorAll('.rsvp-radio-label').forEach(el => el.classList.remove('active'));
+            const activeLabel = document.getElementById('label-' + status.replace('_', '-'));
+            if (activeLabel) activeLabel.classList.add('active');
+
+            const countWrapper = document.getElementById('guest-count-wrapper');
+            if (countWrapper) {
+                countWrapper.style.display = (status === 'attending') ? 'block' : 'none';
+            }
         }
 
         function renderWishes() {
@@ -1533,37 +1648,101 @@
                 `;
                 return;
             }
-            container.innerHTML = wishesList.map(item => `
-                <div class="bg-boho-50/75 rounded-2xl p-3.5 border border-boho-200 shadow-sm">
-                    <div class="flex items-center justify-between gap-2">
-                        <span class="font-bold text-boho-900 text-xs sm:text-sm">${escapeHtml(item.name)}</span>
-                        <span class="text-[10px] text-boho-500">${escapeHtml(item.time)}</span>
+            container.innerHTML = wishesList.map(item => {
+                let badgeHtml = '';
+                if (item.attendance_status === 'attending') {
+                    badgeHtml = `<span class="wish-badge wish-badge-attending">✓ Tham dự (${item.guest_count || 1})</span>`;
+                } else if (item.attendance_status === 'not_attending') {
+                    badgeHtml = `<span class="wish-badge wish-badge-declined">Không thể đến</span>`;
+                } else if (item.attendance_status === 'unsure') {
+                    badgeHtml = `<span class="wish-badge wish-badge-unsure">Chưa rõ</span>`;
+                }
+
+                return `
+                    <div class="bg-boho-50/75 rounded-2xl p-3.5 border border-boho-200 shadow-sm">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center flex-wrap gap-1">
+                                <span class="font-bold text-boho-900 text-xs sm:text-sm">${escapeHtml(item.name)}</span>
+                                ${badgeHtml}
+                            </div>
+                            <span class="text-[10px] text-boho-500 shrink-0">${escapeHtml(item.time)}</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-boho-800 mt-1.5 leading-relaxed whitespace-pre-wrap">${escapeHtml(item.message)}</p>
                     </div>
-                    <p class="text-xs sm:text-sm text-boho-800 mt-1.5 leading-relaxed">${escapeHtml(item.message)}</p>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
+
+        const wishStoreUrl = "{{ route('wishes.store', $weddingCard->id) }}";
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
 
         function submitWish(e) {
             e.preventDefault();
+            const form = document.getElementById('wish-form');
             const nameInput = document.getElementById('wish-name');
             const msgInput = document.getElementById('wish-message');
+            const attRadio = form.querySelector('input[name="attendance_status"]:checked');
+            const countInput = document.getElementById('guest-count');
+            const submitBtn = document.getElementById('wish-submit-btn');
+
             const name = nameInput.value.trim();
             const message = msgInput.value.trim();
+            const attendanceStatus = attRadio ? attRadio.value : 'attending';
+            const guestCount = attendanceStatus === 'attending' ? (parseInt(countInput?.value) || 1) : 1;
+
             if (!name || !message) return;
 
-            const now = new Date();
-            const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
+            submitBtn.disabled = true;
+            const origHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Đang gửi thông tin...</span>';
 
-            wishesList.unshift({
-                name,
-                time: timeStr,
-                message
+            fetch(wishStoreUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({
+                    sender_name: name,
+                    message: message,
+                    attendance_status: attendanceStatus,
+                    guest_count: guestCount
+                })
+            })
+            .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
+            .then(({ ok, body }) => {
+                if (!ok || !body.success) {
+                    throw new Error(body.message || 'Có lỗi xảy ra khi gửi lời chúc.');
+                }
+
+                wishesList.unshift({
+                    name: name,
+                    time: 'Vừa xong',
+                    message: message,
+                    attendance_status: attendanceStatus,
+                    guest_count: guestCount
+                });
+
+                renderWishes();
+                nameInput.value = '';
+                msgInput.value = '';
+                const defaultRadio = document.querySelector('input[name="attendance_status"][value="attending"]');
+                if (defaultRadio) {
+                    defaultRadio.checked = true;
+                    handleRsvpChange('attending');
+                }
+                if (countInput) countInput.value = '1';
+
+                showToast('Cảm ơn bạn đã gửi lời chúc và xác nhận tham dự! ❦');
+            })
+            .catch(err => {
+                alert(err.message || 'Không thể gửi lời chúc, vui lòng thử lại.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origHtml;
             });
-
-            renderWishes();
-            document.getElementById('wish-form').reset();
-            showToast('Cảm ơn bạn đã gửi lời chúc đến {{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}! ❦');
         }
 
         /* ---------------------------------------------------------------
@@ -1789,57 +1968,6 @@
             initCountdown();
             triggerScrollReveal();
         };
-    </script>
-    <!-- Universal Laravel AJAX Wishes & RSVP Integration -->
-    <script>
-    (function() {
-        const cardId = {{ $weddingCard->id }};
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
-        const wishStoreUrl = "{{ route('wishes.store', $weddingCard->id) }}";
-        const wishIndexUrl = "{{ route('wishes.index', $weddingCard->id) }}";
-
-        window.submitLaravelWish = function(senderName, message, attendanceStatus = 'unsure', guestCount = 1) {
-            return fetch(wishStoreUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({
-                    sender_name: senderName,
-                    message: message || 'Chúc mừng hai bạn trăm năm hạnh phúc!',
-                    attendance_status: attendanceStatus,
-                    guest_count: guestCount
-                })
-            }).then(r => r.json());
-        };
-
-        // Listen for form submissions
-        document.addEventListener('submit', function(e) {
-            const form = e.target;
-            const isWish = form.id === 'wishForm' || form.id === 'wish-form' || form.classList.contains('guestbook-form');
-            const isRsvp = form.id === 'rsvp-form' || form.id === 'rsvp' || form.classList.contains('rsvp');
-
-            if (isWish || isRsvp) {
-                const nameInput = form.querySelector('#guestNameInput, #wish-name, #wish-author, #r-name, #rsvp-name, input[name="name"], input[name="sender_name"]');
-                const msgInput = form.querySelector('#guestWishInput, #wish-message, #r-msg, #rsvp-msg, textarea[name="message"]');
-                const attInput = form.querySelector('input[name="att"]:checked, input[name="attendance"]:checked, select[name="attendance"]');
-                const countInput = form.querySelector('input[name="guest_count"], select[name="guest_count"]');
-
-                const name = nameInput ? nameInput.value.trim() : '';
-                const message = msgInput ? msgInput.value.trim() : '';
-                const attendance = attInput ? attInput.value : (isRsvp ? 'attending' : 'unsure');
-                const count = countInput ? parseInt(countInput.value) || 1 : 1;
-
-                if (name) {
-                    window.submitLaravelWish(name, message, attendance, count).then(res => {
-                        console.log('Wish stored in Laravel DB:', res);
-                    }).catch(err => console.error('Error saving wish to Laravel:', err));
-                }
-            }
-        }, true);
-    })();
     </script>
 </body>
 </html>

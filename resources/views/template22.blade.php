@@ -1336,8 +1336,9 @@
       text-align: left;
     }
 
-    .guestbook-form input,
-    .guestbook-form textarea {
+    .guestbook-form input[type="text"],
+    .guestbook-form textarea,
+    .guestbook-form select {
       width: 100%;
       padding: 11px 14px;
       border-radius: 10px;
@@ -1350,9 +1351,118 @@
       outline: none;
     }
 
-    .guestbook-form input:focus,
-    .guestbook-form textarea:focus {
+    .guestbook-form input[type="text"]:focus,
+    .guestbook-form textarea:focus,
+    .guestbook-form select:focus {
       border-color: var(--wine-800);
+      background: #ffffff;
+    }
+
+    .rsvp-group-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--wine-900);
+      margin-bottom: 7px;
+      display: block;
+    }
+
+    .rsvp-radio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .rsvp-radio-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 5px;
+      background: var(--cream-bg);
+      border: 1.5px solid rgba(107, 20, 26, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+      text-align: center;
+      line-height: 1.25;
+      user-select: none;
+    }
+
+    .rsvp-radio-label input {
+      display: none;
+    }
+
+    .rsvp-radio-label:hover {
+      border-color: var(--wine-700);
+    }
+
+    .rsvp-radio-label.active,
+    .rsvp-radio-label:has(input:checked) {
+      background: var(--wine-800);
+      color: #ffffff;
+      border-color: var(--gold-light);
+      box-shadow: 0 3px 8px rgba(107, 20, 26, 0.25);
+    }
+
+    .rsvp-guest-count-wrapper {
+      margin-bottom: 6px;
+    }
+
+    .wish-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      margin-left: 6px;
+      vertical-align: middle;
+      line-height: 1.3;
+    }
+
+    .wish-badge-attending {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .wish-badge-declined {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .wish-badge-unsure {
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    .wish-form-alert {
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    .wish-form-alert.success {
+      display: block;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .wish-form-alert.error {
+      display: block;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
     }
 
     .wishes-feed {
@@ -1994,9 +2104,37 @@
       <p class="section-subtext">Gửi lời chúc tốt đẹp nhất đến {{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}</p>
 
       <form class="guestbook-form" id="wishForm" onsubmit="submitWish(event)">
-        <input type="text" id="guestNameInput" placeholder="Tên của bạn *" required />
-        <textarea id="guestWishInput" rows="3" placeholder="Nhập lời chúc mừng hạnh phúc... *" required></textarea>
-        <button type="submit" class="btn-solid-wine" style="width: 100%;">Gửi lời chúc ♥</button>
+        <input type="text" id="guestNameInput" name="sender_name" placeholder="Tên của bạn *" required />
+
+        <span class="rsvp-group-title">Xác nhận tham dự:</span>
+        <div class="rsvp-radio-grid">
+          <label class="rsvp-radio-label active" id="label-attending">
+            <input type="radio" name="attendance_status" value="attending" checked onchange="handleRsvpChange('attending')" />
+            <span>🍷 Sẽ tham dự</span>
+          </label>
+          <label class="rsvp-radio-label" id="label-not-attending">
+            <input type="radio" name="attendance_status" value="not_attending" onchange="handleRsvpChange('not_attending')" />
+            <span>💌 Không thể đến</span>
+          </label>
+          <label class="rsvp-radio-label" id="label-unsure">
+            <input type="radio" name="attendance_status" value="unsure" onchange="handleRsvpChange('unsure')" />
+            <span>🤔 Chưa rõ</span>
+          </label>
+        </div>
+
+        <div class="rsvp-guest-count-wrapper" id="guestCountWrapper">
+          <span class="rsvp-group-title">Số người cùng tham dự:</span>
+          <select id="guestCountInput" name="guest_count">
+            <option value="1">1 người (Chỉ mình tôi)</option>
+            <option value="2">2 người (Đi cùng người thương)</option>
+            <option value="3">3 người (Đi cùng gia đình/bạn)</option>
+            <option value="4">4+ người (Cả gia đình)</option>
+          </select>
+        </div>
+
+        <textarea id="guestWishInput" name="message" rows="3" placeholder="Nhập lời chúc mừng hạnh phúc... *" required></textarea>
+        <button type="submit" id="wishSubmitBtn" class="btn-solid-wine" style="width: 100%;">Gửi lời chúc &amp; Xác nhận ♥</button>
+        <div class="wish-form-alert" id="wishFormAlert"></div>
       </form>
 
       <div class="wishes-feed" id="wishesFeed">
@@ -2006,7 +2144,16 @@
         @forelse ($dbWishes as $wish)
           <div class="wish-item">
             <div class="wish-header">
-              <span class="wish-author">{{ $wish->sender_name }}</span>
+              <div>
+                <span class="wish-author">{{ $wish->sender_name }}</span>
+                @if ($wish->attendance_status === 'attending')
+                  <span class="wish-badge wish-badge-attending">✓ Tham dự ({{ $wish->guest_count ?: 1 }})</span>
+                @elseif ($wish->attendance_status === 'not_attending')
+                  <span class="wish-badge wish-badge-declined">Không thể đến</span>
+                @elseif ($wish->attendance_status === 'unsure')
+                  <span class="wish-badge wish-badge-unsure">Chưa rõ</span>
+                @endif
+              </div>
               <span class="wish-time">{{ $wish->created_at ? $wish->created_at->diffForHumans() : 'Vừa xong' }}</span>
             </div>
             <p class="wish-content">{{ $wish->message }}</p>
@@ -2240,25 +2387,121 @@
       }
     }
 
-    // Guestbook Wish Submission
+    // RSVP Status Change Handler
+    function handleRsvpChange(status) {
+      document.querySelectorAll('.rsvp-radio-label').forEach(el => el.classList.remove('active'));
+      const activeLabel = document.getElementById('label-' + status.replace('_', '-'));
+      if (activeLabel) activeLabel.classList.add('active');
+
+      const countWrapper = document.getElementById('guestCountWrapper');
+      if (countWrapper) {
+        countWrapper.style.display = (status === 'attending') ? 'block' : 'none';
+      }
+    }
+
+    // Guestbook Wish Submission with Laravel AJAX Integration
+    const wishStoreUrl = "{{ route('wishes.store', $weddingCard->id) }}";
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
     function submitWish(e) {
       e.preventDefault();
+      const form = document.getElementById('wishForm');
       const nameEl = document.getElementById('guestNameInput');
       const wishEl = document.getElementById('guestWishInput');
+      const attEl = form.querySelector('input[name="attendance_status"]:checked');
+      const countEl = document.getElementById('guestCountInput');
+      const submitBtn = document.getElementById('wishSubmitBtn');
+      const alertEl = document.getElementById('wishFormAlert');
       const feed = document.getElementById('wishesFeed');
 
-      const item = document.createElement('div');
-      item.className = 'wish-item';
-      item.innerHTML = `
-        <div class="wish-header">
-          <span class="wish-author">${nameEl.value.replace(/</g, '&lt;')}</span>
-          <span class="wish-time">Vừa xong</span>
-        </div>
-        <p class="wish-content">${wishEl.value.replace(/</g, '&lt;')}</p>
-      `;
-      feed.prepend(item);
-      nameEl.value = '';
-      wishEl.value = '';
+      const senderName = nameEl.value.trim();
+      const message = wishEl.value.trim();
+      const attendanceStatus = attEl ? attEl.value : 'attending';
+      const guestCount = attendanceStatus === 'attending' ? (parseInt(countEl?.value) || 1) : 1;
+
+      if (!senderName || !message) {
+        return;
+      }
+
+      // UI Loading state
+      submitBtn.disabled = true;
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.innerHTML = 'Đang gửi thông tin...';
+      alertEl.className = 'wish-form-alert';
+      alertEl.style.display = 'none';
+
+      fetch(wishStoreUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({
+          sender_name: senderName,
+          message: message,
+          attendance_status: attendanceStatus,
+          guest_count: guestCount
+        })
+      })
+      .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
+      .then(({ ok, body }) => {
+        if (!ok || !body.success) {
+          throw new Error(body.message || 'Có lỗi xảy ra khi gửi lời chúc.');
+        }
+
+        // Render badge
+        let badgeHtml = '';
+        if (attendanceStatus === 'attending') {
+          badgeHtml = `<span class="wish-badge wish-badge-attending">✓ Tham dự (${guestCount})</span>`;
+        } else if (attendanceStatus === 'not_attending') {
+          badgeHtml = `<span class="wish-badge wish-badge-declined">Không thể đến</span>`;
+        } else {
+          badgeHtml = `<span class="wish-badge wish-badge-unsure">Chưa rõ</span>`;
+        }
+
+        const safeName = senderName.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeMsg = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const item = document.createElement('div');
+        item.className = 'wish-item';
+        item.innerHTML = `
+          <div class="wish-header">
+            <div>
+              <span class="wish-author">${safeName}</span>
+              ${badgeHtml}
+            </div>
+            <span class="wish-time">Vừa xong</span>
+          </div>
+          <p class="wish-content">${safeMsg}</p>
+        `;
+        feed.prepend(item);
+
+        // Reset form
+        nameEl.value = '';
+        wishEl.value = '';
+        const defaultRadio = document.querySelector('input[name="attendance_status"][value="attending"]');
+        if (defaultRadio) {
+          defaultRadio.checked = true;
+          handleRsvpChange('attending');
+        }
+        if (countEl) countEl.value = '1';
+
+        // Success Alert
+        alertEl.className = 'wish-form-alert success';
+        alertEl.textContent = 'Cảm ơn bạn đã gửi lời chúc và xác nhận tham dự! ❤️';
+        setTimeout(() => {
+          alertEl.style.display = 'none';
+        }, 6000);
+      })
+      .catch(err => {
+        alertEl.className = 'wish-form-alert error';
+        alertEl.textContent = err.message || 'Không thể gửi lời chúc, vui lòng thử lại.';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      });
     }
 
     // Countdown Timer
@@ -2292,56 +2535,5 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
-    <!-- Universal Laravel AJAX Wishes & RSVP Integration -->
-    <script>
-    (function() {
-        const cardId = {{ $weddingCard->id }};
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
-        const wishStoreUrl = "{{ route('wishes.store', $weddingCard->id) }}";
-        const wishIndexUrl = "{{ route('wishes.index', $weddingCard->id) }}";
-
-        window.submitLaravelWish = function(senderName, message, attendanceStatus = 'unsure', guestCount = 1) {
-            return fetch(wishStoreUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({
-                    sender_name: senderName,
-                    message: message || 'Chúc mừng hai bạn trăm năm hạnh phúc!',
-                    attendance_status: attendanceStatus,
-                    guest_count: guestCount
-                })
-            }).then(r => r.json());
-        };
-
-        // Listen for form submissions
-        document.addEventListener('submit', function(e) {
-            const form = e.target;
-            const isWish = form.id === 'wishForm' || form.id === 'wish-form' || form.classList.contains('guestbook-form');
-            const isRsvp = form.id === 'rsvp-form' || form.id === 'rsvp' || form.classList.contains('rsvp');
-
-            if (isWish || isRsvp) {
-                const nameInput = form.querySelector('#guestNameInput, #wish-name, #wish-author, #r-name, #rsvp-name, input[name="name"], input[name="sender_name"]');
-                const msgInput = form.querySelector('#guestWishInput, #wish-message, #r-msg, #rsvp-msg, textarea[name="message"]');
-                const attInput = form.querySelector('input[name="att"]:checked, input[name="attendance"]:checked, select[name="attendance"]');
-                const countInput = form.querySelector('input[name="guest_count"], select[name="guest_count"]');
-
-                const name = nameInput ? nameInput.value.trim() : '';
-                const message = msgInput ? msgInput.value.trim() : '';
-                const attendance = attInput ? attInput.value : (isRsvp ? 'attending' : 'unsure');
-                const count = countInput ? parseInt(countInput.value) || 1 : 1;
-
-                if (name) {
-                    window.submitLaravelWish(name, message, attendance, count).then(res => {
-                        console.log('Wish stored in Laravel DB:', res);
-                    }).catch(err => console.error('Error saving wish to Laravel:', err));
-                }
-            }
-        }, true);
-    })();
-    </script>
 </body>
 </html>

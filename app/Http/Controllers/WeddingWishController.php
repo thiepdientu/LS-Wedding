@@ -6,6 +6,8 @@ use App\Models\WeddingCard;
 use App\Models\WeddingWish;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class WeddingWishController extends Controller
 {
@@ -112,5 +114,117 @@ class WeddingWishController extends Controller
                 'formatted_time' => $wish->formatted_created_at,
             ],
         ], 201);
+    }
+
+    /**
+     * Trang xem Lời chúc & Xác nhận tham dự (RSVP) dành riêng cho từng thiệp cưới
+     */
+    public function cardGuestbook(Request $request, string|int $key): View
+    {
+        $card = is_numeric($key)
+            ? WeddingCard::find($key)
+            : WeddingCard::where('identifyWedding', $key)->first();
+
+        if (!$card) {
+            abort(404, 'Không tìm thấy thông tin thiệp cưới.');
+        }
+
+        $query = WeddingWish::where('wedding_card_id', $card->id)->approved()->latest();
+
+        // Lọc theo trạng thái tham dự
+        $attendance = $request->input('attendance', 'all');
+        if ($attendance && $attendance !== 'all') {
+            $query->where('attendance_status', $attendance);
+        }
+
+        // Tìm kiếm tên khách hoặc lời chúc
+        if ($search = trim((string) $request->input('search'))) {
+            $query->where(function ($q) use ($search) {
+                $q->where('sender_name', 'like', "%{$search}%")
+                  ->orWhere('message', 'like', "%{$search}%");
+            });
+        }
+
+        // Thống kê riêng cho thiệp này
+        $baseWishes = WeddingWish::where('wedding_card_id', $card->id)->approved();
+        $stats = [
+            'total' => (clone $baseWishes)->count(),
+            'attending_count' => (clone $baseWishes)->where('attendance_status', 'attending')->count(),
+            'attending_guests' => (clone $baseWishes)->where('attendance_status', 'attending')->sum('guest_count'),
+            'declined_count' => (clone $baseWishes)->where('attendance_status', 'not_attending')->count(),
+            'unsure_count' => (clone $baseWishes)->where('attendance_status', 'unsure')->count(),
+        ];
+
+        $wishes = $query->paginate(20)->withQueryString();
+
+        return view('guestbook.card_wishes', compact('card', 'wishes', 'stats'));
+    }
+
+    /**
+     * Xuất danh sách khách mời & lời chúc của riêng thiệp này ra file CSV/Excel
+     */
+    public function exportCardWishes(Request $request, string|int $key): StreamedResponse
+    {
+        $card = is_numeric($key)
+            ? WeddingCard::find($key)
+            : WeddingCard::where('identifyWedding', $key)->first();
+
+        if (!$card) {
+            abort(404, 'Không tìm thấy thông tin thiệp cưới.');
+        }
+
+        $query = WeddingWish::where('wedding_card_id', $card->id)->approved()->latest();
+
+        if ($attendance = $request->input('attendance')) {
+            if ($attendance !== 'all') {
+                $query->where('attendance_status', $attendance);
+            }
+        }
+
+        if ($search = trim((string) $request->input('search'))) {
+            $query->where(function ($q) use ($search) {
+                $q->where('sender_name', 'like', "%{$search}%")
+                  ->orWhere('message', 'like', "%{$search}%");
+            });
+        }
+
+        $wishes = $query->get();
+        $slug = $card->identifyWedding ?: ('thiep-' . $card->id);
+        $filename = 'danh-sach-khach-rsvp-' . $slug . '-' . date('d-m-Y') . '.csv';
+
+        return response()->streamDownload(function () use ($wishes, $card) {
+            $file = fopen('php://output', 'w');
+            // Ghi UTF-8 BOM
+            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            fputcsv($file, [
+                'STT',
+                'Họ và Tên Khách',
+                'Xác Nhận Tham Dự',
+                'Số Người Tham Dự',
+                'Lời Chúc',
+                'Thời Gian Gửi',
+            ]);
+
+            $stt = 1;
+            foreach ($wishes as $wish) {
+                fputcsv($file, [
+                    $stt++,
+                    $wish->sender_name,
+                    match($wish->attendance_status) {
+                        'attending' => 'Sẽ tham dự',
+                        'not_attending' => 'Không thể tham dự',
+                        default => 'Chưa rõ',
+                    },
+                    $wish->attendance_status === 'attending' ? ($wish->guest_count ?: 1) : 0,
+                    $wish->message,
+                    $wish->formatted_created_at,
+                ]);
+            }
+
+            fclose($file);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 }

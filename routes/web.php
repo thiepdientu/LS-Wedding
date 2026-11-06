@@ -95,6 +95,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/weddingInvite/{key}', [WeddingCardController::class, 'showWeddingCardByName'])->name('wedding.invite');
 Route::get('/wedding-cards/{id}', [WeddingCardController::class, 'showWeddingCardByName']);
 
+// Tuyến đường xem Lời chúc & Xác nhận tham dự (RSVP) theo từng thiệp
+Route::get('/weddingInvite/{key}/rsvp', [WeddingWishController::class, 'cardGuestbook'])->name('wedding.card-guestbook');
+Route::get('/weddingInvite/{key}/rsvp/export', [WeddingWishController::class, 'exportCardWishes'])->name('wedding.card-guestbook.export');
+
 // Route điều hướng user đến template thiệp mẫu
 Route::get('/template/{key}', [WeddingCardController::class, 'showTemplate'])->name('wedding.template');
 
