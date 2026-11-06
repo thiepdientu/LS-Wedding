@@ -325,6 +325,14 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
   </div>
 </div>
 
+<audio id="weddingAudio" loop preload="auto">
+  @if(!empty($weddingCard->music_url))
+    <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
+  @endif
+  <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+</audio>
+
 <button class="music" id="music" type="button" aria-label="Bật nhạc nền" hidden>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.4"/><path d="M12 3v3M21 12h-3M12 21v-3M3 12h3"/></svg>
 </button>
@@ -721,17 +729,19 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
   var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'}):null;
   function watch(){document.querySelectorAll('.reveal').forEach(function(el){if(io)io.observe(el);else el.classList.add('in')})}
 
-  /* ---- music (soft pentatonic loop via WebAudio, started by the open button) ---- */
-  var ctx=null,timer=null,playing=false,step=0,mbtn=$('#music');
-  var seq=[392,440,523.25,587.33,659.25,587.33,523.25,440,392,329.63,392,440,523.25,440,392,329.63];
-  function note(f,t,d,v){var o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.04);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+d+.05)}
-  function tick(){var t=ctx.currentTime+.05,f=seq[step%seq.length];note(f,t,1.6,.07);note(f/2,t,2.2,.045);if(step%4===0)note(f*1.5,t+.02,1.2,.025);step++}
+  /* ---- music (audio tag with custom music_url fallback) ---- */
+  var weddingAudio=$('#weddingAudio'),mbtn=$('#music'),playing=false;
+  if(weddingAudio){
+    weddingAudio.onplay=function(){playing=true;mbtn.classList.add('on');mbtn.setAttribute('aria-label','Tắt nhạc nền')};
+    weddingAudio.onpause=function(){playing=false;mbtn.classList.remove('on');mbtn.setAttribute('aria-label','Bật nhạc nền')};
+  }
   function setMusic(on){
-    try{
-      if(on){ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.resume)ctx.resume();clearInterval(timer);tick();timer=setInterval(tick,640);playing=true}
-      else{clearInterval(timer);playing=false}
-    }catch(e){playing=false}
-    mbtn.classList.toggle('on',playing);mbtn.setAttribute('aria-label',playing?'Tắt nhạc nền':'Bật nhạc nền');
+    if(!weddingAudio)return;
+    if(on){
+      weddingAudio.play().then(function(){playing=true;mbtn.classList.add('on')}).catch(function(e){console.warn(e)});
+    }else{
+      weddingAudio.pause();playing=false;mbtn.classList.remove('on');
+    }
   }
   mbtn.onclick=function(){setMusic(!playing)};
 

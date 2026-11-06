@@ -338,6 +338,14 @@
     </style>
 </head>
 <body class="min-h-screen selection:bg-gold-500 selection:text-white">
+    <!-- Background Audio -->
+    <audio id="weddingAudio" loop preload="auto">
+        @if(!empty($weddingCard->music_url))
+            <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
+        @endif
+        <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+    </audio>
     @php
         $cal = $weddingCard->calendar_matrix;
         $dayOfWeekVi = $weddingCard->wedding_date ? $weddingCard->wedding_date->locale('vi')->dayName : 'Chủ Nhật';
@@ -1705,70 +1713,62 @@
         /* ---------------------------------------------------------------
          * F. BACKGROUND WEDDING MUSIC & COVER GATE OPENING
          * --------------------------------------------------------------- */
-        let audioCtx = null;
+        const weddingAudio = document.getElementById('weddingAudio');
         let isMusicPlaying = false;
-        let melodyInterval = null;
 
-        const romanticMelody = [
-            523.25, 659.25, 783.99, 1046.50, 880.00, 783.99, 659.25, 587.33,
-            523.25, 587.33, 659.25, 783.99, 880.00, 783.99, 659.25, 523.25
-        ];
-        let noteIdx = 0;
+        function updateMusicUI() {
+            const eq = document.getElementById('music-eq-bars');
+            const pill = document.getElementById('music-status-pill');
+            if (isMusicPlaying) {
+                if (eq) eq.classList.add('eq-bars-playing');
+                if (pill) pill.textContent = 'Nhạc nền: Đang phát ♪';
+            } else {
+                if (eq) eq.classList.remove('eq-bars-playing');
+                if (pill) pill.textContent = 'Nhạc nền: Tắt';
+            }
+        }
 
-        function playSoftNote(freq) {
-            if (!audioCtx || !isMusicPlaying) return;
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now);
-
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.exponentialRampToValueAtTime(0.05, now + 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.45);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 1.5);
+        if (weddingAudio) {
+            weddingAudio.onplay = () => {
+                isMusicPlaying = true;
+                updateMusicUI();
+            };
+            weddingAudio.onpause = () => {
+                isMusicPlaying = false;
+                updateMusicUI();
+            };
         }
 
         function startMusic() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                isMusicPlaying = true;
-                updateMusicUI();
-
-                if (melodyInterval) clearInterval(melodyInterval);
-                playSoftNote(romanticMelody[noteIdx % romanticMelody.length]);
-                melodyInterval = setInterval(() => {
-                    if (!isMusicPlaying) return;
-                    noteIdx = (noteIdx + 1) % romanticMelody.length;
-                    playSoftNote(romanticMelody[noteIdx]);
-                }, 660);
-            } catch (e) {
-                console.warn('Web Audio API blocked or unsupported', e);
+            if (weddingAudio) {
+                weddingAudio.play().then(() => {
+                    isMusicPlaying = true;
+                    updateMusicUI();
+                }).catch(e => {
+                    console.warn('Web Audio / Autoplay prevented:', e);
+                });
             }
         }
 
         function stopMusic() {
-            isMusicPlaying = false;
-            if (melodyInterval) clearInterval(melodyInterval);
-            updateMusicUI();
+            if (weddingAudio) {
+                weddingAudio.pause();
+                isMusicPlaying = false;
+                updateMusicUI();
+            }
         }
 
         function toggleMusic() {
-            if (isMusicPlaying) {
-                stopMusic();
-                showToast('Đã tạm dừng nhạc nền');
+            if (!weddingAudio) return;
+            if (weddingAudio.paused) {
+                weddingAudio.play().then(() => {
+                    showToast('Đang phát nhạc nền lễ cưới ♪');
+                }).catch(e => {
+                    console.warn('Playback blocked:', e);
+                });
             } else {
-                startMusic();
-                showToast('Đang phát nhạc nền lễ cưới ♪');
+                weddingAudio.pause();
+                showToast('Đã tạm dừng nhạc nền');
             }
         }
 

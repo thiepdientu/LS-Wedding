@@ -293,6 +293,14 @@
     </style>
 </head>
 <body class="min-h-screen flex justify-center items-start selection:bg-sakura-200 selection:text-sakura-900">
+    <!-- Background Audio -->
+    <audio id="weddingAudio" loop preload="auto">
+        @if(!empty($weddingCard->music_url))
+            <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
+        @endif
+        <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+    </audio>
     @php
         $cal = $weddingCard->calendar_matrix;
         $dayOfWeekVi = $weddingCard->wedding_date ? $weddingCard->wedding_date->locale('vi')->dayName : 'Chủ Nhật';
@@ -1779,68 +1787,55 @@
         }
 
         /* -----------------------------------------------------------
-           3. ENVELOPE OPENING & ROMANTIC SAKURA MUSIC-BOX SYNTHESIZER
+           3. ENVELOPE OPENING & WEDDING MUSIC
         ----------------------------------------------------------- */
+        const weddingAudio = document.getElementById('weddingAudio');
         let isMusicPlaying = false;
-        let musicLoop = null;
-        let synth = null;
 
-        async function startSakuraWeddingMusic() {
-            try {
-                await Tone.start();
-                if (!synth) {
-                    synth = new Tone.PolySynth(Tone.Synth, {
-                        oscillator: { type: 'sine' },
-                        envelope: { attack: 0.05, decay: 0.4, sustain: 0.25, release: 2.0 }
-                    }).toDestination();
-                    synth.volume.value = -11;
-
-                    const sakuraMelody = [
-                        { time: '0:0', note: ['A4', 'C5', 'E5'], dur: '2n' },
-                        { time: '0:2', note: ['E4', 'G4', 'B4'], dur: '2n' },
-                        { time: '1:0', note: ['F4', 'A4', 'C5'], dur: '2n' },
-                        { time: '1:2', note: ['C4', 'E4', 'G4'], dur: '2n' },
-                        { time: '2:0', note: ['D4', 'F4', 'A4'], dur: '2n' },
-                        { time: '2:2', note: ['A3', 'C4', 'E4'], dur: '2n' },
-                        { time: '3:0', note: ['B3', 'D4', 'G4'], dur: '2n' },
-                        { time: '3:2', note: ['E4', 'G4', 'C5'], dur: '2n' }
-                    ];
-
-                    musicLoop = new Tone.Part((time, val) => {
-                        synth.triggerAttackRelease(val.note, val.dur, time);
-                    }, sakuraMelody);
-                    musicLoop.loop = true;
-                    musicLoop.loopEnd = '4m';
+        function updateMusicUI() {
+            const wrapper = document.getElementById('music-icon-wrapper');
+            if (wrapper) {
+                if (isMusicPlaying) {
+                    wrapper.classList.add('eq-playing');
+                } else {
+                    wrapper.classList.remove('eq-playing');
                 }
+            }
+        }
 
-                Tone.Transport.bpm.value = 76;
-                Tone.Transport.start();
-                musicLoop.start(0);
+        if (weddingAudio) {
+            weddingAudio.onplay = () => {
                 isMusicPlaying = true;
                 updateMusicUI();
-            } catch (e) {
-                console.warn('Audio waiting for user gesture:', e);
+            };
+            weddingAudio.onpause = () => {
+                isMusicPlaying = false;
+                updateMusicUI();
+            };
+        }
+
+        function startSakuraWeddingMusic() {
+            if (weddingAudio) {
+                weddingAudio.play().then(() => {
+                    isMusicPlaying = true;
+                    updateMusicUI();
+                }).catch(e => {
+                    console.warn('Audio waiting for user gesture:', e);
+                });
             }
         }
 
         function toggleWeddingMusic() {
-            if (!isMusicPlaying) {
-                startSakuraWeddingMusic();
-                showToast('🎵 Đang phát giai điệu Anh Đào Hồng');
+            if (!weddingAudio) return;
+            if (weddingAudio.paused) {
+                weddingAudio.play().then(() => {
+                    showToast('🎵 Đang phát giai điệu Anh Đào Hồng');
+                }).catch(e => {
+                    console.warn('Playback error:', e);
+                });
             } else {
-                Tone.Transport.pause();
-                isMusicPlaying = false;
-                updateMusicUI();
+                weddingAudio.pause();
                 showToast('🔇 Đã tạm dừng nhạc nền');
-            }
-        }
-
-        function updateMusicUI() {
-            const wrapper = document.getElementById('music-icon-wrapper');
-            if (isMusicPlaying) {
-                wrapper.classList.add('eq-playing');
-            } else {
-                wrapper.classList.remove('eq-playing');
             }
         }
 

@@ -353,6 +353,15 @@
 </head>
 <body class="min-h-screen flex justify-center items-start selection:bg-moc-leafLight/40 selection:text-moc-greenDark">
 
+    <!-- Background Audio -->
+    <audio id="weddingAudio" loop preload="auto">
+        @if(!empty($weddingCard->music_url))
+            <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
+        @endif
+        <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- ===================================================================
          REUSABLE WATERCOLOR "HOA MỘC - XANH" BOTANICAL SVG DEFINITIONS:
          - White 5-Petal Mock-Orange / Jasmine Flowers with Golden Stamens
@@ -1662,56 +1671,33 @@
         }
 
         /* -----------------------------------------------------------
-           4. ENVELOPE OPENING & ACOUSTIC GARDEN PIANO SYNTHESIZER
+           4. ENVELOPE OPENING & WEDDING MUSIC HANDLER
         ----------------------------------------------------------- */
+        const weddingAudio = document.getElementById('weddingAudio');
         let isMusicPlaying = false;
-        let musicLoop = null;
-        let synth = null;
 
-        async function startGardenWeddingMusic() {
-            try {
-                await Tone.start();
-                if (!synth) {
-                    synth = new Tone.PolySynth(Tone.Synth, {
-                        oscillator: { type: 'triangle' },
-                        envelope: { attack: 0.06, decay: 0.5, sustain: 0.25, release: 2.2 }
-                    }).toDestination();
-                    synth.volume.value = -11;
+        if (weddingAudio) {
+            weddingAudio.onplay = () => { isMusicPlaying = true; updateMusicUI(); };
+            weddingAudio.onpause = () => { isMusicPlaying = false; updateMusicUI(); };
+        }
 
-                    const gardenMelody = [
-                        { time: '0:0', note: ['G4', 'B4', 'D5'], dur: '2n' },
-                        { time: '0:2', note: ['D4', 'F#4', 'A4'], dur: '2n' },
-                        { time: '1:0', note: ['E4', 'G4', 'B4'], dur: '2n' },
-                        { time: '1:2', note: ['B3', 'D4', 'G4'], dur: '2n' },
-                        { time: '2:0', note: ['C4', 'E4', 'G4'], dur: '2n' },
-                        { time: '2:2', note: ['G3', 'B3', 'D4'], dur: '2n' },
-                        { time: '3:0', note: ['A3', 'C4', 'E4'], dur: '2n' },
-                        { time: '3:2', note: ['D4', 'F#4', 'C5'], dur: '2n' }
-                    ];
-
-                    musicLoop = new Tone.Part((time, val) => {
-                        synth.triggerAttackRelease(val.note, val.dur, time);
-                    }, gardenMelody);
-                    musicLoop.loop = true;
-                    musicLoop.loopEnd = '4m';
-                }
-
-                Tone.Transport.bpm.value = 74;
-                Tone.Transport.start();
-                musicLoop.start(0);
+        function startGardenWeddingMusic() {
+            if (!weddingAudio) return;
+            weddingAudio.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI();
-            } catch (e) {
+            }).catch(e => {
                 console.warn('Audio waiting for user gesture:', e);
-            }
+            });
         }
 
         function toggleWeddingMusic() {
-            if (!isMusicPlaying) {
+            if (!weddingAudio) return;
+            if (weddingAudio.paused) {
                 startGardenWeddingMusic();
-                showToast('🎵 Đang phát giai điệu Hoa Mộc Xanh');
+                showToast('🎵 Đang phát nhạc nền');
             } else {
-                Tone.Transport.pause();
+                weddingAudio.pause();
                 isMusicPlaying = false;
                 updateMusicUI();
                 showToast('🔇 Đã tạm dừng nhạc nền');

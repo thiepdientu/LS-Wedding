@@ -349,6 +349,15 @@
 </head>
 <body class="min-h-screen selection:bg-boho-700 selection:text-white">
 
+    <!-- Background Audio -->
+    <audio id="weddingAudio" loop preload="auto">
+        @if(!empty($weddingCard->music_url))
+            <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
+        @endif
+        <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Falling Blossoms & Bokeh Canvas -->
     <canvas id="boho-canvas" class="fixed inset-0 pointer-events-none z-20"></canvas>
 
@@ -1779,70 +1788,39 @@
         /* ---------------------------------------------------------------
          * F. BACKGROUND WEDDING MUSIC & COVER GATE OPENING
          * --------------------------------------------------------------- */
-        let audioCtx = null;
+        const weddingAudio = document.getElementById('weddingAudio');
         let isMusicPlaying = false;
-        let melodyInterval = null;
 
-        const bohoMelody = [
-            523.25, 659.25, 783.99, 987.77, 880.00, 783.99, 659.25, 587.33,
-            523.25, 587.33, 659.25, 783.99, 880.00, 783.99, 659.25, 523.25
-        ];
-        let noteIdx = 0;
-
-        function playSoftNote(freq) {
-            if (!audioCtx || !isMusicPlaying) return;
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now);
-
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.exponentialRampToValueAtTime(0.05, now + 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.45);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 1.5);
+        if (weddingAudio) {
+            weddingAudio.onplay = () => { isMusicPlaying = true; updateMusicUI(); };
+            weddingAudio.onpause = () => { isMusicPlaying = false; updateMusicUI(); };
         }
 
         function startMusic() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+            if (!weddingAudio) return;
+            weddingAudio.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI();
-
-                if (melodyInterval) clearInterval(melodyInterval);
-                playSoftNote(bohoMelody[noteIdx % bohoMelody.length]);
-                melodyInterval = setInterval(() => {
-                    if (!isMusicPlaying) return;
-                    noteIdx = (noteIdx + 1) % bohoMelody.length;
-                    playSoftNote(bohoMelody[noteIdx]);
-                }, 660);
-            } catch (e) {
-                console.warn('Web Audio API blocked or unsupported', e);
-            }
+            }).catch(e => {
+                console.warn('Audio playback blocked or waiting user gesture', e);
+            });
         }
 
         function stopMusic() {
+            if (!weddingAudio) return;
+            weddingAudio.pause();
             isMusicPlaying = false;
-            if (melodyInterval) clearInterval(melodyInterval);
             updateMusicUI();
         }
 
         function toggleMusic() {
-            if (isMusicPlaying) {
-                stopMusic();
-                showToast('Đã tạm dừng nhạc nền');
-            } else {
+            if (!weddingAudio) return;
+            if (weddingAudio.paused) {
                 startMusic();
                 showToast('Đang phát nhạc nền lễ cưới ♪');
+            } else {
+                stopMusic();
+                showToast('Đã tạm dừng nhạc nền');
             }
         }
 

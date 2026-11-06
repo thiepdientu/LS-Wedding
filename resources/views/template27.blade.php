@@ -292,6 +292,15 @@
 </head>
 <body class="oriental-bg min-h-screen selection:bg-gold-400 selection:text-crimson-950">
 
+    <!-- Background Audio -->
+    <audio id="weddingAudio" loop preload="auto">
+        @if(!empty($weddingCard->music_url))
+            <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
+        @endif
+        <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Falling Gold Sparkles & Red Petals Canvas -->
     <canvas id="petals-canvas" class="fixed inset-0 pointer-events-none z-20"></canvas>
 
@@ -1252,73 +1261,41 @@
         }
 
         /* ---------------------------------------------------------------
-         * C. ENVELOPE / CURTAIN GATE OPENING & WEB AUDIO ROMANTIC MELODY
+         * C. ENVELOPE / CURTAIN GATE OPENING & WEDDING MUSIC HANDLER
          * --------------------------------------------------------------- */
-        let audioCtx = null;
+        const weddingAudio = document.getElementById('weddingAudio');
         let isMusicPlaying = false;
-        let melodyTimer = null;
 
-        // Gentle pentatonic/romantic music box chime using Web Audio API
-        const romanticNotes = [
-            523.25, 659.25, 783.99, 1046.50, 880.00, 783.99, 659.25, 587.33,
-            523.25, 587.33, 659.25, 783.99, 880.00, 783.99, 659.25, 523.25
-        ];
-        let noteIdx = 0;
-
-        function playChimeNote(freq) {
-            if (!audioCtx || !isMusicPlaying) return;
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, now);
-
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.exponentialRampToValueAtTime(0.055, now + 0.06);
-            gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.4);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 1.45);
+        if (weddingAudio) {
+            weddingAudio.onplay = () => { isMusicPlaying = true; updateMusicUI(); };
+            weddingAudio.onpause = () => { isMusicPlaying = false; updateMusicUI(); };
         }
 
         function startBackgroundMusic() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+            if (!weddingAudio) return;
+            weddingAudio.play().then(() => {
                 isMusicPlaying = true;
                 updateMusicUI();
-
-                if (melodyTimer) clearInterval(melodyTimer);
-                playChimeNote(romanticNotes[noteIdx % romanticNotes.length]);
-                melodyTimer = setInterval(() => {
-                    if (!isMusicPlaying) return;
-                    noteIdx = (noteIdx + 1) % romanticNotes.length;
-                    playChimeNote(romanticNotes[noteIdx]);
-                }, 650);
-            } catch (e) {
-                console.warn('Web Audio API blocked or unsupported', e);
-            }
+            }).catch(e => {
+                console.warn('Audio playback blocked or waiting user gesture', e);
+            });
         }
 
         function stopBackgroundMusic() {
+            if (!weddingAudio) return;
+            weddingAudio.pause();
             isMusicPlaying = false;
-            if (melodyTimer) clearInterval(melodyTimer);
             updateMusicUI();
         }
 
         function toggleMusic() {
-            if (isMusicPlaying) {
-                stopBackgroundMusic();
-                showToast('Đã tạm dừng nhạc nền');
-            } else {
+            if (!weddingAudio) return;
+            if (weddingAudio.paused) {
                 startBackgroundMusic();
                 showToast('Đang phát giai điệu lễ cưới ♪');
+            } else {
+                stopBackgroundMusic();
+                showToast('Đã tạm dừng nhạc nền');
             }
         }
 

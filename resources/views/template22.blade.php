@@ -1715,8 +1715,9 @@
     @if(!empty($weddingCard->music_url))
         <source src="{{ $weddingCard->music_url }}" type="audio/mpeg">
     @endif
+    <source src="{{ asset('template01/media/Shane-Filan-Beautiful-In-White-Official-Video.mp3') }}" type="audio/mpeg">
     <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
-</audio>
+  </audio>
 
   <!-- 12 Floating Petals Layer (Exact DOM structure) -->
   <div class="floating-petals-layer" id="petalsLayer" aria-hidden="true">
