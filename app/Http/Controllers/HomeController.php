@@ -432,7 +432,14 @@ class HomeController extends Controller
                 'photo' => 'template01/images/265e55dfe45a5f04064b7.jpg',
             ];
 
-            $imagePath = $meta['photo'] ?? 'template01/images/265e55dfe45a5f04064b7.jpg';
+            $previewRelPath = "templates/previews/template_{$codeStr}.png";
+            if (file_exists(public_path($previewRelPath))) {
+                $imagePath = $previewRelPath;
+                $hasRealPreview = true;
+            } else {
+                $imagePath = $meta['photo'] ?? 'template01/images/265e55dfe45a5f04064b7.jpg';
+                $hasRealPreview = false;
+            }
 
             $templates[] = [
                 'code' => $codeStr,
@@ -446,6 +453,7 @@ class HomeController extends Controller
                 'date_sample' => $meta['date_sample'] ?? '20.03.2027',
                 'couple_sample' => $meta['couple_sample'] ?? 'CHÚ RỂ & CÔ DÂU',
                 'image' => asset($imagePath),
+                'has_real_preview' => $hasRealPreview,
                 'demo_url' => url('/template/' . $code),
             ];
         }

@@ -174,6 +174,9 @@
             position: fixed;
             inset: 0;
             z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             perspective: 1500px;
             transition: visibility 1.2s ease, opacity 1.1s ease;
         }
@@ -210,6 +213,9 @@
             transform: translateX(102%) rotateY(12deg);
         }
         .gate-center-card {
+            position: relative;
+            z-index: 30;
+            transform: translateZ(20px);
             transition: transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.65s ease;
         }
         #invitation-gate.gate-opened .gate-center-card {

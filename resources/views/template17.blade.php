@@ -46,7 +46,7 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15
 <link rel="stylesheet" id="reset uikit-css" href="{{ asset('template17/css/reset1.css') }}" media="all">
 <link rel="stylesheet" id="core-css" href="{{ asset('template17/css/core.css') }}" media="all">
 <link rel="stylesheet" id="remixicon-css" href="{{ asset('template17/css/remixicon.css') }}" media="all">
-<link rel="stylesheet" id="preload-css" href="https://weddingday.com.vn/wp-content/themes/nuis-profile/{{ asset('template17/css/preload.css') }}?ver=1.0.0" media="all">
+<link rel="stylesheet" id="preload-css" href="{{ asset('template17/css/preload.css') }}" media="all">
 <link rel="stylesheet" id="swiper slide-css" href="{{ asset('template17/css/swiper.css') }}" media="all">
 <link rel="stylesheet" id="ui-carousel-css" href="{{ asset('template17/css/ui-carousel.css') }}" media="all">
 <link rel="stylesheet" id="bootstrap-select-css" href="{{ asset('template17/css/bootstrap-select.css') }}" media="all">
