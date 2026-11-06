@@ -10,7 +10,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Pattaya&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Pattaya&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -133,6 +133,137 @@
         }
         .anim-medallion {
             animation: medallionFloat 4.5s ease-in-out infinite;
+        }
+
+        /* =========================================================
+         * VINTAGE SCRAPBOOK POLAROID HERO SECTION (THE WEDDING OF)
+         * ========================================================= */
+        .vintage-paper-hero {
+            background-color: #f7f3ec;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 109, 88, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 109, 88, 0.06) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+            position: relative;
+        }
+
+        .vintage-polaroid-card {
+            background: #ffffff;
+            padding: 12px 12px 34px 12px;
+            border-radius: 2px;
+            box-shadow: 
+                0 18px 40px rgba(74, 55, 30, 0.22),
+                0 4px 12px rgba(0, 0, 0, 0.06),
+                inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+            transform: rotate(-3.5deg);
+            transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .vintage-polaroid-card:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 
+                0 24px 50px rgba(74, 55, 30, 0.28),
+                0 6px 16px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+        }
+
+        /* Top Washi Tape with torn edges */
+        .washi-tape-top {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(0.6deg);
+            width: 126px;
+            height: 32px;
+            background: rgba(206, 185, 156, 0.85);
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 2px, transparent 2px, transparent 4px),
+                linear-gradient(180deg, rgba(218, 196, 168, 0.9) 0%, rgba(188, 164, 134, 0.82) 100%);
+            clip-path: polygon(
+                0% 12%, 3% 0%, 97% 0%, 100% 10%, 
+                98% 30%, 100% 50%, 97% 70%, 100% 90%, 
+                97% 100%, 3% 100%, 0% 88%, 3% 68%, 
+                0% 48%, 2% 28%
+            );
+            box-shadow: 0 2px 6px rgba(60, 42, 25, 0.16);
+            backdrop-filter: blur(1.5px);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Stem Washi Tape */
+        .washi-tape-stem {
+            position: absolute;
+            bottom: 6px;
+            left: -12px;
+            width: 58px;
+            height: 22px;
+            transform: rotate(-14deg);
+            background: rgba(206, 185, 156, 0.85);
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 2px, transparent 2px, transparent 4px),
+                linear-gradient(180deg, rgba(218, 196, 168, 0.9) 0%, rgba(188, 164, 134, 0.82) 100%);
+            clip-path: polygon(
+                0% 15%, 4% 0%, 96% 0%, 100% 12%, 
+                98% 35%, 100% 55%, 97% 75%, 100% 95%, 
+                96% 100%, 4% 100%, 0% 85%, 3% 65%, 
+                0% 45%, 2% 25%
+            );
+            box-shadow: 0 2px 5px rgba(60, 42, 25, 0.16);
+            backdrop-filter: blur(1.5px);
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        /* Realistic Melted Gold Wax Seal */
+        .vintage-wax-seal {
+            position: absolute;
+            right: -16px;
+            bottom: -18px;
+            width: 66px;
+            height: 66px;
+            border-radius: 48% 52% 49% 51% / 53% 47% 53% 47%;
+            background: radial-gradient(circle at 34% 30%, #fae6be 0%, #dbb264 36%, #a87e2b 70%, #724e12 100%);
+            box-shadow: 
+                0 8px 18px rgba(55, 38, 15, 0.38),
+                inset 0 2px 3px rgba(255, 250, 220, 0.7),
+                inset 0 -3px 5px rgba(60, 35, 6, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 6;
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+
+        .vintage-wax-seal:hover {
+            transform: scale(1.08) rotate(5deg);
+        }
+
+        .vintage-wax-seal-inner {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(118, 80, 16, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(70, 45, 10, 0.45);
+        }
+
+        .wax-seal-monogram {
+            font-family: 'Great Vibes', 'Cormorant Garamond', cursive;
+            font-size: 1.65rem;
+            line-height: 1;
+            font-weight: 700;
+            color: #6a4911;
+            text-shadow: 
+                1px 1px 0 rgba(255, 248, 220, 0.55),
+                -1px -1px 0 rgba(70, 45, 10, 0.5);
+            letter-spacing: 1px;
+            transform: rotate(-4deg);
         }
 
         /* =========================================================
@@ -386,10 +517,27 @@
             ];
         }
 
+        $heroBannerTop = !empty($weddingCard->banner_top) 
+            ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top)) 
+            : (!empty($weddingCard->banner_preview) 
+                ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
+                : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85');
+
+        // Extract initials for Wax Seal Monogram (e.g., Thành & Ngọc -> TN)
+        $groomWords = preg_split('/\s+/', trim($weddingCard->groom_name ?? ''));
+        $brideWords = preg_split('/\s+/', trim($weddingCard->bride_name ?? ''));
+        $groomFirstChar = !empty($groomWords) ? mb_substr(end($groomWords), 0, 1, 'UTF-8') : 'T';
+        $brideFirstChar = !empty($brideWords) ? mb_substr(end($brideWords), 0, 1, 'UTF-8') : 'N';
+        $monogramText = mb_strtoupper($groomFirstChar . $brideFirstChar);
+
         $albumData = !empty($weddingCard->album) ? (is_string($weddingCard->album) ? json_decode($weddingCard->album, true) : $weddingCard->album) : [];
-        $albumPhotosJson = json_encode(!empty($albumData) && is_array($albumData) ? array_values(array_map(function($img) {
+        $albumPhotosArray = (!empty($albumData) && is_array($albumData)) ? array_values(array_map(function($img) {
             return str_starts_with($img, 'http') ? $img : asset('storage/' . $img);
-        }, $albumData)) : []);
+        }, $albumData)) : [];
+        if (!empty($heroBannerTop) && !in_array($heroBannerTop, $albumPhotosArray)) {
+            array_unshift($albumPhotosArray, $heroBannerTop);
+        }
+        $albumPhotosJson = json_encode($albumPhotosArray);
 
         $leadEmpty = ($cal['start_day_of_week'] == 0) ? 6 : ($cal['start_day_of_week'] - 1);
         $groomStk = $weddingCard->groom_bank_account ?: ($weddingCard->groom_bank_number ?: '0000000000');
@@ -529,75 +677,102 @@
         </div> --}}
 
         <!-- ============================================================= -->
-        <!-- SECTION 1: HERO SAVE THE DATE & COUPLE PORTRAITS              -->
+        <!-- SECTION 1: VINTAGE SCRAPBOOK POLAROID & THE WEDDING OF        -->
         <!-- ============================================================= -->
-        <section class="relative pt-10 pb-10 px-5 text-center overflow-hidden">
-            <!-- Top Corner Golden Leaves (leaf-2.webp & leaf-1.webp) -->
-            <img 
-                src="https://chungdoi.com/images/themes/marble-yellow/leaf-2.webp" 
-                alt="leaf" 
-                class="anim-leaf-left absolute -top-4 -left-4 w-36 sm:w-44 pointer-events-none select-none opacity-90"
-                onerror="this.style.display='none'"
-            >
-            <img 
-                src="https://chungdoi.com/images/themes/marble-yellow/leaf-1.webp" 
-                alt="leaf" 
-                class="anim-leaf-right absolute -bottom-4 -right-4 w-36 sm:w-44 pointer-events-none select-none opacity-90"
-                onerror="this.style.display='none'"
-            >
+        <section class="vintage-paper-hero relative pt-12 pb-14 px-4 sm:px-6 text-center overflow-hidden border-b border-gold-300/40">
+            <!-- Botanical Leaf Sketch Watermarks on Left & Right -->
+            <svg class="absolute top-12 -left-6 w-36 sm:w-44 h-auto text-[#967d68] opacity-35 pointer-events-none select-none -rotate-12" viewBox="0 0 100 200" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M40 180 C35 130 55 80 40 10" stroke-linecap="round"/>
+                <path d="M40 140 C20 135 15 115 35 125" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M42 120 C60 115 65 95 45 105" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M38 95 C18 90 12 70 34 80" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M43 75 C62 70 66 50 45 60" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M39 50 C22 45 18 28 36 38" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M41 30 C58 24 55 12 40 10" fill="currentColor" fill-opacity="0.1"/>
+            </svg>
 
-            <!-- SAVE THE DATE Heading -->
-            <div class="relative z-10 reveal-item">
-                <p class="font-serif text-xl sm:text-2xl uppercase tracking-[0.28em] text-gold-700 font-bold">
-                    SAVE THE DATE
+            <!-- Botanical Leaf Sketch Watermark on Right -->
+            <svg class="absolute bottom-16 -right-6 w-36 sm:w-44 h-auto text-[#967d68] opacity-30 pointer-events-none select-none rotate-12" viewBox="0 0 100 200" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M60 190 C65 140 45 90 60 20" stroke-linecap="round"/>
+                <path d="M58 150 C78 145 82 125 62 135" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M62 130 C42 125 38 105 58 115" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M59 105 C79 100 84 80 64 90" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M63 85 C45 80 40 60 60 70" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M58 60 C76 55 78 38 60 48" fill="currentColor" fill-opacity="0.1"/>
+            </svg>
+
+            <!-- Subtle Vintage Cottage/House Sketch Watermark at Top Right -->
+            <svg class="absolute top-4 right-3 w-28 sm:w-32 h-auto text-[#967d68] opacity-25 pointer-events-none select-none" viewBox="0 0 120 100" fill="none" stroke="currentColor" stroke-width="1">
+                <polygon points="20,50 60,18 100,50" />
+                <rect x="26" y="50" width="68" height="42" />
+                <rect x="40" y="62" width="16" height="30" />
+                <rect x="68" y="58" width="16" height="18" />
+                <line x1="76" y1="58" x2="76" y2="76" />
+                <line x1="68" y1="67" x2="84" y2="67" />
+                <line x1="10" y1="92" x2="110" y2="92" stroke-dasharray="2 2" />
+                <path d="M85 30 L85 20 L92 20 L92 36" />
+            </svg>
+
+            <!-- Header Typography: THE WEDDING OF / Thành & Ngọc -->
+            <div class="relative z-10 reveal-item max-w-sm mx-auto mb-8">
+                <p class="font-serif text-xs sm:text-sm uppercase tracking-[0.32em] text-[#8c6d58] font-bold">
+                    THE WEDDING OF
                 </p>
-                <div class="ornament-divider my-3">
-                    <div></div>
-                    <span>❦</span>
-                    <div></div>
-                </div>
-                <h2 class="font-pattaya text-4xl sm:text-5xl text-gold-foil mt-1 leading-tight">
-                    {{ $weddingCard->groom_name }} <span class="font-serif italic text-gold-600 text-3xl mx-1">&amp;</span> {{ $weddingCard->bride_name }}
-                </h2>
-                <p class="font-serif text-sm sm:text-base text-bronze-700 tracking-widest uppercase mt-2 font-semibold">
-                    {{ $wDate ? $wDate->format('d . m . Y') : '14 . 02 . 2027' }}
-                </p>
+                <h1 class="font-serif font-bold text-4xl sm:text-5xl text-[#3f2d21] mt-2.5 tracking-normal leading-tight">
+                    {{ $weddingCard->groom_name }} <span class="font-serif font-normal italic text-3xl sm:text-4xl text-[#8c6d58] mx-1">&amp;</span> {{ $weddingCard->bride_name }}
+                </h1>
             </div>
 
-            <!-- Two Portrait Cards: Groom (Chú Rể - {{ $weddingCard->groom_name }}) & Bride (Cô Dâu - {{ $weddingCard->bride_name }}) -->
-            <div class="relative z-10 grid grid-cols-2 gap-4 sm:gap-5 mt-7 reveal-item">
-                <!-- Groom Card -->
-                <div class="marble-card-surface rounded-t-full rounded-b-3xl p-2.5 pb-5 border border-gold-400/60 shadow-xl group">
-                    <div onclick="openLightbox(1)" class="aspect-[3/4] rounded-t-full rounded-b-2xl overflow-hidden border border-gold-300 relative cursor-pointer">
-                        <img 
-                            src="{{ $groomAvatarSrc }}" 
-                            alt="Chú Rể {{ $weddingCard->groom_name }}" 
-                            class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-700"
-                        >
-                    </div>
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-700 font-bold mt-3.5">
-                        Chú Rể
-                    </p>
-                    <h3 class="font-pattaya text-2xl sm:text-3xl text-bronze-900 mt-1">
-                        {{ $weddingCard->groom_name }}
-                    </h3>
-                </div>
+            <!-- Tilted Polaroid Photo Card with Washi Tape, Dried Flower & Wax Seal -->
+            <div class="relative z-10 flex justify-center items-center py-3 reveal-item">
+                <div class="vintage-polaroid-card w-[86%] max-w-[335px]" onclick="openLightbox(0)" title="Chạm để phóng to ảnh cưới">
+                    
+                    <!-- Top Washi Tape (Kraft Paper Tape with Torn Edges) -->
+                    <div class="washi-tape-top" aria-hidden="true"></div>
 
-                <!-- Bride Card -->
-                <div class="marble-card-surface rounded-t-full rounded-b-3xl p-2.5 pb-5 border border-gold-400/60 shadow-xl group">
-                    <div onclick="openLightbox(0)" class="aspect-[3/4] rounded-t-full rounded-b-2xl overflow-hidden border border-gold-300 relative cursor-pointer">
+                    <!-- Inner Photo (Banner Top Photo) -->
+                    <div class="w-full aspect-[4/5] sm:aspect-[3/4] bg-[#eae4db] overflow-hidden rounded-[2px] relative group">
                         <img 
-                            src="{{ $brideAvatarSrc }}" 
-                            alt="Cô Dâu {{ $weddingCard->bride_name }}" 
-                            class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-700"
+                            src="{{ $heroBannerTop }}" 
+                            alt="{{ $weddingCard->groom_name }} &amp; {{ $weddingCard->bride_name }}" 
+                            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                            onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85'"
                         >
                     </div>
-                    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-700 font-bold mt-3.5">
-                        Cô Dâu
-                    </p>
-                    <h3 class="font-pattaya text-2xl sm:text-3xl text-bronze-900 mt-1">
-                        {{ $weddingCard->bride_name }}
-                    </h3>
+
+                    <!-- Dried Flower Botanical Twig (Bottom Left) -->
+                    <svg class="absolute -bottom-6 -left-5 w-24 sm:w-28 h-auto pointer-events-none select-none z-10" viewBox="0 0 100 160" fill="none">
+                        <!-- Main stem -->
+                        <path d="M38 152 C42 125 40 85 46 22" stroke="#7e5d3c" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M42 110 C32 98 22 84 18 68" stroke="#7e5d3c" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M44 80 C54 70 66 56 68 42" stroke="#7e5d3c" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M45 52 C36 44 28 32 26 22" stroke="#7e5d3c" stroke-width="1.4" stroke-linecap="round"/>
+                        <!-- Dried delicate buds / blooms in golden-brown & cream -->
+                        <circle cx="18" cy="68" r="4.5" fill="#caa476" opacity="0.95"/>
+                        <circle cx="16" cy="65" r="3" fill="#ecd8bf"/>
+                        <circle cx="24" cy="74" r="3.5" fill="#a47c4e"/>
+                        <circle cx="28" cy="85" r="4" fill="#caa476" opacity="0.9"/>
+                        <circle cx="68" cy="42" r="4.5" fill="#caa476" opacity="0.95"/>
+                        <circle cx="70" cy="39" r="3" fill="#ecd8bf"/>
+                        <circle cx="60" cy="48" r="3.5" fill="#a47c4e"/>
+                        <circle cx="56" cy="60" r="4" fill="#caa476" opacity="0.9"/>
+                        <circle cx="26" cy="22" r="4" fill="#caa476"/>
+                        <circle cx="24" cy="20" r="2.8" fill="#ecd8bf"/>
+                        <circle cx="32" cy="28" r="3.2" fill="#a47c4e"/>
+                        <circle cx="46" cy="22" r="4.5" fill="#caa476"/>
+                        <circle cx="48" cy="18" r="3" fill="#ecd8bf"/>
+                        <circle cx="42" cy="32" r="3.5" fill="#a47c4e"/>
+                    </svg>
+
+                    <!-- Small Washi Tape taping down the dried flower stem -->
+                    <div class="washi-tape-stem" aria-hidden="true"></div>
+
+                    <!-- 3D Melted Gold Wax Seal with Monogram (Bottom Right) -->
+                    <div class="vintage-wax-seal" title="Con dấu sáp niêm phong {{ $monogramText }}">
+                        <div class="vintage-wax-seal-inner">
+                            <span class="wax-seal-monogram">{{ $monogramText }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1559,15 +1734,19 @@
          * D. SỔ LƯU BÚT & XÁC NHẬN THAM DỰ (DỮ LIỆU TỪ DATABASE)
          * --------------------------------------------------------------- */
         @php
-            $cardWishes32 = $weddingCard->wishes()->approved()->latest()->take(30)->get()->map(function($w) {
-                return [
-                    'name' => $w->sender_name,
-                    'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
-                    'message' => $w->message,
-                    'attendance_status' => $w->attendance_status,
-                    'guest_count' => $w->guest_count,
-                ];
-            });
+            try {
+                $cardWishes32 = $weddingCard->wishes()->approved()->latest()->take(30)->get()->map(function($w) {
+                    return [
+                        'name' => $w->sender_name,
+                        'time' => $w->created_at ? $w->created_at->diffForHumans() : 'Vừa xong',
+                        'message' => $w->message,
+                        'attendance_status' => $w->attendance_status,
+                        'guest_count' => $w->guest_count,
+                    ];
+                });
+            } catch (\Throwable $e) {
+                $cardWishes32 = [];
+            }
         @endphp
         const wishesList = @json($cardWishes32, JSON_UNESCAPED_UNICODE);
         const wishStoreUrl32 = "{{ route('wishes.store', $weddingCard->id) }}";
