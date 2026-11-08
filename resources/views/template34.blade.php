@@ -7,10 +7,10 @@
     <title>{{ $weddingCard->couple_name }} - Thiệp Cưới Online</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Pattaya, Great Vibes, Cormorant Garamond, Be Vietnam Pro -->
+    <!-- Google Fonts: Pattaya, Great Vibes, Dancing Script, Cormorant Garamond, Be Vietnam Pro -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Pattaya&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@400;600;700&family=Great+Vibes&family=Pattaya&display=swap" rel="stylesheet">
     <!-- Tone.js for romantic sakura music-box synthesis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
@@ -38,6 +38,7 @@
                         }
                     },
                     fontFamily: {
+                        dancing: ['"Dancing Script"', 'cursive'],
                         pattaya: ['"Pattaya"', 'cursive'],
                         vibes: ['"Great Vibes"', 'cursive'],
                         serif: ['"Cormorant Garamond"', 'serif'],
@@ -77,12 +78,10 @@
 
         /* Delicate Sakura Paper Texture */
         .sakura-paper {
-            background-color: #FFF8FA;
+            background-color: #FFF9FA;
             background-image: 
-                radial-gradient(#F2BFD0 0.45px, transparent 0.45px), 
-                radial-gradient(#F9DCE5 0.45px, #FFF8FA 0.45px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
+                radial-gradient(circle, rgba(232, 153, 177, 0.42) 1.2px, transparent 1.2px);
+            background-size: 18px 18px;
         }
 
         .sakura-container-shadow {
@@ -437,15 +436,15 @@
         <div class="pointer-events-none absolute inset-y-0 right-2.5 w-[1px] bg-gradient-to-b from-sakura-200 via-sakura-300/60 to-sakura-200 z-10"></div>
 
         <!-- TOP STICKY BAR: TEMPLATE BADGE & REOPEN ENVELOPE BUTTON -->
-        <div class="sticky top-3 z-40 flex justify-between items-center px-4 pointer-events-none">
-            <div class="pointer-events-auto bg-white/90 backdrop-blur-md border border-sakura-200 rounded-full px-3 py-1 text-[11px] text-sakura-700 shadow-sm flex items-center gap-1.5">
-                <span class="text-xs">🌸</span>
-                <span class="font-medium tracking-wide">Anh Đào - Hồng</span>
+        {{-- <div class="sticky top-3 z-40 flex justify-between items-center px-4 pointer-events-none">
+            <div class="pointer-events-auto bg-white/90 backdrop-blur-md border border-neutral-200 rounded-full px-3 py-1 text-[11px] text-neutral-700 shadow-sm flex items-center gap-1.5">
+                <span class="text-xs">✉</span>
+                <span class="font-medium tracking-wide">Mẫu Thiệp 34</span>
             </div>
-            <button id="reopen-envelope-btn" onclick="reopenEnvelope()" class="pointer-events-auto bg-white/90 hover:bg-sakura-50 backdrop-blur-md border border-sakura-300 text-sakura-700 rounded-full px-3 py-1 text-[11px] font-medium shadow-sm transition flex items-center gap-1 cursor-pointer">
+            <button id="reopen-envelope-btn" onclick="reopenEnvelope()" class="pointer-events-auto bg-white/90 hover:bg-neutral-50 backdrop-blur-md border border-neutral-300 text-neutral-700 rounded-full px-3 py-1 text-[11px] font-medium shadow-sm transition flex items-center gap-1 cursor-pointer">
                 <span>✉</span> Xem lại phong bì
             </button>
-        </div>
+        </div> --}}
 
         <!-- ===================================================================
              1. 3D ENVELOPE / COVER OVERLAY (?open=1 TRANSITION)
@@ -560,101 +559,73 @@
         </div>
 
         <!-- ===================================================================
-             2. HERO SECTION (MAIN WEDDING COVER - TRUNG HIẾU & NHƯ Ý)
+             2. HERO SECTION (MINIMALIST EDITORIAL STUDIO - STYLE ẢNH MẪU CHUẨN)
              =================================================================== -->
-        <section id="sec-hero" class="relative pt-2 pb-8 px-6 text-center overflow-hidden">
+        <section id="sec-hero" class="relative pt-3 pb-8 px-3 sm:px-4 text-center overflow-hidden bg-white">
             
-            <!-- Top Arching Sakura Branches at Both Corners -->
-            <div class="flex justify-between items-start -mx-6 -mt-2 pointer-events-none select-none">
-                <svg class="w-44 h-28 sakura-branch-sway" viewBox="0 0 220 110">
-                    <use href="#sakura-corner-branch" />
-                </svg>
-                <svg class="w-44 h-28 sakura-branch-sway-right" style="transform: scaleX(-1);" viewBox="0 0 220 110">
-                    <use href="#sakura-corner-branch" />
-                </svg>
-            </div>
+            <!-- Minimalist Wedding Card Frame (Khung ảnh chân dung tạp chí) -->
+            <div class="reveal-scale relative mx-auto w-full max-w-[430px] rounded-2xl overflow-hidden border border-neutral-300/80 shadow-[0_12px_40px_rgba(0,0,0,0.08)] bg-white group">
+                
+                <!-- Top-Left Editorial Slogan (Góc trên bên trái ảnh như ảnh mẫu) -->
+                <div class="absolute top-4 left-4 sm:top-5 sm:left-5 text-left pointer-events-none select-none z-20">
+                    <p class="font-dancing text-xs sm:text-[13px] text-neutral-600 leading-tight">Love is</p>
+                    <p class="font-dancing text-base sm:text-lg text-neutral-800 -mt-0.5 font-bold">A Canvas</p>
+                    <p class="font-dancing text-xs sm:text-[13px] text-neutral-600 -mt-0.5">Burnished</p>
+                    <div class="w-5 h-[1px] bg-neutral-400 mt-1 transform -rotate-12"></div>
+                </div>
 
-            <!-- Save The Date Pill -->
-            <div class="reveal-item inline-flex items-center gap-2 bg-sakura-100/90 border border-sakura-300 rounded-full px-4 py-1 -mt-4 mb-5 shadow-sm">
-                <span class="text-xs">🌸</span>
-                <span class="text-[11px] uppercase tracking-[0.28em] text-sakura-600 font-semibold">Save The Date</span>
-                <span class="text-xs">🌸</span>
-            </div>
+                <!-- Main Full Studio Wedding Portrait Container -->
+                <div onclick="openLightbox(0)" class="relative w-full aspect-[9/14] sm:min-h-[640px] cursor-pointer overflow-hidden bg-neutral-100">
+                    <img src="{{ $weddingCard->banner_top ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top)) : asset('template34/images/hero_sample.jpg') }}" 
+                         alt="{{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" 
+                         class="w-full h-full object-cover object-top transition duration-700 group-hover:scale-105"
+                         onerror="this.src='{{ asset('template34/images/hero_sample.jpg') }}'">
+                    
+                    <!-- Soft White Gradient Overlay at Bottom (Tạo nền sáng tinh tế cho Typography đè lên váy) -->
+                    <div class="absolute inset-x-0 bottom-0 h-[52%] bg-gradient-to-t from-white via-white/85 to-transparent pointer-events-none"></div>
+                </div>
 
-            <!-- ARCHED / OVAL PASTEL PINK FRAMED WEDDING PORTRAIT -->
-            <div class="reveal-scale relative mx-auto w-[256px] h-[335px] my-2">
-                <!-- Soft Pastel Glow Halo -->
-                <div class="absolute -inset-3 rounded-t-full rounded-b-[120px] bg-gradient-to-b from-sakura-200/70 via-sakura-100/50 to-transparent blur-md -z-10"></div>
+                <!-- Typography Overlay on Gown (Chữ đè lên phần váy cô dâu chuẩn style ảnh mẫu) -->
+                <div class="absolute inset-x-0 bottom-5 sm:bottom-7 flex flex-col items-center justify-end px-4 z-10 text-center pointer-events-none">
+                    
+                    <!-- Tên Cô Dâu Chú Rể (Font Dancing Script nét đen uốn lượn nghệ thuật) -->
+                    <h1 class="font-dancing text-2xl sm:text-[32px] text-neutral-900 font-bold tracking-wide drop-shadow-sm leading-tight">
+                        {{ $weddingCard->groom_name }} - {{ $weddingCard->bride_name }}
+                    </h1>
 
-                <!-- Main Arch Portrait Frame -->
-                <div onclick="openLightbox(0)" class="cursor-pointer relative w-full h-full rounded-t-full rounded-b-[110px] p-2 bg-white border-2 border-sakura-300 shadow-xl overflow-hidden group">
-                    <div class="w-full h-full rounded-t-full rounded-b-[102px] overflow-hidden relative bg-sakura-50">
-                        <img src="{{ $weddingCard->cover_image ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image)) : ($weddingCard->groom_avatar ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar)) : 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=85') }}" 
-                             alt="{{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" 
-                             class="w-full h-full object-cover object-center transition duration-700 group-hover:scale-105"
-                             onerror="this.src='https://placehold.co/500x680/FDF0F4/5A3E46?text={{ urlencode($weddingCard->couple_name) }}'">
-                        <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-sakura-900/50 via-transparent to-transparent"></div>
+                    <!-- Tiêu đề: THƯ MỜI TIỆC CƯỚI -->
+                    <p class="mt-2 text-[11px] sm:text-xs uppercase tracking-[0.28em] font-sans text-neutral-800 font-semibold">
+                        THƯ MỜI TIỆC CƯỚI
+                    </p>
+
+                    <!-- Khung Ngày Cưới (2 đường kẻ đen kẹp giữa thứ & ngày tháng năm) -->
+                    <div class="my-3 w-full max-w-[240px] sm:max-w-[270px] border-y-2 border-neutral-900 py-2.5 flex flex-col items-center justify-center">
+                        <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-neutral-800 font-semibold font-sans">
+                            {{ mb_strtoupper($dayOfWeekVi, 'UTF-8') }}
+                        </p>
+                        <p class="mt-1 font-sans text-xl sm:text-[24px] font-bold tracking-[0.22em] text-neutral-950">
+                            {{ $dayNum }} . {{ $monthNum }} . {{ $yearNum }}
+                        </p>
+                    </div>
+
+                    <!-- Lời tựa tình yêu (2 câu thơ viết tay đối xứng) -->
+                    <div class="mt-1 text-center font-dancing text-[14px] sm:text-[16.5px] text-neutral-700 leading-snug">
+                        <p>Yêu nhau là chuyện cả đời</p>
+                        <p class="mt-0.5">Yêu người vừa ý, cưới người mình thương</p>
+                    </div>
+
+                    <!-- Chữ dọc nhỏ góc phải -->
+                    <div class="absolute bottom-1 right-2 text-[9px] tracking-widest text-neutral-400 rotate-90 origin-bottom-right">
+                        nelove
                     </div>
                 </div>
-
-                <!-- Blooming Sakura Cluster Accent on Bottom-Left & Top-Right of Arch -->
-                <svg class="pointer-events-none absolute -top-4 -right-6 w-28 h-20 rotate-12" viewBox="0 0 200 110">
-                    <use href="#sakura-blossom-full" transform="translate(110, 55) scale(0.9)" />
-                    <use href="#sakura-blossom-full" transform="translate(148, 38) scale(0.6)" />
-                </svg>
-                <svg class="pointer-events-none absolute -bottom-3 -left-6 w-28 h-20 -rotate-12" viewBox="0 0 200 110">
-                    <use href="#sakura-blossom-full" transform="translate(80, 55) scale(0.85)" />
-                    <use href="#sakura-blossom-full" transform="translate(45, 70) scale(0.55)" />
-                </svg>
-
-                <!-- Floating Date Ribbon Badge -->
-                <div class="absolute -bottom-3.5 left-1/2 -translate-x-1/2 z-20 bg-white border border-sakura-300 rounded-full px-4 py-1 shadow-md flex items-center gap-1.5 whitespace-nowrap">
-                    <span class="text-sakura-500 text-xs">❦</span>
-                    <span class="font-serif font-bold text-sm tracking-widest text-sakura-900">{{ $dayNum }} . {{ $monthNum }} . {{ $yearNum }}</span>
-                    <span class="text-sakura-500 text-xs">❦</span>
-                </div>
             </div>
 
-            <!-- COUPLE CALLIGRAPHY NAMES -->
-            <div class="reveal-item relative mt-9 mb-3 py-2">
-                <!-- Subtle Watermark "&" Behind -->
-                <span class="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-serif italic text-[135px] leading-none text-sakura-100 -z-0">
-                    &amp;
-                </span>
-
-                <div class="relative z-10">
-                    <h2 class="font-pattaya text-[40px] sm:text-[44px] text-sakura-500 drop-shadow-sm leading-tight">
-                        {{ $weddingCard->groom_name }}
-                    </h2>
-                    <div class="my-1 flex items-center justify-center gap-2.5">
-                        <div class="w-10 h-[1px] bg-sakura-300"></div>
-                        <span class="text-sakura-500 text-sm">❦</span>
-                        <div class="w-10 h-[1px] bg-sakura-300"></div>
-                    </div>
-                    <h2 class="font-pattaya text-[40px] sm:text-[44px] text-sakura-500 drop-shadow-sm leading-tight">
-                        {{ $weddingCard->bride_name }}
-                    </h2>
-                </div>
-            </div>
-
-            <!-- Romantic Cherry Blossom Quote -->
-            <p class="reveal-item font-serif italic text-base text-sakura-800 max-w-[340px] mx-auto leading-relaxed">
-                "Giữa mùa hoa anh đào nở rộ dịu dàng,<br>
-                Cảm ơn vì chúng ta đã tìm thấy nhau và cùng viết nên chuyện tình trăm năm."
-            </p>
-
-            <!-- Personalized Welcome Banner for Anh Minh Khôi -->
-            <div class="reveal-item mt-5 bg-sakura-100/80 border border-sakura-200 rounded-2xl p-3.5 max-w-[355px] mx-auto shadow-sm">
-                <p class="text-[11px] uppercase tracking-[0.2em] text-sakura-600 font-semibold">Thân Mời Quý Khách</p>
-                <p id="hero-guest-name" class="font-serif text-lg font-bold text-sakura-700 mt-0.5">Anh Minh Khôi</p>
-                <p class="text-xs text-sakura-800 mt-0.5">Đến dự buổi tiệc chung vui cùng gia đình chúng tôi</p>
-            </div>
-
-            <!-- Ornamental Sakura Divider -->
-            <div class="mt-6 -mx-6">
-                <svg class="w-full h-10" viewBox="0 0 480 48">
-                    <use href="#sakura-ribbon-divider" />
-                </svg>
+            <!-- Divider nhẹ phía dưới -->
+            <div class="mt-6 -mx-6 flex justify-center items-center gap-2">
+                <span class="w-16 h-[1px] bg-neutral-300"></span>
+                <span class="text-xs text-neutral-400">❦</span>
+                <span class="w-16 h-[1px] bg-neutral-300"></span>
             </div>
         </section>
 

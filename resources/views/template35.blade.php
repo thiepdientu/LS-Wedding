@@ -694,8 +694,8 @@
                 <div onclick="openLightbox(0)" class="hero-polaroid-frame cursor-pointer w-[278px] sm:w-[298px]">
                     <!-- Studio Pink Portrait Container (#ECA6B0) -->
                     <div class="relative w-full aspect-[3/4] overflow-hidden bg-[#ECA6B0]">
-                        @if(!empty($weddingCard->cover_image) || !empty($weddingCard->groom_avatar))
-                            <img src="{{ $weddingCard->cover_image ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image)) : ($weddingCard->groom_avatar ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar)) : '') }}" 
+                        @if(!empty($weddingCard->banner_top) || !empty($weddingCard->groom_avatar))
+                            <img src="{{ $weddingCard->banner_top ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top)) : ($weddingCard->groom_avatar ? (str_starts_with($weddingCard->groom_avatar, 'http') ? $weddingCard->groom_avatar : asset('storage/' . $weddingCard->groom_avatar)) : '') }}" 
                                  alt="{{ $weddingCard->groom_name }} & {{ $weddingCard->bride_name }}" 
                                  class="w-full h-full object-cover object-center"
                                  onerror="this.src='https://placehold.co/500x680/FDF0F4/5A3E46?text={{ urlencode($weddingCard->couple_name) }}'">

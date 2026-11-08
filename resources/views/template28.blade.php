@@ -663,10 +663,10 @@ footer small{display:block;margin-top:20px;font-size:11px;letter-spacing:.2em;te
   var dbPhotos = {!! $albumPhotosJson ?: '[]' !!};
   var photos = (Array.isArray(dbPhotos) && dbPhotos.length > 0) ? dbPhotos : defaultPhotos;
   @php
-    $heroCover28 = !empty($weddingCard->cover_image)
-        ? (str_starts_with($weddingCard->cover_image, 'http') ? $weddingCard->cover_image : asset('storage/' . $weddingCard->cover_image))
+    $heroCover28 = !empty($weddingCard->banner_top)
+        ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top))
         : (!empty($weddingCard->banner_preview)
-            ? (str_starts_with($weddingCard->banner_preview, 'http') ? $weddingCard->banner_preview : asset('storage/' . $weddingCard->banner_preview))
+            ? (str_starts_with($weddingCard->banner_top, 'http') ? $weddingCard->banner_top : asset('storage/' . $weddingCard->banner_top))
             : '');
   @endphp
   $('#heroPhoto').src= '{{ $heroCover28 }}' || photos[0];
