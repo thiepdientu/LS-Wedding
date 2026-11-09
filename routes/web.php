@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/wedding-cards', [AdminWeddingCardController::class, 'index'])->name('admin.wedding-cards.index');
         Route::post('/wedding-cards/{id}/toggle-status', [AdminWeddingCardController::class, 'toggleStatus'])->name('admin.wedding-cards.toggle-status');
         Route::get('/wedding-cards/{id}/customer-info', [AdminWeddingCardController::class, 'getCustomerInfo'])->name('admin.wedding-cards.customer-info');
+        Route::get('/wedding-cards/{id}/export-standalone', [AdminWeddingCardController::class, 'exportStandalone'])->name('admin.wedding-cards.export-standalone');
         Route::delete('/wedding-cards/{id}', [AdminWeddingCardController::class, 'destroy'])->name('admin.wedding-cards.destroy');
 
         // Form Tạo & Chỉnh sửa thiệp

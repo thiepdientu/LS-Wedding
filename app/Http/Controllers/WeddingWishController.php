@@ -34,14 +34,28 @@ class WeddingWishController extends Controller
             ->take(50)
             ->get()
             ->map(function (WeddingWish $wish) {
+                $attendanceLabel = match ($wish->attendance_status) {
+                    'attending' => 'Sẽ tham dự',
+                    'not_attending' => 'Không thể tham dự',
+                    default => 'Chúc phúc',
+                };
+                $timeHuman = $wish->created_at ? $wish->created_at->diffForHumans() : 'Vừa xong';
+
                 return [
                     'id' => $wish->id,
+                    // Định dạng cho template cổ điển (01-21)
                     'sender_name' => e($wish->sender_name),
                     'message' => e($wish->message),
                     'attendance_status' => $wish->attendance_status,
                     'guest_count' => $wish->guest_count,
-                    'created_at' => $wish->created_at ? $wish->created_at->diffForHumans() : '',
+                    'created_at' => $timeHuman,
                     'formatted_time' => $wish->formatted_created_at,
+                    // Định dạng tương thích cho template hiện đại (22-35)
+                    'name' => e($wish->sender_name),
+                    'wish' => e($wish->message),
+                    'side' => 'Khách quý',
+                    'attendance' => $attendanceLabel,
+                    'time' => $timeHuman,
                 ];
             });
 
@@ -76,25 +90,59 @@ class WeddingWishController extends Controller
             ], 403);
         }
 
-        $validated = $request->validate([
-            'sender_name' => 'required|string|max:100',
-            'message' => 'required|string|max:1000',
-            'attendance_status' => 'nullable|string|in:attending,not_attending,unsure',
-            'guest_count' => 'nullable|integer|min:1|max:10',
-        ], [
-            'sender_name.required' => 'Vui lòng nhập tên của bạn.',
-            'sender_name.max' => 'Tên không được vượt quá 100 ký tự.',
-            'message.required' => 'Vui lòng nhập lời chúc.',
-            'message.max' => 'Lời chúc không được vượt quá 1000 ký tự.',
-        ]);
+        // Linh hoạt nhận diện tên trường giữa các template (sender_name / name, message / wish)
+        $senderName = trim((string) ($request->input('sender_name') ?: $request->input('name', '')));
+        $message = trim((string) ($request->input('message') ?: $request->input('wish', '')));
+        $rawAttendance = trim((string) ($request->input('attendance_status') ?: $request->input('attendance', '')));
+        $side = trim((string) $request->input('side', 'Khách quý'));
+        $guestCount = (int) $request->input('guest_count', 1);
+        if ($guestCount < 1) $guestCount = 1;
 
-        $attendanceStatus = $validated['attendance_status'] ?? 'unsure';
-        $guestCount = isset($validated['guest_count']) ? (int) $validated['guest_count'] : 1;
+        if (empty($senderName)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng nhập họ và tên của bạn.',
+            ], 422);
+        }
+
+        if (empty($message)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng nhập lời chúc mừng.',
+            ], 422);
+        }
+
+        if (mb_strlen($senderName) > 100) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tên không được vượt quá 100 ký tự.',
+            ], 422);
+        }
+
+        if (mb_strlen($message) > 1000) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lời chúc không được vượt quá 1000 ký tự.',
+            ], 422);
+        }
+
+        // Chuẩn hóa trạng thái tham dự
+        $attendanceLower = mb_strtolower($rawAttendance);
+        if (str_contains($attendanceLower, 'tham dự') || str_contains($attendanceLower, 'attending') || str_contains($attendanceLower, 'có') || $attendanceLower === 'yes') {
+            $attendanceStatus = 'attending';
+            $attendanceLabel = 'Sẽ tham dự';
+        } elseif (str_contains($attendanceLower, 'không') || str_contains($attendanceLower, 'tiếc') || str_contains($attendanceLower, 'bận') || str_contains($attendanceLower, 'not_attending') || $attendanceLower === 'no') {
+            $attendanceStatus = 'not_attending';
+            $attendanceLabel = 'Không thể tham dự';
+        } else {
+            $attendanceStatus = 'unsure';
+            $attendanceLabel = 'Chúc phúc';
+        }
 
         $wish = WeddingWish::create([
             'wedding_card_id' => $card->id,
-            'sender_name' => strip_tags(trim($validated['sender_name'])),
-            'message' => strip_tags(trim($validated['message'])),
+            'sender_name' => strip_tags($senderName),
+            'message' => strip_tags($message),
             'attendance_status' => $attendanceStatus,
             'guest_count' => $guestCount,
             'is_approved' => true, // Mặc định hiển thị, admin có thể ẩn nếu cần
@@ -106,12 +154,19 @@ class WeddingWishController extends Controller
             'message' => 'Gửi lời chúc thành công! Cảm ơn bạn rất nhiều.',
             'data' => [
                 'id' => $wish->id,
+                // Định dạng cũ
                 'sender_name' => e($wish->sender_name),
                 'message' => e($wish->message),
                 'attendance_status' => $wish->attendance_status,
                 'guest_count' => $wish->guest_count,
                 'created_at' => 'Vừa xong',
                 'formatted_time' => $wish->formatted_created_at,
+                // Định dạng mới (Template 22-35)
+                'name' => e($wish->sender_name),
+                'wish' => e($wish->message),
+                'side' => e($side ?: 'Khách quý'),
+                'attendance' => $attendanceLabel,
+                'time' => 'Vừa gửi xong',
             ],
         ], 201);
     }

@@ -725,13 +725,16 @@
     @php
         $album = !empty($weddingCard->album) ? json_decode($weddingCard->album, true) : [];
         $stories = [];
-        if ($weddingCard->love_story != ',') {
-            $test = '1/2/2023:Hẹn Hò,1/3/2025:Tỏ tình,2/04/2025:Đính Hôn, 2/05/2025:Kết Hôn';
+        if (!empty($weddingCard->love_story) && trim($weddingCard->love_story) !== ',') {
             $items = explode(',', $weddingCard->love_story);
             foreach ($items as $item) {
-                [$date, $story] = explode(':', $item);
-                $image = !empty($album) ? array_shift($album) : null; // Lấy ảnh đầu tiên và loại khỏi album
-                $stories[] = ['date' => trim($date), 'story' => trim($story), 'image' => $image];
+                $parts = explode(':', $item);
+                if (count($parts) >= 2) {
+                    $date = $parts[0];
+                    $story = $parts[1];
+                    $image = !empty($album) ? array_shift($album) : null; // Lấy ảnh đầu tiên và loại khỏi album
+                    $stories[] = ['date' => trim($date), 'story' => trim($story), 'image' => $image];
+                }
             }
         }
 

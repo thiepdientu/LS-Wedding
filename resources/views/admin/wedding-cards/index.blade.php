@@ -284,6 +284,15 @@
                                         </svg>
                                     </a>
 
+                                    <!-- Tải thiệp độc lập (Offline & GitHub Pages) -->
+                                    <a href="{{ route('admin.wedding-cards.export-standalone', $card->id) }}" 
+                                       class="p-1.5 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors" 
+                                       title="Tải thiệp chạy độc lập (Offline & GitHub Pages) .ZIP">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                        </svg>
+                                    </a>
+
                                     <!-- Edit Icon -->
                                     <a href="{{ route('wedding.edit', $card->id) }}" 
                                        class="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" 
