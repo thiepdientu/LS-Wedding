@@ -20,8 +20,14 @@
     var WeddingWishes = {
         cardId: null,
         endpoints: {
-            list: function (id) { return '/wedding-cards/' + encodeURIComponent(id) + '/wishes'; },
-            store: function (id) { return '/wedding-cards/' + encodeURIComponent(id) + '/wishes'; }
+            list: function (id) {
+                var base = (typeof window.WEDDING_API_URL === 'string') ? window.WEDDING_API_URL.replace(/\/+$/, '') : '';
+                return base + '/wedding-cards/' + encodeURIComponent(id) + '/wishes';
+            },
+            store: function (id) {
+                var base = (typeof window.WEDDING_API_URL === 'string') ? window.WEDDING_API_URL.replace(/\/+$/, '') : '';
+                return base + '/wedding-cards/' + encodeURIComponent(id) + '/wishes';
+            }
         },
 
         init: function (cardId, opts) {
@@ -35,8 +41,29 @@
 
             if (!this.cardId) return;
 
+            // Nếu có dữ liệu khởi tạo sẵn (chế độ độc lập / offline), hiển thị ngay
+            if (Array.isArray(window.INITIAL_WISHES) && window.INITIAL_WISHES.length > 0) {
+                this.renderWishesList(window.INITIAL_WISHES);
+            }
+
             this.loadWishes();
             this.bindForm();
+        },
+
+        renderWishesList: function (items) {
+            var self = this;
+            var listEl = document.querySelector(self.options.listSelector);
+            if (!listEl) return;
+
+            if (items && items.length > 0) {
+                var html = '';
+                items.forEach(function (item) {
+                    html += self.renderWishItem(item);
+                });
+                listEl.innerHTML = html;
+            } else {
+                listEl.innerHTML = '<div class="text-center italic opacity-75 py-3 text-sm">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc nhé!</div>';
+            }
         },
 
         loadWishes: function () {
@@ -51,19 +78,14 @@
             .then(function (res) { return res.json(); })
             .then(function (res) {
                 if (res && res.success && Array.isArray(res.data)) {
-                    if (res.data.length > 0) {
-                        var html = '';
-                        res.data.forEach(function (item) {
-                            html += self.renderWishItem(item);
-                        });
-                        listEl.innerHTML = html;
-                    } else {
-                        listEl.innerHTML = '<div class="text-center italic opacity-75 py-3 text-sm">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc nhé!</div>';
-                    }
+                    self.renderWishesList(res.data);
                 }
             })
             .catch(function (err) {
-                console.warn('[WeddingWishes] Không thể tải danh sách lời chúc:', err);
+                console.warn('[WeddingWishes] Không thể tải danh sách lời chúc từ máy chủ, sử dụng dữ liệu cục bộ:', err);
+                if (Array.isArray(window.INITIAL_WISHES) && window.INITIAL_WISHES.length > 0) {
+                    self.renderWishesList(window.INITIAL_WISHES);
+                }
             });
         },
 

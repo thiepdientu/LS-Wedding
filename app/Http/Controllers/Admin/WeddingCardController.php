@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\WeddingCard;
+use App\Services\WeddingCardExportService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class WeddingCardController extends Controller
 {
@@ -144,6 +148,31 @@ class WeddingCardController extends Controller
                 'status' => $card->status_info['label'],
             ]
         ]);
+    }
+
+    /**
+     * Xuất bản và tải thiệp cưới độc lập (Standalone ZIP - Hỗ trợ Offline & GitHub Pages)
+     */
+    public function exportStandalone(int|string $id, WeddingCardExportService $exportService): BinaryFileResponse|RedirectResponse
+    {
+        $card = WeddingCard::findOrFail($id);
+
+        try {
+            $zipPath = $exportService->export($card);
+            $slug = $card->identifyWedding ?: 'id-' . $card->id;
+            $downloadFileName = 'thiep-cuoi-' . Str::slug($slug) . '.zip';
+
+            return response()->download($zipPath, $downloadFileName, [
+                'Content-Type' => 'application/zip',
+            ])->deleteFileAfterSend(true);
+        } catch (\Throwable $e) {
+            Log::error('Lỗi khi xuất thiệp cưới độc lập: ' . $e->getMessage(), [
+                'card_id' => $id,
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()->back()->with('error', 'Không thể tạo file xuất bản thiệp: ' . $e->getMessage());
+        }
     }
 
     /**
